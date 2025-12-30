@@ -17,6 +17,30 @@ settings = get_settings()
 app = FastAPI(title=settings.app_name, default_response_class=ORJSONResponse)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    
+    # Content Security Policy
+    csp = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; "
+        "font-src 'self' https://fonts.gstatic.com; "
+        "img-src 'self' data: https://*.tile.openstreetmap.org https://unpkg.com; "
+        "connect-src 'self'; "
+        "frame-ancestors 'none';"
+    )
+    response.headers["Content-Security-Policy"] = csp
+    
+    if settings.environment == "production":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
@@ -52,6 +76,27 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
             "message": exc.detail if exc.detail else t.get('404_message', 'An error occurred'),
         },
         status_code=exc.status_code
+    )
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    lang = request.cookies.get("lang", "ar")
+    t = get_translations(lang)
+    profile = get_profile(lang)
+    return templates.TemplateResponse(
+        "errors/error.html",
+        {
+            "request": request,
+            "t": t,
+            "profile": profile,
+            "current_user": None,
+            "lang": lang,
+            "dir": "rtl" if lang == "ar" else "ltr",
+            "code": 500,
+            "title": "Error",
+            "message": t.get('error_message', 'An unexpected error occurred'),
+        },
+        status_code=500
     )
 
 app.include_router(pages.router)

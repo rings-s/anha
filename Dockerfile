@@ -37,6 +37,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Copy application code
 COPY --chown=appuser:appgroup . .
 
+# Create data directory and set permissions for SQLite
+RUN mkdir -p data && chown appuser:appgroup data
+
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

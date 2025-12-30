@@ -30,6 +30,9 @@ async def register(
     role: str = Form("client"),  # Ignored - always set to client
     session: AsyncSession = Depends(get_db_session),
 ):
+    if len(password) < 8:
+        raise HTTPException(status_code=400, detail="كلمة المرور يجب أن لا تقل عن 8 أحرف")
+    
     exists = await session.execute(select(User).where(User.email == email))
     if exists.scalar_one_or_none():
         raise HTTPException(status_code=400, detail="البريد الإلكتروني مستخدم بالفعل")
@@ -47,7 +50,14 @@ async def register(
     session.add(user)
     await session.commit()
     response = _redirect("/dashboard")
-    response.set_cookie("access_token", create_access_token(email), httponly=True, samesite="lax")
+    is_secure = settings.environment == "production"
+    response.set_cookie(
+        "access_token", 
+        create_access_token(email), 
+        httponly=True, 
+        samesite="lax",
+        secure=is_secure
+    )
     return response
 
 
@@ -69,7 +79,14 @@ async def login(
         redirect_url = "/dashboard"
     
     response = _redirect(redirect_url)
-    response.set_cookie("access_token", create_access_token(user.email), httponly=True, samesite="lax")
+    is_secure = settings.environment == "production"
+    response.set_cookie(
+        "access_token", 
+        create_access_token(user.email), 
+        httponly=True, 
+        samesite="lax",
+        secure=is_secure
+    )
     return response
 
 
@@ -106,6 +123,9 @@ async def reset_confirm(
     new_password: str = Form(...),
     session: AsyncSession = Depends(get_db_session),
 ):
+    if len(new_password) < 8:
+        raise HTTPException(status_code=400, detail="كلمة المرور الجديدة يجب أن لا تقل عن 8 أحرف")
+    
     token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
     result = await session.execute(select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash))
     matched = result.scalar_one_or_none()
