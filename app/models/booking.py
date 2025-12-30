@@ -22,7 +22,6 @@ class Booking(Base):
     client_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     service_id: Mapped[int] = mapped_column(ForeignKey("services.id"))
     status: Mapped[BookingStatus] = mapped_column(Enum(BookingStatus), default=BookingStatus.requested)
-    price: Mapped[float] = mapped_column(Float, default=0.0)
 
     contact_name: Mapped[str] = mapped_column(String(255))
     contact_phone: Mapped[str] = mapped_column(String(50))

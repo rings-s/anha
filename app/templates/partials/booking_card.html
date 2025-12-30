@@ -29,8 +29,9 @@ Variables:
 
         {# Status Badge with proper class-based styling #}
         {% set status_val = booking.status.value if booking.status else 'unknown' %}
+        {% set status_label = t.get(status_val, status_val | capitalize) %}
         <span class="badge status-badge status-{{ status_val }}">
-            {{ status_val }}
+            {{ status_label }}
         </span>
     </div>
 

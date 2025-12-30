@@ -65,7 +65,6 @@ async def create_booking(
         location_lng=location_lng,
         address_text=address_text,
         status=BookingStatus.requested,
-        price=service.price or 0.0,
     )
     session.add(booking)
     await session.commit()

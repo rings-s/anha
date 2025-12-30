@@ -93,13 +93,11 @@ async def reset_request(
         expires_at = datetime.utcnow() + timedelta(minutes=settings.reset_token_expire_minutes)
         session.add(PasswordResetToken(user_id=user.id, token_hash=token_hash, expires_at=expires_at))
         await session.commit()
-        reset_link = f"/reset/{token}"
-    t = get_translations("ar")  # Default to Arabic for reset emails
-    return HTMLResponse(
-        f"<p>{t['reset_request']}</p>"
-        + (f"<p>رابط الاستعادة: <a href='{reset_link}'>{reset_link}</a></p>" if reset_link else ""),
-        status_code=200,
-    )
+        # Direct redirect for demo purposes (skipping email)
+        return RedirectResponse(f"/reset/{token}", status_code=303)
+    
+    # If user not found
+    raise HTTPException(status_code=404, detail="Email not found")
 
 
 @router.post("/reset/confirm")

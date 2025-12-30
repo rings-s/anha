@@ -19,7 +19,7 @@ def test_admin_requires_role(client):
     assert response.status_code == 403
 
 
-def test_admin_can_create_service_with_price(client):
+def test_admin_can_create_service(client):
     create_user("admin2@example.com", "pass1234", role="admin")
     cookies = _login(client, "admin2@example.com", "pass1234")
 
@@ -29,7 +29,6 @@ def test_admin_can_create_service_with_price(client):
             "name_ar": "خدمة جديدة",
             "name_en": "New Service",
             "description": "Service description",
-            "price": "200.25",
         },
         cookies=cookies,
         follow_redirects=False,
@@ -39,4 +38,4 @@ def test_admin_can_create_service_with_price(client):
 
     service = get_service_by_name("خدمة جديدة")
     assert service is not None
-    assert service.price == 200.25
+    assert service.name_ar == "خدمة جديدة"

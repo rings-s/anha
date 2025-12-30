@@ -428,53 +428,110 @@
     @media (max-width: 900px) {
         .hero-advanced {
             grid-template-columns: 1fr;
-            text-align: center;
-            gap: 2rem;
-            margin-top: 3rem;
+            text-align: start;
+            gap: 3rem;
+            /* Increased gap */
+            margin-top: 4rem;
             min-height: auto;
             display: flex;
-            /* Switch to flex to use order easily */
             flex-direction: column;
         }
 
         .hero-text {
             order: 1;
-            /* Content first */
+            padding-bottom: 1rem;
         }
 
         .hero-visual {
             display: flex;
-            /* Show on mobile */
-            height: 350px;
-            transform: scale(0.85);
-            margin-top: 0;
+            height: 400px;
+            /* Taller */
+            margin-top: 2rem;
+            width: 100%;
+            justify-content: center;
             order: 2;
-            /* Visual second (bottom) */
             margin-bottom: 2rem;
+            transform: scale(0.95);
+            /* Larger visual */
+        }
+
+        .glass-stack {
+            width: 320px;
+            /* Fixed width for consistent visual */
+            margin: 0 auto;
+        }
+
+        /* Disable float on mobile to save battery/performance and keep it cleaner */
+        .glass-floating {
+            animation: none !important;
         }
 
         .hero-actions {
-            justify-content: center;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            flex-direction: row;
+            /* Back to row for smaller buttons */
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            /* Add spacing between buttons and next items */
         }
 
-        /* Explicitly center the paragraph text block */
+        .hero-actions .btn {
+            width: auto;
+            /* Buttons fit content */
+            padding: 0.7rem 1.5rem;
+            /* Smaller padding */
+            font-size: 0.9rem;
+            /* Smaller font */
+        }
+
         .hero-text p {
-            margin-left: auto;
-            margin-right: auto;
+            margin-left: 0;
+            margin-right: 0;
+            font-size: 1.1rem;
+            /* Readable font size */
         }
 
-        /* Flexbox centering for the stats row */
         .hero-text>div:last-child {
-            justify-content: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            /* Allow wrapping */
+            gap: 2rem;
         }
 
-        /* Adjust font sizes for mobile */
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
+            /* Larger title */
+            line-height: 1.2;
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 2.2rem;
+        }
+
+        /* Adjust cards for mobile layout */
+        .card-1 {
+            top: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+            position: relative;
+        }
+
+        .card-2 {
+            display: none;
+            /* Simplify visual by hiding secondary cards on mobile */
+        }
+
+        .card-3 {
+            display: none;
+        }
+
+        /* Improve services grid on mobile */
+        #services .grid {
+            gap: 2rem;
         }
     }
 }

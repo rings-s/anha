@@ -73,7 +73,9 @@
           <button class="btn outline active px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=all"
             hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.all }}</button>
           <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=requested"
-            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.new }}</button>
+            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.requested }}</button>
+          <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=assigned"
+            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.assigned }}</button>
           <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=in_progress"
             hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.in_progress }}</button>
           <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=completed"

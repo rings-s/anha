@@ -292,11 +292,10 @@ async def create_service(
     name_ar: str = Form(...),
     name_en: str = Form(""),
     description: str = Form(""),
-    price: float = Form(0.0),
     admin: User = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ):
-    service = Service(name_ar=name_ar, name_en=name_en, description=description, price=price)
+    service = Service(name_ar=name_ar, name_en=name_en, description=description)
     session.add(service)
     await session.commit()
     return _redirect("/admin")
@@ -308,7 +307,6 @@ async def update_service(
     name_ar: str = Form(...),
     name_en: str = Form(""),
     description: str = Form(""),
-    price: float = Form(0.0),
     admin: User = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ):
@@ -320,7 +318,6 @@ async def update_service(
     service.name_ar = name_ar
     service.name_en = name_en
     service.description = description
-    service.price = price
     await session.commit()
     return _redirect("/admin")
 

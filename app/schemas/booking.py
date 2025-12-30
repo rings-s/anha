@@ -16,7 +16,6 @@ class BookingOut(BaseModel):
     id: int
     service_id: int
     status: str
-    price: float
     contact_name: str
     contact_phone: str
     description: str

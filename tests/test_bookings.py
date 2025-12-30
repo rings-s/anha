@@ -17,11 +17,11 @@ def test_booking_requires_auth(client):
     assert response.headers["location"] == "/login"
 
 
-def test_create_booking_uses_service_price(client):
+def test_create_booking(client):
     create_user("booker@example.com", "pass1234")
     cookies = _login(client, "booker@example.com", "pass1234")
 
-    service_id = create_service("خدمة اختبار", 150.5)
+    service_id = create_service("خدمة اختبار")
     service = get_service_by_id(service_id)
     assert service is not None
 
@@ -42,4 +42,4 @@ def test_create_booking_uses_service_price(client):
 
     booking = get_booking_by_contact("Test Booker")
     assert booking is not None
-    assert booking.price == service.price
+    assert booking.service_id == service_id

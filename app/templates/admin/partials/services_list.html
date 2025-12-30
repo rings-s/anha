@@ -45,9 +45,6 @@
                     {{ service.description[:120] if service.description else 'لا يوجد وصف تفصيلي متاح لهذه الخدمة
                     حالياً.' }}{% if service.description and service.description|length > 120 %}...{% endif %}
                 </p>
-                <div style="font-weight: 800; font-size: 0.9rem; color: var(--accent-primary);">
-                    {{ "%.2f"|format(service.price or 0.0) }} SAR
-                </div>
             </div>
 
             <div style="display: flex; gap: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem;">
@@ -87,10 +84,6 @@
                     <label>وصف الخدمة</label>
                     <textarea name="description" rows="4">{{ service.description or '' }}</textarea>
                 </div>
-                <div class="modal-form-group">
-                    <label>سعر الخدمة (SAR)</label>
-                    <input type="number" name="price" min="0" step="0.01" value="{{ service.price or 0.0 }}">
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn" style="flex: 2;">💾 حفظ التغييرات</button>
@@ -129,10 +122,6 @@
             <div class="modal-form-group">
                 <label>وصف تفصيلي للخدمة</label>
                 <textarea name="description" rows="4" placeholder="اشرح ما تشمله هذه الخدمة وما يميزها..."></textarea>
-            </div>
-            <div class="modal-form-group">
-                <label>سعر الخدمة (SAR)</label>
-                <input type="number" name="price" min="0" step="0.01" placeholder="0.00">
             </div>
         </div>
         <div class="modal-footer">

@@ -172,13 +172,13 @@ def get_user_by_email(email: str):
     return _run(_get())
 
 
-def create_service(name_ar: str, price: float):
+def create_service(name_ar: str):
     async def _create():
         from app.db.session import AsyncSessionLocal
         from app.models.service import Service
 
         async with AsyncSessionLocal() as session:
-            service = Service(name_ar=name_ar, name_en="Test", description="", price=price)
+            service = Service(name_ar=name_ar, name_en="Test", description="")
             session.add(service)
             await session.commit()
             return service.id

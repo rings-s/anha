@@ -16,6 +16,10 @@
                 hx-swap="innerHTML">جديد</button>
             <button class="btn outline"
                 style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
+                hx-get="/admin/bookings?status=assigned" hx-target="#admin-bookings-grid" hx-swap="innerHTML">تم
+                التكليف</button>
+            <button class="btn outline"
+                style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
                 hx-get="/admin/bookings?status=in_progress" hx-target="#admin-bookings-grid" hx-swap="innerHTML">قيد
                 التنفيذ</button>
             <button class="btn outline"
@@ -39,8 +43,6 @@
                         <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">العميل
                         </th>
                         <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الحالة
-                        </th>
-                        <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">المبلغ
                         </th>
                         <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الموظف
                             المكلف</th>
@@ -73,18 +75,12 @@
                             </div>
                         </td>
                         <td style="padding: 1.2rem 1rem;">
-                            <span class="badge" style="
-                background: {% if booking.status.value == 'requested' %}rgba(255, 193, 7, 0.12){% elif booking.status.value in ['assigned', 'in_progress'] %}rgba(15, 107, 95, 0.12){% elif booking.status.value == 'completed' %}rgba(46, 204, 113, 0.12){% else %}rgba(149, 165, 166, 0.12){% endif %};
-                color: {% if booking.status.value == 'requested' %}#d39e00{% elif booking.status.value in ['assigned', 'in_progress'] %}var(--accent-primary){% elif booking.status.value == 'completed' %}#2ecc71{% else %}#7f8c8d{% endif %};
-                padding: 4px 10px;
-                border-radius: 50px;
-                font-size: 0.65rem;
-                font-weight: 700;
-                border: 1px solid currentColor;
-              ">{{ booking.status.value | upper }}</span>
-                        </td>
-                        <td style="padding: 1.2rem 1rem; font-weight: 700; font-size: 0.85rem;">
-                            {{ "%.2f"|format(booking.price or 0.0) }} SAR
+                            {% set status_labels = {'requested': 'جديد', 'assigned': 'تم التكليف', 'in_progress': 'قيد
+                            التنفيذ', 'completed': 'مكتمل', 'cancelled': 'ملغي'} %}
+                            {% set status_val = booking.status.value %}
+                            <span class="badge status-badge status-{{ status_val }}">
+                                {{ status_labels.get(status_val, status_val) }}
+                            </span>
                         </td>
                         <td style="padding: 1.2rem 1rem;">
                             {% if booking.assigned_employee %}
