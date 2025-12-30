@@ -1,0 +1,15 @@
+{#
+Form Input Partial Component
+Variables:
+- type: input type (text, email, password, etc.)
+- name: input name attribute
+- label: label text
+- value: optional default value
+- placeholder: optional placeholder
+- required: boolean for required field
+#}
+<div class="form-group">
+    <label for="{{ name }}">{{ label }}</label>
+    <input type="{{ type|default('text') }}" id="{{ name }}" name="{{ name }}" value="{{ value|default('') }}"
+        placeholder="{{ placeholder|default('') }}" {% if required %}required{% endif %}>
+</div>

@@ -1,0 +1,24 @@
+{#
+Auth Card Partial Component
+A centered card container for authentication pages
+Variables:
+- title: Card title
+- subtitle: Optional subtitle text
+- max_width: Optional max width (default: 450px)
+#}
+<section class="container auth-section"
+    style="display: flex; justify-content: center; align-items: center; min-height: 75vh;">
+    <div class="glass-card animate-in auth-card"
+        style="width: 100%; max-width: {{ max_width|default('450px') }}; padding: 3rem;">
+        {# Header #}
+        <div class="text-center" style="margin-bottom: 2.5rem;">
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">{{ title }}</h2>
+            {% if subtitle %}
+            <p class="muted" style="margin: 0;">{{ subtitle }}</p>
+            {% endif %}
+        </div>
+
+        {# Content slot - caller() renders the content between with/endwith #}
+        {{ caller() }}
+    </div>
+</section>

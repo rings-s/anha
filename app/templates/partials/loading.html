@@ -1,0 +1,10 @@
+{#
+Loading Spinner Partial
+A centered loading indicator
+Variables:
+- text: Optional loading text (uses t.loading by default)
+#}
+<div class="loading-spinner text-center muted animate-in" style="padding: 3rem;">
+    <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
+    <p style="margin: 0;">{{ text|default(t.loading) }}</p>
+</div>

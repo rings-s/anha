@@ -1,0 +1,34 @@
+# ============================================
+# ANHA Trading - Docker Compose Configuration
+# ============================================
+
+services:
+  # FastAPI Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: anha-app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=ANHA Trading
+      - ENVIRONMENT=production
+      - DATABASE_URL=sqlite+aiosqlite:///./data/anha.db
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=720
+      - RESET_TOKEN_EXPIRE_MINUTES=30
+      - AUTO_CREATE_DB=true
+    volumes:
+      - app-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  app-data:
+    driver: local

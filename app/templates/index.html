@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section
+  class="hero-advanced grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-16 items-center min-h-[75vh] mt-8 mb-24 relative container">
+  <div class="hero-text animate-in relative z-10">
+    <div class="mb-5">
+      <span
+        class="badge inline-block bg-accent-secondary text-white px-4 py-1.5 font-extrabold rounded-full text-sm uppercase tracking-wider">
+        {{ profile.company_name }} ✨
+      </span>
+    </div>
+
+    <h1
+      class="text-[4.2rem] font-[950] leading-[1.05] mb-6 bg-linear-to-br from-text-main via-text-main to-accent-primary bg-clip-text text-transparent tracking-[-2px]">
+      {{ t.hero_title }}
+    </h1>
+
+    <p class="lead text-lg text-text-muted mb-10 max-w-[85%] leading-relaxed">
+      {{ t.hero_sub }}
+    </p>
+
+    <div class="hero-actions flex gap-4 items-center">
+      <a class="btn" href="/book">
+        {{ t.book_cta }}
+      </a>
+      <a class="btn outline" href="#services">
+        {{ t.nav_services }}
+      </a>
+    </div>
+
+    <!-- Integrated Stats/Trust -->
+    <div class="mt-10 flex gap-12 border-t border-black/5 pt-6">
+      <div>
+        <div class="text-[1.8rem] font-[900] text-accent-primary">+500</div>
+        <div class="muted font-semibold text-sm">{{ t.successful_projects }}</div>
+      </div>
+      <div>
+        <div class="text-[1.8rem] font-[900] text-accent-primary">4.9/5</div>
+        <div class="muted font-semibold text-sm">{{ t.customer_rating }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual animate-in flex relative h-[500px] items-center justify-center perspective-1000"
+    style="animation-delay: 0.4s;">
+    <div class="glass-stack relative w-full h-full rotate-[-2deg]">
+      <!-- Primary Floating Item -->
+      <div
+        class="glass-floating absolute bg-glass-bg backdrop-blur-xl border border-white/60 shadow-2xl rounded-[30px] w-[320px] p-5 top-[10%] right-[10%] z-20 animate-float">
+        <div class="flex justify-between items-center mb-6">
+          <div class="font-[900] text-[1.1rem] text-accent-primary">{{ t.fast_execution }}</div>
+          <div class="bg-accent-glow px-2.5 py-1.5 rounded-xl">⚡</div>
+        </div>
+        <div class="h-[100px] bg-accent-glow/20 rounded-2xl flex items-center justify-center mb-4">
+          <span class="text-[2rem]">🚀</span>
+        </div>
+        <div class="text-sm font-bold">{{ t.team_ready }}</div>
+      </div>
+
+      <!-- Testimonial Bubble -->
+      <div
+        class="glass-floating absolute bg-white/85 backdrop-blur-xl border border-white/60 shadow-2xl rounded-[25px] w-[260px] p-5 bottom-[15%] right-[-50px] z-30 animate-float"
+        style="animation-delay: 2s;">
+        <div class="italic text-[0.95rem] mb-4 text-[#444]">"{{ t.testimonial_quote }}"
+        </div>
+        <div class="font-extrabold text-[0.85rem] text-accent-primary">{{ t.testimonial_author }}</div>
+      </div>
+
+      <!-- Decorative Circle -->
+      <div
+        class="glass-floating absolute bg-linear-to-br from-accent-glow to-white/20 rounded-full w-[180px] h-[180px] top-[40%] left-[40%] z-10 opacity-50 animate-float"
+        style="animation-delay: 4s;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- About Company Area (Fixed and Integrated) -->
+<section class="container animate-in my-24">
+  <div class="text-center max-w-[1000px] mx-auto">
+    <h2 class="text-[2.2rem] font-[950] mb-14 tracking-[-1px]">{{ profile.about_title }}</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div class="glass-card text-{{ 'right' if lang == 'ar' else 'left' }} p-10 rounded-[var(--radius-lg)]">
+        <div class="text-[2.2rem] mb-5">🎯</div>
+        <h3 class="text-[1.5rem] mb-4 text-accent-primary font-[900]">{{ profile.vision_title }}</h3>
+        <p class="muted text-base leading-[1.7]">{{ profile.vision }}</p>
+      </div>
+
+      <div class="glass-card text-{{ 'right' if lang == 'ar' else 'left' }} p-10 rounded-[var(--radius-lg)]">
+        <div class="text-[2.2rem] mb-5">💡</div>
+        <h3 class="text-[1.5rem] mb-4 text-accent-primary font-[900]">{{ profile.mission_title }}</h3>
+        <p class="muted text-base leading-[1.7]">{{ profile.mission }}</p>
+      </div>
+    </div>
+
+    <div class="glass-card mt-12 p-10 rounded-[var(--radius-lg)] border-1.5 border-white">
+      <p class="text-[1.15rem] leading-[1.8] text-text-main font-medium">{{ profile.intro }}</p>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="container animate-in my-24">
+  <h2 class="text-[2.2rem] font-[950] text-center mb-14 tracking-[-0.5px]">{{ t.nav_services }}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+    {% for service in services %}
+    <div
+      class="glass-card card-hover p-8 rounded-[var(--radius-lg)] relative overflow-hidden flex flex-col border border-white/5">
+
+      {# Subtle icon background decorator #}
+      <div class="absolute -top-[15px] -right-[15px] text-[5rem] opacity-[0.03] pointer-events-none rotate-[10deg]">🔧
+      </div>
+
+      <div class="flex gap-5 items-start mb-6">
+        <div
+          class="w-[50px] h-[50px] bg-[#0f6b5f1a] rounded-2xl flex items-center justify-center text-[1.5rem] shrink-0">
+          🛠️
+        </div>
+        <div>
+          <h3 class="text-text-main text-[1.25rem] mb-1.5 font-[800] leading-[1.3]">
+            {{ service.name_ar if lang == 'ar' else service.name_en }}
+          </h3>
+          {% if service.name_en and lang == 'ar' %}
+          <div class="text-accent-primary font-bold text-xs uppercase tracking-[0.5px]">
+            {{ service.name_en }}
+          </div>
+          {% elif service.name_ar and lang == 'en' %}
+          <div class="text-accent-primary font-bold text-xs tracking-[0.5px]">
+            {{ service.name_ar }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <p class="muted text-[0.95rem] leading-[1.6] m-0 line-clamp-3 h-[75px]">
+        {{ service.description or t.default_service_desc }}
+      </p>
+
+      <div class="mt-8 pt-6 border-t border-black/5">
+        <a href="/book" class="font-[800] text-[0.9rem] text-accent-primary flex items-center gap-2">
+          {{ t.request_service }} <span>{{ '←' if lang == 'ar' else '→' }}</span>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container animate-in my-24 mb-32">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div class="glass-card p-10 rounded-[var(--radius-lg)]">
+      <h3 class="text-[1.5rem] mb-5 font-[900]">{{ profile.system_title }}</h3>
+      <p class="muted text-base leading-[1.7]">{{ profile.system_description }}</p>
+    </div>
+    <div class="glass-card p-10 rounded-[var(--radius-lg)] bg-accent-primary text-white">
+      <h3 class="text-[1.5rem] mb-5 font-[900] text-white">{{ profile.contact_title }}</h3>
+      <div class="mt-6 space-y-3">
+        <p class="text-[1.05rem]"><strong>{{ t.whatsapp }}:</strong> {{ profile.whatsapp }}</p>
+        <p class="text-[1.05rem]">{{ profile.hq }}</p>
+        <p class="text-[1.05rem] opacity-90">{{ profile.contact_note }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

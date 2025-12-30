@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container" data-controller="tabs" data-tabs-active-class="active">
+  {# Page Header using partial #}
+  {% with
+  title=t.nav_dashboard,
+  subtitle=t.welcome ~ " " ~ current_user.full_name ~ " — " ~ current_user.role.value,
+  action_text=t.nav_book,
+  action_url="/book"
+  %}
+  {% include "partials/page_header.html" %}
+  {% endwith %}
+
+  {# Admin Panel Link #}
+  {% if current_user.role.value == 'admin' %}
+  <div class="animate-in mt-[1rem]" style="animation-delay: 0.05s;">
+    <a href="/admin"
+      class="glass inline-flex items-center gap-[0.75rem] py-[1rem] px-[1.5rem] no-underline text-inherit rounded-[var(--radius-xs)] hover:bg-[#0f6b5f1a] transition-all">
+      <span class="text-[1.5rem]">🛡️</span>
+      <div>
+        <div class="font-[700]">{{ t.admin_panel }}</div>
+        <span class="text-text-muted text-[0.85rem]">{{ t.manage_users }}</span>
+      </div>
+    </a>
+  </div>
+  {% endif %}
+
+  {# Tabs Navigation #}
+  <div class="flex gap-4 mb-8 p-2 bg-white/40 border border-white/80 rounded-[var(--radius-md)] w-fit animate-in mt-8"
+    style="animation-delay: 0.1s;">
+    <button
+      class="px-6 py-3 rounded-[15px] cursor-pointer font-bold transition-all text-text-muted border-0 bg-transparent hover:text-accent-primary hover:bg-white/60 active:bg-white active:text-accent-primary active:shadow-md"
+      data-tabs-target="tab" data-action="click->tabs#switch">
+      🗂️ {{ t.bookings }}
+    </button>
+    <button
+      class="px-6 py-3 rounded-[15px] cursor-pointer font-bold transition-all text-text-muted border-0 bg-transparent hover:text-accent-primary hover:bg-white/60 active:bg-white active:text-accent-primary active:shadow-md"
+      data-tabs-target="tab" data-action="click->tabs#switch">
+      ⚡ {{ t.quick_actions }}
+    </button>
+    <button
+      class="px-6 py-3 rounded-[15px] cursor-pointer font-bold transition-all text-text-muted border-0 bg-transparent hover:text-accent-primary hover:bg-white/60 active:bg-white active:text-accent-primary active:shadow-md"
+      data-tabs-target="tab" data-action="click->tabs#switch">
+      ⚙️ {{ t.settings }}
+    </button>
+  </div>
+
+  {# Panels #}
+  <div class="tab-panels">
+    {# Panel 1: Bookings #}
+    <div class="tab-panel animate-in" data-tabs-target="panel" style="animation-delay: 0.2s;">
+      {# Stats Row #}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 mt-0">
+        <div class="glass p-8 text-center">
+          <div class="text-text-muted text-[0.9rem] mb-2">{{ t.total_requests }}</div>
+          <div class="text-[2.2rem] font-[950]">{{ stats.total }}</div>
+        </div>
+        <div class="glass p-8 text-center">
+          <div class="text-text-muted text-[0.9rem] mb-2">{{ t.active_requests }}</div>
+          <div class="text-[2.2rem] font-[950] text-accent-primary">{{ stats.active }}</div>
+        </div>
+        <div class="glass p-8 text-center">
+          <div class="text-text-muted text-[0.9rem] mb-2">{{ t.completed_requests }}</div>
+          <div class="text-[2.2rem] font-[950] text-[#28a745]">{{ stats.completed }}</div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-2xl font-bold">{{ t.bookings }}</h3>
+        <div class="flex gap-2.5 items-center flex-wrap" data-controller="filter">
+          <span class="text-text-muted text-[0.85rem] me-2">{{ t.filter_by }}</span>
+          <button class="btn outline active px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=all"
+            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.all }}</button>
+          <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=requested"
+            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.new }}</button>
+          <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=in_progress"
+            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.in_progress }}</button>
+          <button class="btn outline px-5 py-2 text-[0.85rem] rounded-full" hx-get="/bookings?status=completed"
+            hx-target="#bookings-grid" hx-indicator="#loading-indicator">{{ t.completed }}</button>
+        </div>
+      </div>
+
+      {# HTMX-loaded bookings grid #}
+      <div id="bookings-grid" class="grid gap-6 w-full" hx-get="/bookings" hx-trigger="load" hx-swap="innerHTML">
+        {# Loading state using partial #}
+        <div class="col-span-full">
+          {% include "partials/loading.html" %}
+        </div>
+      </div>
+    </div>
+
+    {# Panel 2: Quick Actions #}
+    <div class="tab-panel hidden" data-tabs-target="panel">
+      <h3 class="text-2xl font-bold mb-6">{{ t.quick_actions }}</h3>
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6">
+        <a href="/book"
+          class="glass-card text-center p-8 no-underline text-inherit flex flex-col items-center justify-center hover:bg-white/40">
+          <div class="text-[2.5rem] mb-4">📝</div>
+          <div class="font-[700]">{{ t.new_request }}</div>
+        </a>
+        <a href="/"
+          class="glass-card text-center p-8 no-underline text-inherit flex flex-col items-center justify-center hover:bg-white/40">
+          <div class="text-[2.5rem] mb-4">🏠</div>
+          <div class="font-[700]">{{ t.home_page }}</div>
+        </a>
+        <a href="/profile"
+          class="glass-card text-center p-8 no-underline text-inherit flex flex-col items-center justify-center hover:bg-white/40">
+          <div class="text-[2.5rem] mb-4">👤</div>
+          <div class="font-[700]">{{ t.profile }}</div>
+        </a>
+      </div>
+    </div>
+
+    {# Panel 3: Settings #}
+    <div class="tab-panel hidden" data-tabs-target="panel">
+      <div class="glass-card max-w-[600px] mx-auto">
+        <div class="text-center p-12">
+          <div class="text-[4rem] mb-8">⚙️</div>
+          <h3 class="text-[1.5rem] font-[900] mb-4">{{ t.account_settings }}</h3>
+          <p class="text-text-muted">{{ t.under_development }}</p>
+          <div class="mt-8 flex flex-col gap-4">
+            <div class="glass p-4 flex justify-between items-center">
+              <span>{{ t.preferred_language }}</span>
+              <a href="/set-lang/{{ 'en' if lang == 'ar' else 'ar' }}"
+                class="group flex items-center gap-2 btn outline py-2 px-4 text-[0.8rem]">
+                <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" fill="none"
+                  stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                {{ t.switch_lang }}
+              </a>
+            </div>
+            <div class="glass p-4 flex justify-between items-center opacity-50">
+              <span>{{ t.email_notifications }}</span>
+              <span class="text-text-muted">{{ t.enabled }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

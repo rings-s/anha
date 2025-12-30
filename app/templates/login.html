@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container flex justify-center items-center min-h-[75vh]">
+  <div class="glass-card animate-in w-full max-w-[450px] p-12">
+    {# Header #}
+    <div class="text-center mb-10">
+      <div class="text-[3rem] mb-4">🔐</div>
+      <h2 class="text-[2rem] font-[900] mb-2">{{ t.login_title }}</h2>
+      <p class="muted m-0">{{ t.login_desc }}</p>
+    </div>
+
+    {# Login Form #}
+    <form method="post" action="/login" class="flex flex-col gap-6">
+      {% with type="email", name="email", label=t.email, placeholder="example@domain.com", required=true %}
+      {% include "partials/form_input.html" %}
+      {% endwith %}
+
+      {% with type="password", name="password", label=t.password, placeholder="••••••••", required=true %}
+      {% include "partials/form_input.html" %}
+      {% endwith %}
+
+      <button class="btn w-full mt-6 py-4" type="submit">
+        {{ t.submit }} →
+      </button>
+    </form>
+
+    {# Footer Links #}
+    {% with
+    primary_text=t.no_account,
+    primary_url="/register",
+    primary_label=t.nav_register,
+    secondary_url="/reset",
+    secondary_label=t.reset_title
+    %}
+    {% include "partials/auth_footer.html" %}
+    {% endwith %}
+  </div>
+</section>
+{% endblock %}

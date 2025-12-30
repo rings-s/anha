@@ -1,0 +1,119 @@
+from fastapi import APIRouter, Cookie, Depends, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.session import get_db_session
+from app.models.service import Service
+from app.services.content import get_translations, get_profile
+from app.services.deps import get_current_user, get_current_user_optional
+from app.models.user import User, Role
+
+router = APIRouter()
+
+templates = Jinja2Templates(directory="app/templates")
+
+
+def _get_lang(request: Request) -> str:
+    """Get language from cookie, default to Arabic."""
+    return request.cookies.get("lang", "ar")
+
+
+def _base_context(request: Request, user: User | None = None) -> dict:
+    lang = _get_lang(request)
+    return {
+        "request": request,
+        "t": get_translations(lang),
+        "profile": get_profile(lang),
+        "current_user": user,
+        "lang": lang,
+        "dir": "rtl" if lang == "ar" else "ltr",
+    }
+
+
+@router.get("/set-lang/{lang}", response_class=HTMLResponse)
+async def set_language(lang: str, request: Request):
+    """Set language preference and redirect back."""
+    if lang not in ("ar", "en"):
+        lang = "ar"
+    
+    # Get referer or default to home
+    referer = request.headers.get("referer", "/")
+    response = RedirectResponse(url=referer, status_code=303)
+    response.set_cookie("lang", lang, max_age=60*60*24*365, httponly=True, samesite="lax")
+    return response
+
+
+@router.get("/", response_class=HTMLResponse)
+async def home(
+    request: Request,
+    session: AsyncSession = Depends(get_db_session),
+    current_user: User | None = Depends(get_current_user_optional),
+):
+    services = (await session.execute(select(Service))).scalars().all()
+    context = _base_context(request, user=current_user)
+    context["services"] = services
+    return templates.TemplateResponse("index.html", context)
+
+
+@router.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", _base_context(request))
+
+
+@router.get("/register", response_class=HTMLResponse)
+async def register_page(request: Request):
+    return templates.TemplateResponse("register.html", _base_context(request))
+
+
+@router.get("/reset", response_class=HTMLResponse)
+async def reset_request_page(request: Request):
+    return templates.TemplateResponse("reset_request.html", _base_context(request))
+
+
+@router.get("/reset/{token}", response_class=HTMLResponse)
+async def reset_confirm_page(request: Request, token: str):
+    context = _base_context(request)
+    context["token"] = token
+    return templates.TemplateResponse("reset_confirm.html", context)
+
+
+@router.get("/dashboard", response_class=HTMLResponse)
+async def dashboard(
+    request: Request,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_db_session),
+):
+    from app.models.booking import Booking, BookingStatus
+
+    # Basic stats
+    if user.role in {Role.employee, Role.technical, Role.driver}:
+        q = select(Booking)
+    else:
+        q = select(Booking).where(Booking.client_id == user.id)
+
+    res = await session.execute(q)
+    bookings = res.scalars().all()
+
+    stats = {
+        "total": len(bookings),
+        "active": len([b for b in bookings if b.status in {BookingStatus.requested, BookingStatus.assigned, BookingStatus.in_progress}]),
+        "completed": len([b for b in bookings if b.status == BookingStatus.completed]),
+    }
+
+    context = _base_context(request, user=user)
+    context["stats"] = stats
+    return templates.TemplateResponse("dashboard.html", context)
+
+
+@router.get("/book", response_class=HTMLResponse)
+async def booking_page(
+    request: Request,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_db_session),
+):
+    services = (await session.execute(select(Service))).scalars().all()
+    context = _base_context(request, user=user)
+    context["services"] = services
+    return templates.TemplateResponse("booking.html", context)

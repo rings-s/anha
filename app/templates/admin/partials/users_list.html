@@ -1,0 +1,194 @@
+{# Admin Users List Partial #}
+<div class="glass animate-in" style="margin-top: 1.5rem; padding: 2rem; border-radius: var(--radius-lg);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 3px; height: 20px; background: var(--accent-primary); border-radius: 10px;"></div>
+            <h3 style="margin: 0; font-weight: 800;">إدارة قاعدة المستخدمين</h3>
+        </div>
+        <button class="btn" style="border-radius: 50px; padding: 0.6rem 1.8rem; box-shadow: var(--shadow-sm);"
+            onclick="document.getElementById('create-user-modal').showModal()">
+            <span style="margin-left: 0.5rem;">➕</span> إضافة مستخدم جديد
+        </button>
+    </div>
+
+    {# Users Table #}
+    <div
+        style="overflow-x: auto; background: rgba(0,0,0,0.02); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
+        <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+            <thead>
+                <tr style="background: rgba(0,0,0,0.05); color: var(--text-main);">
+                    <th style="text-align: right; padding: 1rem 1.25rem; font-weight: 800; font-size: 0.8rem;"># ID
+                    </th>
+                    <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الاسم
+                        الكامل</th>
+                    <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">البريد
+                        الإلكتروني</th>
+                    <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الدور</th>
+                    <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الحالة
+                    </th>
+                    <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">التاريخ
+                    </th>
+                    <th style="text-align: center; padding: 1rem 1.25rem; font-weight: 800; font-size: 0.8rem;">
+                        العمليات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="table-row-hover"
+                    style="border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s ease;">
+                    <td
+                        style="padding: 1rem 1.25rem; font-weight: 500; font-family: monospace; color: var(--accent-primary); font-size: 0.85rem;">
+                        {{ user.id }}</td>
+                    <td style="padding: 1rem 0.8rem; font-weight: 600; font-size: 0.85rem;">{{ user.full_name }}</td>
+                    <td style="padding: 1rem 0.8rem; font-size: 0.8rem;" class="muted">{{ user.email }}</td>
+                    <td style="padding: 1.2rem 1rem;">
+                        <span class="badge" style="
+              background: {% if user.role.value == 'admin' %}rgba(220, 53, 69, 0.12){% elif user.role.value == 'employee' %}rgba(15, 107, 95, 0.12){% else %}rgba(52, 152, 219, 0.12){% endif %};
+              color: {% if user.role.value == 'admin' %}#e74c3c{% elif user.role.value == 'employee' %}var(--accent-primary){% else %}#3498db{% endif %};
+              padding: 4px 10px;
+              border-radius: 50px;
+              font-size: 0.65rem;
+              font-weight: 700;
+              border: 1px solid currentColor;
+            ">{{ user.role.value | upper }}</span>
+                    </td>
+                    <td style="padding: 1.2rem 1rem;">
+                        {% if user.is_active %}
+                        <div
+                            style="display: flex; align-items: center; gap: 0.5rem; color: #2ecc71; font-weight: 700; font-size: 0.85rem;">
+                            <span
+                                style="width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);"></span>
+                            نشط
+                        </div>
+                        {% else %}
+                        <div
+                            style="display: flex; align-items: center; gap: 0.5rem; color: #95a5a6; font-weight: 700; font-size: 0.85rem;">
+                            <span style="width: 8px; height: 8px; background: #95a5a6; border-radius: 50%;"></span>
+                            معطل
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 1rem 0.8rem; font-size: 0.8rem;" class="muted">{{
+                        user.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td style="padding: 1rem 1.25rem; text-align: center;">
+                        <div style="display: flex; gap: 0.8rem; justify-content: center;">
+                            <button class="btn outline"
+                                style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px;"
+                                onclick="document.getElementById('edit-user-{{ user.id }}').showModal()"
+                                title="تعديل">✏️</button>
+                            <form method="post" action="/admin/users/{{ user.id }}/delete" style="display: inline;"
+                                onsubmit="return confirm('هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.')">
+                                <button type="submit" class="btn outline"
+                                    style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #e74c3c; border-color: rgba(231, 76, 60, 0.2);">🗑️</button>
+                            </form>
+                        </div>
+                    </td>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# Edit User Modals (moved outside table for valid HTML) #}
+    {% for user in users %}
+    <dialog id="edit-user-{{ user.id }}">
+        <div class="modal-header">
+            <h3>✏️ تحديث بيانات العضو</h3>
+            <p>تعديل ملف المستخدم: {{ user.full_name }}</p>
+        </div>
+        <form method="post" action="/admin/users/{{ user.id }}/update">
+            <div class="modal-content">
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 0;">
+                    <div class="modal-form-group" style="grid-column: span 2;">
+                        <label>الاسم الكامل</label>
+                        <input type="text" name="full_name" value="{{ user.full_name }}" required>
+                    </div>
+                    <div class="modal-form-group" style="grid-column: span 2;">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="modal-form-group">
+                        <label>الدور الوظيفي</label>
+                        <select name="role">
+                            {% for role in roles %}
+                            <option value="{{ role.value }}" {% if user.role==role %}selected{% endif %}>{{
+                                role.value | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: flex-end; padding-bottom: 1.5rem;">
+                        <label
+                            style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer; user-select: none;">
+                            <input type="checkbox" name="is_active" {% if user.is_active %}checked{% endif %}
+                                style="width: 18px; height: 18px; accent-color: var(--accent-primary);">
+                            <span style="font-weight: 700; font-size: 0.85rem;">حساب نشط</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn" style="flex: 2;">💾 حفظ التغييرات</button>
+                <button type="button" class="btn outline" onclick="this.closest('dialog').close()"
+                    style="flex: 1;">إلغاء</button>
+            </div>
+        </form>
+    </dialog>
+    {% endfor %}
+
+    {% if not users %}
+    <div class="text-center" style="padding: 5rem 2rem;">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.2;">🛡️</div>
+        <h4 style="font-weight: 800; margin-bottom: 0.5rem;">لا يوجد مستخدمين حالياً</h4>
+        <p class="muted">قاعدة البيانات فارغة أو لا يوجد مستخدمين يطابقون البحث</p>
+    </div>
+    {% endif %}
+</div>
+
+{# Create User Modal #}
+<dialog id="create-user-modal">
+    <div class="modal-header">
+        <h3>➕ إضافة عضو جديد للنظام</h3>
+        <p>إنشاء حساب جديد ببيانات كاملة</p>
+    </div>
+    <form method="post" action="/admin/users/create">
+        <div class="modal-content">
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 0;">
+                <div class="modal-form-group" style="grid-column: span 2;">
+                    <label>الاسم الكامل</label>
+                    <input type="text" name="full_name" required placeholder="الاسم الكامل">
+                </div>
+                <div class="modal-form-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" name="email" required placeholder="example@domain.com">
+                </div>
+                <div class="modal-form-group">
+                    <label>رقم الجوال</label>
+                    <input type="text" name="phone" placeholder="05xxxxxxxx">
+                </div>
+                <div class="modal-form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" name="password" required placeholder="********">
+                </div>
+                <div class="modal-form-group">
+                    <label>الدور الوظيفي</label>
+                    <select name="role">
+                        {% for role in roles %}
+                        <option value="{{ role.value }}">{{ role.value | capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn" style="flex: 2;">🚀 إنشاء الحساب الآن</button>
+            <button type="button" class="btn outline" onclick="this.closest('dialog').close()"
+                style="flex: 1;">إلغاء</button>
+        </div>
+    </form>
+</dialog>
+
+
+<style>
+    .table-row-hover:hover {
+        background: rgba(15, 107, 95, 0.05) !important;
+    }
+</style>

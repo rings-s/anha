@@ -1,0 +1,48 @@
+{#
+Map Location Picker Partial Component
+Usage: include "partials/map_picker.html" in your template
+Requires: Leaflet JS/CSS loaded in base.html, map_controller.js Stimulus controller
+#}
+<div class="map-picker glass-card" style="margin-top: 1.5rem; padding: 1.5rem; border-radius: var(--radius-lg);">
+    <!-- Hidden inputs for form submission -->
+    <input data-map-target="lat" type="hidden" name="location_lat">
+    <input data-map-target="lng" type="hidden" name="location_lng">
+
+    <!-- Header with label and detect button -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <label style="margin: 0; font-size: 1rem; font-weight: 700;">
+            📍 {{ t.location }}
+        </label>
+        <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="btn outline" data-action="map#detectLocation" data-map-target="detectBtn"
+                style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                <span data-map-target="detectText">{{ t.detect_location }}</span>
+                <span data-map-target="detectSpinner" style="display: none;">{{ t.detecting_location }}</span>
+            </button>
+            <button type="button" class="btn outline" data-action="map#shareLocation" data-map-target="shareBtn"
+                style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                {{ t.open_google_maps }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Status message -->
+    <div data-map-target="status"
+        style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 0.9rem;">
+    </div>
+
+    <!-- Coordinates display -->
+    <div data-map-target="coords" class="muted"
+        style="font-size: 0.85rem; margin-bottom: 0.75rem; font-family: monospace; display: none;">
+        📌 <span data-map-target="coordsText">--</span>
+    </div>
+
+    <!-- Map container -->
+    <div class="map glass" data-map-target="map"
+        style="height: 350px; border-radius: var(--radius-md); border: 2px solid white; overflow: hidden;"></div>
+
+    <!-- Instructions -->
+    <p class="muted" style="font-size: 0.8rem; margin-top: 0.75rem; margin-bottom: 0;">
+        {{ t.map_hint }}
+    </p>
+</div>

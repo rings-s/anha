@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('ar') }}" dir="{{ dir | default('rtl') }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ t.app_title }}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/css/main.css">
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="/static/js/app.js?v=2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    /* Dynamic font based on language */
+    html[lang="ar"] {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    html[lang="en"] {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <div
+    class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-[radial-gradient(circle_at_10%_20%,rgba(15,107,95,0.08)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(42,157,143,0.08)_0%,transparent_40%)]">
+  </div>
+
+  <header data-controller="mobile-menu"
+    class="fixed top-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] max-w-[var(--container-width)] z-50 rounded-[2rem] bg-white/65 backdrop-blur-[20px] border border-white/40 shadow-[0_10px_40px_rgba(0,0,0,0.05)] transition-all duration-500 hover:bg-white/80 hover:shadow-[0_15px_50px_rgba(0,0,0,0.1)]">
+    <div class="flex justify-between items-center py-3 px-6 md:px-8">
+      <a href="/"
+        class="animate-in text-[1.4rem] font-[900] tracking-[-1px] bg-gradient-to-br from-[var(--accent-primary)] to-[var(--accent-secondary)] bg-clip-text text-transparent hover:opacity-80 transition-opacity">
+        {{ t.app_title }}</a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex gap-4 xl:gap-6 items-center animate-in">
+        <a href="/"
+          class="font-semibold text-[0.95rem] text-text-main transition-all px-4 py-2 rounded-full hover:bg-[rgba(15,107,95,0.1)] hover:text-accent-primary">{{
+          t.nav_services }}</a>
+        {% if current_user %}
+        <a href="/book"
+          class="font-semibold text-[0.95rem] text-text-main transition-all px-4 py-2 rounded-full hover:bg-[rgba(15,107,95,0.1)] hover:text-accent-primary">{{
+          t.nav_book }}</a>
+        <a href="/dashboard"
+          class="font-semibold text-[0.95rem] text-text-main transition-all px-4 py-2 rounded-full hover:bg-[rgba(15,107,95,0.1)] hover:text-accent-primary">{{
+          t.nav_dashboard }}</a>
+        {% if current_user.role.value == 'admin' %}
+        <a href="/admin"
+          class="font-semibold text-[0.95rem] text-accent-secondary transition-all px-4 py-2 rounded-full hover:bg-[rgba(15,107,95,0.1)]">🛡️
+          <span class="hidden xl:inline">{{ t.admin_panel }}</span></a>
+        {% endif %}
+        <form method="post" action="/logout" style="display:inline;">
+          <button class="btn outline !py-2 !px-5 !text-[0.9rem]" type="submit">{{ t.logout }}</button>
+        </form>
+        {% else %}
+        <a href="/login"
+          class="font-semibold text-[0.95rem] text-text-main transition-all px-4 py-2 rounded-full hover:bg-[rgba(15,107,95,0.1)] hover:text-accent-primary">{{
+          t.nav_login }}</a>
+        <a href="/register" class="btn !py-2 !px-6 !text-[0.9rem]">{{ t.nav_register }}</a>
+        {% endif %}
+
+        {# Language Toggle Button #}
+        <a href="/set-lang/{{ 'en' if lang == 'ar' else 'ar' }}"
+          class="group flex items-center gap-2 px-3 py-2 text-sm font-bold rounded-full bg-gradient-to-r from-accent-primary/10 to-accent-secondary/10 border border-accent-primary/20 hover:from-accent-primary/20 hover:to-accent-secondary/20 hover:border-accent-primary/40 transition-all duration-300 text-accent-primary hover:scale-105 hover:shadow-lg"
+          title="{{ 'Switch to English' if lang == 'ar' else 'التبديل للعربية' }}">
+          <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+          </svg>
+          <span class="uppercase text-xs">{{ 'EN' if lang == 'ar' else 'AR' }}</span>
+        </a>
+      </nav>
+
+      <!-- Mobile Toggle -->
+      <div class="flex items-center gap-4 lg:hidden">
+        {# Language Toggle Mobile (Simplified) #}
+        <a href="/set-lang/{{ 'en' if lang == 'ar' else 'ar' }}"
+          class="text-accent-primary font-bold text-sm uppercase px-2 py-1 bg-accent-primary/10 rounded-md border border-accent-primary/20">
+          {{ 'EN' if lang == 'ar' else 'AR' }}
+        </a>
+
+        <button data-action="click->mobile-menu#toggle"
+          class="p-2 text-[var(--accent-primary)] focus:outline-none transition-transform active:scale-90">
+          <svg data-mobile-menu-target="iconOpen" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+          <svg data-mobile-menu-target="iconClose" class="hidden w-7 h-7" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div data-mobile-menu-target="menu"
+      class="hidden lg:hidden absolute top-[calc(100%+0.5rem)] left-0 w-full p-2 origin-top transform transition-all duration-300 ease-out z-[60]">
+      <div
+        class="bg-white/95 backdrop-blur-[30px] border border-white/50 rounded-[1.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden">
+        <a href="/"
+          class="p-4 font-bold text-center border-b border-gray-100 hover:bg-gray-50 active:bg-gray-100 transition-colors text-text-main">{{
+          t.nav_services }}</a>
+        {% if current_user %}
+        <a href="/book"
+          class="p-4 font-bold text-center border-b border-gray-100 hover:bg-gray-50 active:bg-gray-100 transition-colors text-text-main">{{
+          t.nav_book }}</a>
+        <a href="/dashboard"
+          class="p-4 font-bold text-center border-b border-gray-100 hover:bg-gray-50 active:bg-gray-100 transition-colors text-text-main">{{
+          t.nav_dashboard }}</a>
+        {% if current_user.role.value == 'admin' %}
+        <a href="/admin"
+          class="p-4 font-bold text-center border-b border-gray-100 hover:bg-gray-50 active:bg-gray-100 transition-colors text-accent-secondary">{{
+          t.admin_panel }}</a>
+        {% endif %}
+        <form method="post" action="/logout" class="w-full">
+          <button class="w-full p-4 font-bold text-center text-red-500 hover:bg-red-50/50 transition-colors"
+            type="submit">{{ t.logout }}</button>
+        </form>
+        {% else %}
+        <a href="/login"
+          class="p-4 font-bold text-center border-b border-gray-100 hover:bg-gray-50 active:bg-gray-100 transition-colors text-text-main">{{
+          t.nav_login }}</a>
+        <div class="p-4">
+          <a href="/register" class="btn w-full justify-center">{{ t.nav_register }}</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 max-w-[var(--container-width)] pt-32">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="glass-card mt-auto transition-transform duration-500 hover:-translate-y-1">
+    <div class="container mx-auto px-6 text-center animate-in font-medium">
+      © {{ profile.company_name }} - {{ profile.hq }}
+    </div>
+  </footer>
+
+  <script>
+    // Global Animation Init
+    document.addEventListener('DOMContentLoaded', () => {
+      anime({
+        targets: '.animate-in',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(100),
+        easing: 'easeOutExpo',
+        duration: 800
+      });
+    });
+
+    // Re-run animations on HTMX swaps
+    document.body.addEventListener('htmx:afterSwap', function (evt) {
+      anime({
+        targets: evt.detail.target.querySelectorAll('.animate-in'),
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(100),
+        easing: 'easeOutExpo',
+        duration: 800
+      });
+    });
+  </script>
+</body>
+
+</html>

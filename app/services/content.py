@@ -1,0 +1,333 @@
+# ============================================
+# ANHA Trading - Internationalization (i18n)
+# ============================================
+
+BUSINESS_PROFILE = {
+    "ar": {
+        "company_name": "شركة انها التجارية",
+        "intro": (
+            "تعد من أبرز شركات التشغيل والصيانة في المملكة وتتميز بجذب المشاريع "
+            "الكبرى والعملاء البارزين بفضل التزامها بالجودة والاحترافية. تركز "
+            "الشركة على رضا العملاء وتنفيذ المشاريع بكفاءة عبر فريق عمل متخصص، "
+            "مما يجعلها شريكًا موثوقًا للجميع."
+        ),
+        "about_title": "عن انها التجارية",
+        "vision_title": "الرؤية",
+        "vision": (
+            "أن نكون الخيار الأول في المملكة العربية السعودية في مجال التشغيل والصيانة "
+            "لجميع القطاعات وتقديم الحلول العملية والمبتكرة لسوق العمل بجميع كياناته "
+            "الاقتصادية سواء القطاع الحكومي وشبه الحكومي والخاص."
+        ),
+        "mission_title": "الرسالة",
+        "mission": (
+            "أن نتجاوز توقعات العملاء للقيمة والخدمة، نبني ونحافظ على علاقاتنا مع العملاء "
+            "ونضمن رضا العملاء على المدى الطويل ونساهم بالتطور الاقتصادي بالمملكة وأن "
+            "نتميز بخدماتنا ومصداقيتنا في سوق العمل."
+        ),
+        "system_title": "نظام إدارة ومتابعة مشروعك",
+        "system_description": (
+            "نظام خاص بشركة انها منصة مبتكرة تتيح للعملاء إدارة مشاريعهم ومتابعة تقدمها "
+            "بدقة وفعالية، مع تقارير لحظية وواجهة سهلة الاستخدام لضمان شفافية العمليات."
+        ),
+        "contact_title": "معلومات التواصل",
+        "hq": "المملكة العربية السعودية - الرياض",
+        "contact_note": "نسعد بخدمتكم على الدوام – ربط مباشر لدعم سريع واستفسارات فورية",
+    },
+    "en": {
+        "company_name": "ANHA Trading Company",
+        "intro": (
+            "One of the leading operation and maintenance companies in the Kingdom, "
+            "distinguished by attracting major projects and prominent clients thanks to "
+            "its commitment to quality and professionalism. The company focuses on customer "
+            "satisfaction and efficient project execution through a specialized team."
+        ),
+        "about_title": "About ANHA Trading",
+        "vision_title": "Vision",
+        "vision": (
+            "To be the first choice in Saudi Arabia in the field of operation and maintenance "
+            "for all sectors, providing practical and innovative solutions to the labor market "
+            "in all its economic entities, whether government, semi-government, or private."
+        ),
+        "mission_title": "Mission",
+        "mission": (
+            "To exceed customer expectations for value and service, build and maintain our "
+            "relationships with customers, ensure long-term customer satisfaction, contribute "
+            "to the economic development of the Kingdom, and excel in our services and credibility."
+        ),
+        "system_title": "Project Management System",
+        "system_description": (
+            "A specialized platform by ANHA that allows clients to manage their projects "
+            "and track their progress with precision and efficiency, featuring real-time "
+            "reports and an easy-to-use interface for operational transparency."
+        ),
+        "contact_title": "Contact Information",
+        "hq": "Kingdom of Saudi Arabia - Riyadh",
+        "contact_note": "We're delighted to serve you – direct support and instant inquiries",
+    },
+    "whatsapp": "+966 54 888 8568",
+}
+
+TRANSLATIONS = {
+    "ar": {
+        "app_title": "شركة انها التجارية",
+        "nav_services": "خدماتنا",
+        "nav_book": "حجز صيانة",
+        "nav_reviews": "التقييمات",
+        "nav_login": "تسجيل الدخول",
+        "nav_register": "إنشاء حساب",
+        "nav_dashboard": "لوحة التحكم",
+        "hero_title": "حلول تشغيل وصيانة متكاملة",
+        "hero_sub": "نخدم منشآتكم باحترافية، سرعة استجابة، وشفافية كاملة.",
+        "book_cta": "اطلب خدمة الآن",
+        "login_title": "تسجيل الدخول",
+        "login_desc": "أدخل بياناتك للوصول إلى حسابك",
+        "register_title": "إنشاء حساب",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "full_name": "الاسم الكامل",
+        "phone": "رقم الجوال",
+        "submit": "إرسال",
+        "logout": "تسجيل الخروج",
+        "reset_title": "استعادة كلمة المرور",
+        "reset_request": "طلب رابط الاستعادة",
+        "reset_new": "تعيين كلمة مرور جديدة",
+        "service": "الخدمة",
+        "description": "تفاصيل الطلب",
+        "location": "الموقع",
+        "address": "العنوان النصي",
+        "bookings": "الطلبات",
+        "request": "الطلب",
+        "status": "الحالة",
+        "created": "تاريخ الإنشاء",
+        "review": "التقييم",
+        "rating": "التقييم من 1 إلى 5",
+        "comment": "الملاحظة",
+        "submit_review": "إرسال التقييم",
+        "admin_panel": "لوحة الإدارة",
+        "manage_users": "إدارة المستخدمين",
+        "manage_bookings": "إدارة الطلبات",
+        "manage_services": "إدارة الخدمات",
+        "active_users": "المستخدمين النشطين",
+        "total_bookings": "إجمالي الطلبات",
+        "available_services": "الخدمات المتاحة",
+        "client_reviews": "تقييمات العملاء",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "save_changes": "حفظ التغييرات",
+        "cancel": "إلغاء",
+        "add_new": "إضافة جديد",
+        "404_title": "الصفحة غير موجودة",
+        "404_message": "عذراً، الصفحة التي تبحث عنها قد تكون حذفت أو تم نقلها.",
+        "back_home": "العودة للرئيسية",
+        "back": "العودة للخلف",
+        "switch_lang": "English",
+        "successful_projects": "مشروع ناجح",
+        "customer_rating": "تقييم العملاء",
+        "request_service": "اطلب هذه الخدمة الآن",
+        "no_services": "لا توجد خدمات متاحة حالياً",
+        "welcome": "مرحباً",
+        "filter_by": "تصفية حسب:",
+        "all": "الكل",
+        "new": "جديد",
+        "in_progress": "قيد التنفيذ",
+        "completed": "مكتمل",
+        "total_requests": "إجمالي الطلبات",
+        "active_requests": "قيد التنفيذ",
+        "completed_requests": "طلبات مكتملة",
+        "quick_actions": "إجراءات سريعة",
+        "new_request": "طلب جديد",
+        "home_page": "الصفحة الرئيسية",
+        "profile": "الملف الشخصي",
+        "settings": "الإعدادات",
+        "account_settings": "إعدادات الحساب",
+        "under_development": "هذه الصفحة قيد التطوير وسيتم إضافة المزيد من الخيارات قريباً.",
+        "preferred_language": "اللغة المفضلة",
+        "email_notifications": "تنبيهات البريد",
+        "enabled": "مفعل",
+        "create_account_desc": "أنشئ حسابك للبدء في استخدام خدماتنا",
+        "have_account": "لديك حساب بالفعل؟",
+        "no_account": "ليس لديك حساب؟",
+        "forgot_password": "نسيت كلمة المرور؟",
+        "detect_location": "🎯 تحديد موقعي",
+        "detecting_location": "⏳ جاري التحديد...",
+        "open_google_maps": "🗺️ فتح في Google Maps",
+        "book_service": "حجز الخدمة",
+        "select_service": "اختر الخدمة",
+        "whatsapp": "واتساب",
+        # Error pages
+        "error_occurred": "حدث خطأ غير متوقع",
+        "error_message": "نعتذر، حدث خلل فني في الخدمة. يعمل فريقنا حالياً على إصلاح المشكلة.",
+        "refresh_page": "🔄 تحديث الصفحة",
+        # Booking form
+        "booking_desc": "أكمل البيانات التالية وحدد موقعك لنصل إليك",
+        "full_name_placeholder": "الاسم الكامل",
+        "address_placeholder": "الحي - الشارع - رقم المبنى",
+        "description_placeholder": "اكتب وصفاً تفصيلياً للخدمة المطلوبة...",
+        "password_placeholder": "كلمة مرور قوية",
+        "map_hint": "💡 انقر على الخريطة أو اسحب العلامة لتحديد الموقع بدقة",
+        # Loading and status
+        "loading": "جاري التحميل...",
+        "no_bookings": "لا توجد طلبات حتى الآن",
+        "no_bookings_desc": "ابدأ بإنشاء طلب جديد للاستفادة من خدماتنا",
+        "new_service_request": "طلب خدمة جديدة ✨",
+        "no_description": "لا يوجد وصف إضافي",
+        "default_service_desc": "نقدم أفضل خدمات الصيانة المتكاملة لضمان استمرارية أعمالكم بكفاءة عالية.",
+        # Action buttons
+        "accept_request": "✅ قبول الطلب",
+        "start_work": "🚀 بدء التنفيذ",
+        "complete_request": "✔️ إكمال الطلب",
+        "cancel_request": "❌ إلغاء",
+        "confirm_cancel": "هل أنت متأكد من إلغاء هذا الطلب؟",
+        # Hero section
+        "fast_execution": "سرعة التنفيذ",
+        "team_ready": "جاهزية كاملة لفريق العمل",
+        "testimonial_quote": "أفضل تجربة عمل على الإطلاق، السرعة والإتقان هما العنوان.",
+        "testimonial_author": "أحمد سالم - عميل مميز",
+        # Reset password
+        "reset_desc": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+        "reset_confirm_desc": "أدخل كلمة المرور الجديدة",
+        "new_password_placeholder": "كلمة مرور جديدة قوية",
+        "remember_password": "تذكرت كلمة المرور؟",
+        "no_reset_needed": "لا تحتاج إلى إعادة التعيين؟",
+        # Admin panel
+        "system_admin": "مدير النظام النشط",
+        "back_to_dashboard": "العودة للوحة التحكم",
+    },
+    "en": {
+        "app_title": "ANHA Trading Company",
+        "nav_services": "Our Services",
+        "nav_book": "Book Maintenance",
+        "nav_reviews": "Reviews",
+        "nav_login": "Login",
+        "nav_register": "Register",
+        "nav_dashboard": "Dashboard",
+        "hero_title": "Integrated Operation & Maintenance Solutions",
+        "hero_sub": "We serve your facilities with professionalism, quick response, and full transparency.",
+        "book_cta": "Request Service Now",
+        "login_title": "Login",
+        "login_desc": "Enter your credentials to access your account",
+        "register_title": "Create Account",
+        "email": "Email Address",
+        "password": "Password",
+        "full_name": "Full Name",
+        "phone": "Phone Number",
+        "submit": "Submit",
+        "logout": "Logout",
+        "reset_title": "Password Recovery",
+        "reset_request": "Request Reset Link",
+        "reset_new": "Set New Password",
+        "service": "Service",
+        "description": "Request Details",
+        "location": "Location",
+        "address": "Text Address",
+        "bookings": "Bookings",
+        "request": "Request",
+        "status": "Status",
+        "created": "Created At",
+        "review": "Review",
+        "rating": "Rating (1 to 5)",
+        "comment": "Comment",
+        "submit_review": "Submit Review",
+        "admin_panel": "Admin Panel",
+        "manage_users": "Manage Users",
+        "manage_bookings": "Manage Bookings",
+        "manage_services": "Manage Services",
+        "active_users": "Active Users",
+        "total_bookings": "Total Bookings",
+        "available_services": "Available Services",
+        "client_reviews": "Client Reviews",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save_changes": "Save Changes",
+        "cancel": "Cancel",
+        "add_new": "Add New",
+        "404_title": "Page Not Found",
+        "404_message": "Sorry, the page you are looking for may have been deleted or moved.",
+        "back_home": "Back to Home",
+        "back": "Go Back",
+        "switch_lang": "العربية",
+        "successful_projects": "Successful Projects",
+        "customer_rating": "Customer Rating",
+        "request_service": "Request This Service",
+        "no_services": "No services available at the moment",
+        "welcome": "Welcome",
+        "filter_by": "Filter by:",
+        "all": "All",
+        "new": "New",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "total_requests": "Total Requests",
+        "active_requests": "In Progress",
+        "completed_requests": "Completed Requests",
+        "quick_actions": "Quick Actions",
+        "new_request": "New Request",
+        "home_page": "Home Page",
+        "profile": "Profile",
+        "settings": "Settings",
+        "account_settings": "Account Settings",
+        "under_development": "This page is under development. More options coming soon.",
+        "preferred_language": "Preferred Language",
+        "email_notifications": "Email Notifications",
+        "enabled": "Enabled",
+        "create_account_desc": "Create your account to start using our services",
+        "have_account": "Already have an account?",
+        "no_account": "Don't have an account?",
+        "forgot_password": "Forgot your password?",
+        "detect_location": "🎯 Detect Location",
+        "detecting_location": "⏳ Detecting...",
+        "open_google_maps": "🗺️ Open in Google Maps",
+        "book_service": "Book Service",
+        "select_service": "Select Service",
+        "whatsapp": "WhatsApp",
+        # Error pages
+        "error_occurred": "An unexpected error occurred",
+        "error_message": "We apologize, a technical issue has occurred. Our team is currently working to fix it.",
+        "refresh_page": "🔄 Refresh Page",
+        # Booking form
+        "booking_desc": "Complete the following details and select your location",
+        "full_name_placeholder": "Full Name",
+        "address_placeholder": "District - Street - Building Number",
+        "description_placeholder": "Write a detailed description of the required service...",
+        "password_placeholder": "Strong password",
+        "map_hint": "💡 Click on the map or drag the marker to set your exact location",
+        # Loading and status
+        "loading": "Loading...",
+        "no_bookings": "No bookings yet",
+        "no_bookings_desc": "Start by creating a new request to benefit from our services",
+        "new_service_request": "Request New Service ✨",
+        "no_description": "No additional description",
+        "default_service_desc": "We provide the best integrated maintenance services to ensure your business continuity with high efficiency.",
+        # Action buttons
+        "accept_request": "✅ Accept Request",
+        "start_work": "🚀 Start Work",
+        "complete_request": "✔️ Complete Request",
+        "cancel_request": "❌ Cancel",
+        "confirm_cancel": "Are you sure you want to cancel this request?",
+        # Hero section
+        "fast_execution": "Fast Execution",
+        "team_ready": "Full team readiness",
+        "testimonial_quote": "Best work experience ever, speed and perfection are the hallmarks.",
+        "testimonial_author": "Ahmed Salem - Premium Client",
+        # Reset password
+        "reset_desc": "Enter your email to reset your password",
+        "reset_confirm_desc": "Enter your new password",
+        "new_password_placeholder": "Strong new password",
+        "remember_password": "Remember your password?",
+        "no_reset_needed": "Don't need to reset?",
+        # Admin panel
+        "system_admin": "Active System Administrator",
+        "back_to_dashboard": "Back to Dashboard",
+    },
+}
+
+
+def get_translations(lang: str = "ar") -> dict:
+    """Get translations for the specified language."""
+    return TRANSLATIONS.get(lang, TRANSLATIONS["ar"])
+
+
+def get_profile(lang: str = "ar") -> dict:
+    """Get business profile for the specified language."""
+    profile = BUSINESS_PROFILE.get(lang, BUSINESS_PROFILE["ar"]).copy()
+    profile["whatsapp"] = BUSINESS_PROFILE["whatsapp"]
+    return profile

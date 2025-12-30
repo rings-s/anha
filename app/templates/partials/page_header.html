@@ -1,0 +1,20 @@
+{#
+Page Header Partial Component
+Variables:
+- title: Main title
+- subtitle: Optional subtitle
+- action_text: Optional button text
+- action_url: Optional button URL
+#}
+<div class="page-header glass-card animate-in"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; padding: 2.5rem 3rem;">
+    <div>
+        <h2>{{ title }}</h2>
+        {% if subtitle %}
+        <p class="muted" style="margin: 0;">{{ subtitle }}</p>
+        {% endif %}
+    </div>
+    {% if action_text and action_url %}
+    <a class="btn" href="{{ action_url }}" style="padding: 1rem 2rem;">{{ action_text }}</a>
+    {% endif %}
+</div>

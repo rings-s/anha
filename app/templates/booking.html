@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container animate-in">
+  <div class="glass-card max-w-[900px] mx-auto p-12">
+    <h2 class="text-center mb-2 text-[2.5rem] font-[900]">{{ t.nav_book }}</h2>
+    <p class="text-center muted mb-10">{{ t.booking_desc }}</p>
+
+    <form method="post" action="/bookings" data-controller="map" class="flex flex-col gap-6">
+      <!-- Service & Name Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-0">
+        <div>
+          <label>{{ t.service }}</label>
+          <select name="service_id" required>
+            {% for service in services %}
+            <option value="{{ service.id }}">{{ service.name_ar if lang == 'ar' else service.name_en }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>{{ t.full_name }}</label>
+          <input type="text" name="contact_name" value="{{ current_user.full_name }}" required
+            placeholder="{{ t.full_name_placeholder }}">
+        </div>
+      </div>
+
+      <!-- Phone & Address Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-0">
+        <div>
+          <label>{{ t.phone }}</label>
+          <input type="text" name="contact_phone" value="{{ current_user.phone }}" required placeholder="05xxxxxxxx">
+        </div>
+        <div>
+          <label>{{ t.address }}</label>
+          <input type="text" name="address_text" data-map-target="address" placeholder="{{ t.address_placeholder }}">
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label>{{ t.description }}</label>
+        <textarea name="description" rows="3" placeholder="{{ t.description_placeholder }}"></textarea>
+      </div>
+
+      <!-- Map Picker Partial -->
+      {% include "partials/map_picker.html" %}
+
+      <button class="btn w-full mt-8 py-5 text-[1.1rem]" type="submit">
+        {{ t.submit }} ✨
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

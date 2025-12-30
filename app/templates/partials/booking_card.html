@@ -1,0 +1,143 @@
+{#
+Booking Card Partial Component
+Renders a single booking item
+Variables:
+- booking: Booking object with service, status, created_at, etc.
+- t: Translation dictionary
+- lang: Current language ('ar' or 'en')
+- is_staff: Boolean for staff actions visibility
+#}
+<div class="booking-card animate-in">
+
+    {# Header #}
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.2rem;">
+        <div>
+            <span class="muted" style="font-size: 0.8rem; display: block; margin-bottom: 0.2rem;">{{ t.request }} #{{
+                booking.id }}</span>
+            <h4 style="font-weight: 800; font-size: 1.1rem; color: var(--text-main);">
+                {% if booking.service %}
+                {% if lang == 'ar' %}
+                {{ booking.service.name_ar or booking.service.name_en or t.service }}
+                {% else %}
+                {{ booking.service.name_en or booking.service.name_ar or t.service }}
+                {% endif %}
+                {% else %}
+                {{ t.service }}
+                {% endif %}
+            </h4>
+        </div>
+
+        {# Status Badge with proper class-based styling #}
+        {% set status_val = booking.status.value if booking.status else 'unknown' %}
+        <span class="badge status-badge status-{{ status_val }}">
+            {{ status_val }}
+        </span>
+    </div>
+
+    {# Body #}
+    <div style="margin-bottom: 1.5rem;">
+        {% if booking.description %}
+        <p class="muted" style="font-size: 0.9rem; margin: 0; line-height: 1.5;">
+            {{ booking.description[:80] }}{% if booking.description|length > 80 %}...{% endif %}
+        </p>
+        {% else %}
+        <p class="muted" style="font-size: 0.9rem; font-style: italic; margin: 0;">{{ t.no_description }}</p>
+        {% endif %}
+    </div>
+
+    {# Footer #}
+    <div
+        style="padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.03); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+        <div class="muted" style="display: flex; gap: 0.8rem;">
+            <span>📅 {{ booking.created_at.strftime('%Y-%m-%d') if booking.created_at else '--' }}</span>
+            {% if booking.contact_phone %}
+            <span>📞 {{ booking.contact_phone }}</span>
+            {% endif %}
+        </div>
+        {% if booking.address_text %}
+        <span class="muted" title="{{ booking.address_text }}">
+            📍 {{ booking.address_text[:15] }}{% if booking.address_text|length > 15 %}...{% endif %}
+        </span>
+        {% endif %}
+    </div>
+
+    {# Staff Actions #}
+    {% if is_staff and status_val in ['requested', 'assigned', 'in_progress'] %}
+    <div
+        style="padding-top: 1rem; margin-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05); display: flex; gap: 0.5rem; flex-wrap: wrap;">
+
+        {% if status_val == 'requested' %}
+        <form method="post" action="/bookings/{{ booking.id }}/status" style="margin: 0;">
+            <input type="hidden" name="new_status" value="assigned">
+            <button type="submit" class="btn" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+                {{ t.accept_request }}
+            </button>
+        </form>
+        {% endif %}
+
+        {% if status_val == 'assigned' %}
+        <form method="post" action="/bookings/{{ booking.id }}/status" style="margin: 0;">
+            <input type="hidden" name="new_status" value="in_progress">
+            <button type="submit" class="btn" style="padding: 0.4rem 1rem; font-size: 0.8rem;">
+                {{ t.start_work }}
+            </button>
+        </form>
+        {% endif %}
+
+        {% if status_val == 'in_progress' %}
+        <form method="post" action="/bookings/{{ booking.id }}/status" style="margin: 0;">
+            <input type="hidden" name="new_status" value="completed">
+            <button type="submit" class="btn" style="padding: 0.4rem 1rem; font-size: 0.8rem; background: #28a745;">
+                {{ t.complete_request }}
+            </button>
+        </form>
+        {% endif %}
+
+        {% if status_val != 'cancelled' %}
+        <form method="post" action="/bookings/{{ booking.id }}/status" style="margin: 0;">
+            <input type="hidden" name="new_status" value="cancelled">
+            <button type="submit" class="btn outline" style="padding: 0.4rem 1rem; font-size: 0.8rem; color: #dc3545;"
+                onclick="return confirm('{{ t.confirm_cancel }}')">
+                {{ t.cancel_request }}
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    /* Status badge styling */
+    .status-badge {
+        font-size: 0.7rem;
+        padding: 6px 14px;
+        border: 1px solid currentColor;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .status-requested {
+        background: rgba(255, 193, 7, 0.1);
+        color: #b8860b;
+    }
+
+    .status-assigned,
+    .status-in_progress {
+        background: rgba(15, 107, 95, 0.1);
+        color: var(--accent-primary);
+    }
+
+    .status-completed {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+
+    .status-cancelled,
+    .status-unknown {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+    }
+</style>

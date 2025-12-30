@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container auth-section"
+  style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+  <div class="glass-card animate-in" style="width: 100%; max-width: 450px; padding: 3rem;">
+    {# Header #}
+    <div class="text-center" style="margin-bottom: 2.5rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+      <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem;">{{ t.reset_new }}</h2>
+      <p class="muted" style="margin: 0;">{{ t.reset_confirm_desc }}</p>
+    </div>
+
+    {# Reset Confirm Form #}
+    <form method="post" action="/reset/confirm">
+      <input type="hidden" name="token" value="{{ token }}">
+
+      {% with type="password", name="new_password", label=t.password, placeholder=t.new_password_placeholder,
+      required=true
+      %}
+      {% include "partials/form_input.html" %}
+      {% endwith %}
+
+      <button class="btn" type="submit" style="width: 100%; margin-top: 1.5rem; padding: 1rem;">
+        {{ t.submit }} ✅
+      </button>
+    </form>
+
+    {# Footer Links #}
+    {% with
+    primary_text=t.no_reset_needed,
+    primary_url="/login",
+    primary_label=t.nav_login
+    %}
+    {% include "partials/auth_footer.html" %}
+    {% endwith %}
+  </div>
+</section>
+{% endblock %}

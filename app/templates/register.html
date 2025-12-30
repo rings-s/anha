@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container flex justify-center items-center min-h-[80vh]">
+  <div class="glass-card animate-in w-full max-w-[500px] p-12">
+    {# Header #}
+    <div class="text-center mb-10">
+      <div class="text-[3rem] mb-4">✨</div>
+      <h2 class="text-[2rem] font-[900] mb-2">{{ t.register_title }}</h2>
+      <p class="muted m-0">{{ t.create_account_desc }}</p>
+    </div>
+
+    {# Registration Form #}
+    <form method="post" action="/register" class="flex flex-col gap-6">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          {% with type="text", name="full_name", label=t.full_name, placeholder=t.full_name_placeholder, required=true
+          %}
+          {% include "partials/form_input.html" %}
+          {% endwith %}
+        </div>
+        <div>
+          {% with type="text", name="phone", label=t.phone, placeholder="05xxxxxxxx" %}
+          {% include "partials/form_input.html" %}
+          {% endwith %}
+        </div>
+      </div>
+
+      {% with type="email", name="email", label=t.email, placeholder="example@domain.com", required=true %}
+      {% include "partials/form_input.html" %}
+      {% endwith %}
+
+      {% with type="password", name="password", label=t.password, placeholder=t.password_placeholder, required=true %}
+      {% include "partials/form_input.html" %}
+      {% endwith %}
+
+      {# Role is hidden - only clients can self-register. Staff roles are admin-created. #}
+      <input type="hidden" name="role" value="client">
+
+      <button class="btn w-full mt-6 py-4" type="submit">
+        {{ t.submit }} ✨
+      </button>
+    </form>
+
+    {# Footer Links #}
+    {% with
+    primary_text=t.have_account,
+    primary_url="/login",
+    primary_label=t.nav_login
+    %}
+    {% include "partials/auth_footer.html" %}
+    {% endwith %}
+  </div>
+</section>
+{% endblock %}
