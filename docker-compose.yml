@@ -34,6 +34,7 @@ services:
     environment:
       - APP_NAME=ANHA Trading
       - ENVIRONMENT=production
+      - BASE_URL=http://localhost:8000
       # To use SQLite, uncomment the line below and comment the PostgreSQL line
       # - DATABASE_URL=sqlite+aiosqlite:///./data/anha.db
       - DATABASE_URL=postgresql+asyncpg://anha_user:anha_password@db:5432/anha_db

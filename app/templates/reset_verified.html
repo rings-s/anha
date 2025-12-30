@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-24" data-controller="redirect" data-redirect-url-value="/reset/{{ token }}" data-redirect-delay-value="2000">
+    <div class="glass-card max-w-[500px] mx-auto text-center p-12 animate-in">
+        <div class="mb-8">
+            <div class="w-20 h-20 bg-accent-glow/20 rounded-full flex items-center justify-center text-[3rem] mx-auto">
+                ✅
+            </div>
+        </div>
+
+        <h1 class="text-[2rem] font-[900] mb-6 text-text-main">
+            {{ t.reset_verified_title }}
+        </h1>
+
+        <p class="text-text-muted mb-10 leading-relaxed text-lg">
+            {{ t.reset_verified_msg }}
+        </p>
+
+        <div class="flex flex-col gap-4">
+            <a href="/reset/{{ token }}" class="btn">
+                {{ t.continue_reset }}
+            </a>
+            <a href="/login" class="btn outline">
+                {{ t.back_to_login }}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

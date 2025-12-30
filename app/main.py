@@ -1,6 +1,10 @@
+from collections import deque
+from time import monotonic
+from typing import Deque
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import ORJSONResponse
+from fastapi.responses import ORJSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,6 +20,26 @@ settings = get_settings()
 
 app = FastAPI(title=settings.app_name, default_response_class=ORJSONResponse)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+# In-memory, per-process rate limiter.
+_rate_limit_store: dict[str, Deque[float]] = {}
+
+@app.middleware("http")
+async def rate_limit(request: Request, call_next):
+    client_ip = request.client.host if request.client else "unknown"
+    now = monotonic()
+    window_seconds = settings.rate_limit_window_seconds
+    max_requests = settings.rate_limit_max_requests
+    timestamps = _rate_limit_store.setdefault(client_ip, deque())
+
+    while timestamps and now - timestamps[0] > window_seconds:
+        timestamps.popleft()
+
+    if len(timestamps) >= max_requests:
+        return PlainTextResponse("Too many requests", status_code=429)
+
+    timestamps.append(now)
+    return await call_next(request)
 
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):

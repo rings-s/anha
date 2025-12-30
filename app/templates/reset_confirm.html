@@ -25,6 +25,11 @@
       {% include "partials/form_input.html" %}
       {% endwith %}
 
+      {% with type="password", name="confirm_password", label=t.confirm_password, placeholder=t.confirm_password_placeholder,
+      required=true %}
+      {% include "partials/form_input.html" %}
+      {% endwith %}
+
       <button
         class="btn w-full py-4 text-[1rem] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
         type="submit">

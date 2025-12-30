@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Cookie, Depends, Request
+from datetime import datetime
+import hashlib
+from fastapi import APIRouter, Cookie, Depends, Request, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
@@ -9,6 +11,7 @@ from app.models.service import Service
 from app.services.content import get_translations, get_profile
 from app.services.deps import get_current_user, get_current_user_optional
 from app.models.user import User, Role
+from app.models.password_reset import PasswordResetToken
 
 router = APIRouter()
 
@@ -58,25 +61,73 @@ async def home(
 
 
 @router.get("/login", response_class=HTMLResponse)
-async def login_page(request: Request):
+async def login_page(request: Request, user: User | None = Depends(get_current_user_optional)):
+    if user:
+        return RedirectResponse("/dashboard", status_code=303)
     return templates.TemplateResponse("login.html", _base_context(request))
 
 
 @router.get("/register", response_class=HTMLResponse)
-async def register_page(request: Request):
+async def register_page(request: Request, user: User | None = Depends(get_current_user_optional)):
+    if user:
+        return RedirectResponse("/dashboard", status_code=303)
     return templates.TemplateResponse("register.html", _base_context(request))
 
 
 @router.get("/reset", response_class=HTMLResponse)
-async def reset_request_page(request: Request):
+async def reset_request_page(request: Request, user: User | None = Depends(get_current_user_optional)):
+    if user:
+        return RedirectResponse("/dashboard", status_code=303)
     return templates.TemplateResponse("reset_request.html", _base_context(request))
 
 
+@router.get("/reset/verify/{token}", response_class=HTMLResponse)
+async def reset_verify_page(request: Request, token: str, session: AsyncSession = Depends(get_db_session)):
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    result = await session.execute(
+        select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash)
+    )
+    matched = result.scalar_one_or_none()
+
+    if not matched:
+        raise HTTPException(status_code=400, detail="الرابط غير صالح")
+
+    if matched.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="رابط إعادة التعيين منتهي الصلاحية")
+
+    context = _base_context(request)
+    context["token"] = token
+    return templates.TemplateResponse("reset_verified.html", context)
+
+
 @router.get("/reset/{token}", response_class=HTMLResponse)
-async def reset_confirm_page(request: Request, token: str):
+async def reset_confirm_page(request: Request, token: str, session: AsyncSession = Depends(get_db_session)):
+    # Verify token exists and is not expired
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    result = await session.execute(
+        select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash)
+    )
+    matched = result.scalar_one_or_none()
+    
+    if not matched:
+        raise HTTPException(status_code=400, detail="الرابط غير صالح")
+    
+    if matched.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="رابط إعادة التعيين منتهي الصلاحية")
+
     context = _base_context(request)
     context["token"] = token
     return templates.TemplateResponse("reset_confirm.html", context)
+
+
+@router.get("/reset/sent", response_class=HTMLResponse)
+async def reset_sent_page(request: Request):
+    return templates.TemplateResponse("reset_success.html", _base_context(request))
+
+
+@router.get("/reset/done", response_class=HTMLResponse)
+async def reset_done_page(request: Request):
+    return templates.TemplateResponse("password_updated.html", _base_context(request))
 
 
 @router.get("/dashboard", response_class=HTMLResponse)

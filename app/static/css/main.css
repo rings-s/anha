@@ -9,6 +9,7 @@
       "Courier New", monospace;
     --color-red-50: oklch(97.1% 0.013 17.38);
     --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-green-500: oklch(72.3% 0.219 149.579);
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-black: #000;
@@ -427,6 +428,9 @@
   .h-7 {
     height: calc(var(--spacing) * 7);
   }
+  .h-20 {
+    height: calc(var(--spacing) * 20);
+  }
   .h-\[50px\] {
     height: 50px;
   }
@@ -462,6 +466,9 @@
   }
   .w-7 {
     width: calc(var(--spacing) * 7);
+  }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
   }
   .w-\[50px\] {
     width: 50px;
@@ -774,6 +781,12 @@
   .bg-glass-bg {
     background-color: var(--color-glass-bg);
   }
+  .bg-green-500\/20 {
+    background-color: color-mix(in srgb, oklch(72.3% 0.219 149.579) 20%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-green-500) 20%, transparent);
+    }
+  }
   .bg-transparent {
     background-color: transparent;
   }
@@ -971,6 +984,9 @@
   }
   .py-12 {
     padding-block: calc(var(--spacing) * 12);
+  }
+  .py-24 {
+    padding-block: calc(var(--spacing) * 24);
   }
   .py-\[1rem\] {
     padding-block: 1rem;

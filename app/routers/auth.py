@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 import hashlib
 
-from fastapi import APIRouter, Depends, Form, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
+from fastapi.responses import RedirectResponse
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,9 +12,12 @@ from app.db.session import get_db_session
 from app.models.password_reset import PasswordResetToken
 from app.models.user import User, Role
 from app.services.content import get_translations
+from app.services.email import send_password_reset_email
 
 router = APIRouter()
 settings = get_settings()
+def _get_lang(request: Request) -> str:
+    return request.cookies.get("lang", "ar")
 
 
 def _redirect(url: str) -> RedirectResponse:
@@ -97,34 +100,53 @@ async def logout():
     return response
 
 
-@router.post("/reset/request", response_class=HTMLResponse)
+@router.post("/reset/request")
 async def reset_request(
+    request: Request,
     email: str = Form(...),
     session: AsyncSession = Depends(get_db_session),
 ):
     result = await session.execute(select(User).where(User.email == email))
     user = result.scalar_one_or_none()
-    reset_link = None
     if user:
+        latest_result = await session.execute(
+            select(PasswordResetToken)
+            .where(PasswordResetToken.user_id == user.id)
+            .order_by(PasswordResetToken.created_at.desc())
+            .limit(1)
+        )
+        latest_token = latest_result.scalar_one_or_none()
+        if latest_token:
+            age_seconds = (datetime.utcnow() - latest_token.created_at).total_seconds()
+            if age_seconds < settings.reset_request_cooldown_seconds:
+                return _redirect("/reset/sent")
+
+        await session.execute(delete(PasswordResetToken).where(PasswordResetToken.user_id == user.id))
+
         token, token_hash = create_reset_token()
         expires_at = datetime.utcnow() + timedelta(minutes=settings.reset_token_expire_minutes)
         session.add(PasswordResetToken(user_id=user.id, token_hash=token_hash, expires_at=expires_at))
         await session.commit()
-        # Direct redirect for demo purposes (skipping email)
-        return RedirectResponse(f"/reset/{token}", status_code=303)
-    
-    # If user not found
-    raise HTTPException(status_code=404, detail="Email not found")
+
+        # Send actual email
+        await send_password_reset_email(user.email, token)
+
+    # SECURITY: Always return success to avoid user enumeration
+    return _redirect("/reset/sent")
 
 
 @router.post("/reset/confirm")
 async def reset_confirm(
+    request: Request,
     token: str = Form(...),
     new_password: str = Form(...),
+    confirm_password: str = Form(...),
     session: AsyncSession = Depends(get_db_session),
 ):
     if len(new_password) < 8:
         raise HTTPException(status_code=400, detail="كلمة المرور الجديدة يجب أن لا تقل عن 8 أحرف")
+    if new_password != confirm_password:
+        raise HTTPException(status_code=400, detail="كلمتا المرور غير متطابقتين")
     
     token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
     result = await session.execute(select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash))
@@ -140,5 +162,5 @@ async def reset_confirm(
     user.hashed_password = hash_password(new_password)
     await session.execute(delete(PasswordResetToken).where(PasswordResetToken.user_id == user.id))
     await session.commit()
-    response = _redirect("/login")
-    return response
+    
+    return _redirect("/reset/done")

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-24">
+    <div class="glass-card max-w-[500px] mx-auto text-center p-12 animate-in">
+        <div class="mb-8">
+            <div class="w-20 h-20 bg-accent-glow/20 rounded-full flex items-center justify-center text-[3rem] mx-auto">
+                📧
+            </div>
+        </div>
+
+        <h1 class="text-[2rem] font-[900] mb-6 text-text-main">
+            {{ t.reset_title }}
+        </h1>
+
+        <p class="text-text-muted mb-10 leading-relaxed text-lg">
+            {{ t.reset_success_msg }}
+        </p>
+
+        <div class="flex flex-col gap-4">
+            <a href="/login" class="btn">
+                {{ t.back_to_login }}
+            </a>
+            <a href="/" class="btn outline">
+                {{ t.back_home }}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
