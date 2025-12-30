@@ -81,13 +81,13 @@
     <h2 class="text-[2.2rem] font-[950] mb-14 tracking-[-1px]">{{ profile.about_title }}</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div class="glass-card text-{{ 'right' if lang == 'ar' else 'left' }} p-10 rounded-[var(--radius-lg)]">
+      <div class="glass-card text-start p-10 rounded-[var(--radius-lg)]">
         <div class="text-[2.2rem] mb-5">🎯</div>
         <h3 class="text-[1.5rem] mb-4 text-accent-primary font-[900]">{{ profile.vision_title }}</h3>
         <p class="muted text-base leading-[1.7]">{{ profile.vision }}</p>
       </div>
 
-      <div class="glass-card text-{{ 'right' if lang == 'ar' else 'left' }} p-10 rounded-[var(--radius-lg)]">
+      <div class="glass-card text-start p-10 rounded-[var(--radius-lg)]">
         <div class="text-[2.2rem] mb-5">💡</div>
         <h3 class="text-[1.5rem] mb-4 text-accent-primary font-[900]">{{ profile.mission_title }}</h3>
         <p class="muted text-base leading-[1.7]">{{ profile.mission }}</p>
@@ -105,7 +105,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
     {% for service in services %}
     <div
-      class="glass-card card-hover p-8 rounded-[var(--radius-lg)] relative overflow-hidden flex flex-col border border-white/5">
+      class="glass-card card-hover text-start p-8 rounded-[var(--radius-lg)] relative overflow-hidden flex flex-col border border-white/5">
 
       {# Subtle icon background decorator #}
       <div class="absolute -top-[15px] -right-[15px] text-[5rem] opacity-[0.03] pointer-events-none rotate-[10deg]">🔧
@@ -148,14 +148,15 @@
 
 <section class="container animate-in my-24 mb-32">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-    <div class="glass-card p-10 rounded-[var(--radius-lg)]">
+    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)]">
       <h3 class="text-[1.5rem] mb-5 font-[900]">{{ profile.system_title }}</h3>
       <p class="muted text-base leading-[1.7]">{{ profile.system_description }}</p>
     </div>
-    <div class="glass-card p-10 rounded-[var(--radius-lg)] bg-accent-primary text-white">
+    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)] bg-accent-primary text-white">
       <h3 class="text-[1.5rem] mb-5 font-[900] text-white">{{ profile.contact_title }}</h3>
       <div class="mt-6 space-y-3">
-        <p class="text-[1.05rem]"><strong>{{ t.whatsapp }}:</strong> {{ profile.whatsapp }}</p>
+        <p class="text-[1.05rem]"><strong>{{ t.whatsapp }}:</strong> <span dir="ltr" class="inline-block">{{
+            profile.whatsapp }}</span></p>
         <p class="text-[1.05rem]">{{ profile.hq }}</p>
         <p class="text-[1.05rem] opacity-90">{{ profile.contact_note }}</p>
       </div>

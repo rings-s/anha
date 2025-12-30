@@ -117,3 +117,33 @@ async def booking_page(
     context = _base_context(request, user=user)
     context["services"] = services
     return templates.TemplateResponse("booking.html", context)
+
+
+@router.get("/profile", response_class=HTMLResponse)
+async def profile_page(request: Request, user: User = Depends(get_current_user)):
+    context = _base_context(request, user=user)
+    return templates.TemplateResponse("profile.html", context)
+
+
+@router.get("/robots.txt")
+async def robots_txt():
+    content = "User-agent: *\nAllow: /\nSitemap: /sitemap.xml"
+    return HTMLResponse(content=content, media_type="text/plain")
+
+
+@router.get("/sitemap.xml")
+async def sitemap_xml(request: Request):
+    urls = ["/", "/login", "/register", "/book"]
+    base_url = str(request.base_url).rstrip("/")
+    
+    xml_items = []
+    for url in urls:
+        xml_items.append(f"<url><loc>{base_url}{url}</loc><changefreq>weekly</changefreq></url>")
+    
+    content = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"{''.join(xml_items)}"
+        '</urlset>'
+    )
+    return HTMLResponse(content=content, media_type="application/xml")

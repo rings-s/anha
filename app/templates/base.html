@@ -4,7 +4,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ t.app_title }}</title>
+  <title>{{ t.app_title }}{% if title %} | {{ title }}{% endif %}</title>
+
+  {# SEO Meta Tags #}
+  <meta name="description" content="{{ t.meta_description }}">
+  <meta name="keywords" content="{{ t.meta_keywords }}">
+  <meta name="author" content="ANHA Trading">
+  <meta name="robots" content="index, follow">
+
+  {# Open Graph / Facebook #}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url }}">
+  <meta property="og:title" content="{{ t.og_title }}">
+  <meta property="og:description" content="{{ t.meta_description }}">
+  <meta property="og:image" content="{{ request.url_for('static', path='img/og-image.jpg') }}">
+
+  {# Twitter #}
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ request.url }}">
+  <meta property="twitter:title" content="{{ t.og_title }}">
+  <meta property="twitter:description" content="{{ t.meta_description }}">
+  <meta property="twitter:image" content="{{ request.url_for('static', path='img/og-image.jpg') }}">
+
+  {# Canonical Link #}
+  <link rel="canonical" href="{{ request.url }}">
+
+  {# JSON-LD Structured Data #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "{{ profile.company_name }}",
+    "description": "{{ t.meta_description }}",
+    "url": "{{ request.base_url }}",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Riyadh",
+      "addressCountry": "SA",
+      "streetAddress": "{{ profile.hq }}"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "{{ profile.whatsapp }}",
+      "contactType": "customer service"
+    }
+  }
+  </script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -138,9 +183,22 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="glass-card mt-auto transition-transform duration-500 hover:-translate-y-1">
-    <div class="container mx-auto px-6 text-center animate-in font-medium">
-      © {{ profile.company_name }} - {{ profile.hq }}
+  <footer class="mt-auto py-12 border-t border-black/5 bg-white/30 backdrop-blur-md">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="animate-in font-bold text-text-main text-lg group cursor-default">
+          <span class="text-accent-primary group-hover:animate-pulse">©</span> {{ profile.company_name }}
+          <div class="text-xs font-semibold text-text-muted mt-1 uppercase tracking-widest">{{ profile.hq }}</div>
+        </div>
+
+        <div
+          class="animate-in flex items-center gap-3 py-2 px-5 bg-white/50 rounded-2xl border border-white/40 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="w-1.5 h-1.5 rounded-full bg-accent-primary animate-pulse"></div>
+          <span class="text-sm font-bold text-text-main">
+            {{ t.developed_by }} <span class="text-accent-primary">Ahmed Bashir</span>
+          </span>
+        </div>
+      </div>
     </div>
   </footer>
 

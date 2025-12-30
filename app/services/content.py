@@ -78,6 +78,9 @@ TRANSLATIONS = {
         "nav_dashboard": "لوحة التحكم",
         "hero_title": "حلول تشغيل وصيانة متكاملة",
         "hero_sub": "نخدم منشآتكم باحترافية، سرعة استجابة، وشفافية كاملة.",
+        "meta_description": "شركة انها التجارية - الرائدة في حلول التشغيل والصيانة المتكاملة في المملكة العربية السعودية. خدمات فنية، نظافة، سباكة، وكهرباء باحترافية عالية.",
+        "meta_keywords": "تشغيل وصيانة, انها التجارية, صيانة مباني, خدمات فنية, الرياض, السعودية, نظافة, سباكة, كهرباء",
+        "og_title": "شركة انها التجارية | حلول التشغيل والصيانة",
         "book_cta": "اطلب خدمة الآن",
         "login_title": "تسجيل الدخول",
         "login_desc": "أدخل بياناتك للوصول إلى حسابك",
@@ -195,6 +198,7 @@ TRANSLATIONS = {
         # Admin panel
         "system_admin": "مدير النظام النشط",
         "back_to_dashboard": "العودة للوحة التحكم",
+        "developed_by": "تم تطوير هذا التطبيق بواسطة",
     },
     "en": {
         "app_title": "ANHA Trading Company",
@@ -206,6 +210,9 @@ TRANSLATIONS = {
         "nav_dashboard": "Dashboard",
         "hero_title": "Integrated Operation & Maintenance Solutions",
         "hero_sub": "We serve your facilities with professionalism, quick response, and full transparency.",
+        "meta_description": "ANHA Trading Company - Leader in integrated operation and maintenance solutions in Saudi Arabia. Technical services, cleaning, plumbing, and electrical with high professionalism.",
+        "meta_keywords": "operation and maintenance, ANHA trading, building maintenance, technical services, Riyadh, Saudi Arabia, cleaning, plumbing, electrical",
+        "og_title": "ANHA Trading Company | O&M Solutions",
         "book_cta": "Request Service Now",
         "login_title": "Login",
         "login_desc": "Enter your credentials to access your account",
@@ -323,6 +330,7 @@ TRANSLATIONS = {
         # Admin panel
         "system_admin": "Active System Administrator",
         "back_to_dashboard": "Back to Dashboard",
+        "developed_by": "This app developed by",
     },
 }
 
