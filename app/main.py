@@ -55,8 +55,8 @@ async def add_security_headers(request: Request, call_next):
         "script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com; "
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; "
         "font-src 'self' https://fonts.gstatic.com; "
-        "img-src 'self' data: https://*.tile.openstreetmap.org https://unpkg.com; "
-        "connect-src 'self'; "
+        "img-src 'self' data: https:; "
+        "connect-src 'self' https://nominatim.openstreetmap.org https://unpkg.com; "
         "frame-ancestors 'none';"
     )
     response.headers["Content-Security-Policy"] = csp
