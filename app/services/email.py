@@ -44,7 +44,7 @@ async def send_password_reset_email(email: str, token: str):
     base_url = settings.base_url.rstrip("/")
     reset_link = f"{base_url}/reset/verify/{token}"
     
-    subject = "إعادة تعيين كلمة المرور - ANHA Trading"
+    subject = "إعادة تعيين كلمة المرور - FWZ"
     body = f"""
     مرحباً،
     
@@ -55,7 +55,7 @@ async def send_password_reset_email(email: str, token: str):
     إذا لم تطلب هذا، يرجى تجاهل هذا البريد.
     
     شكراً،
-    فريق انها التجارية
+    فريق FWZ للطاقة والكهرباء
     """
     
     # Simple plain text for now, can be upgraded to HTML later

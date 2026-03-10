@@ -1,86 +1,88 @@
 # ============================================
-# ANHA Trading - Internationalization (i18n)
+# FWZ - Internationalization (i18n)
 # ============================================
 
 BUSINESS_PROFILE = {
     "ar": {
-        "company_name": "شركة انها التجارية",
+        "company_name": "شركة FWZ للطاقة والكهرباء",
         "intro": (
-            "تعد من أبرز شركات التشغيل والصيانة في المملكة وتتميز بجذب المشاريع "
-            "الكبرى والعملاء البارزين بفضل التزامها بالجودة والاحترافية. تركز "
-            "الشركة على رضا العملاء وتنفيذ المشاريع بكفاءة عبر فريق عمل متخصص، "
-            "مما يجعلها شريكًا موثوقًا للجميع."
+            "في FWZ نؤمن بأن الوصول إلى الخدمات الفنية يجب أن يكون سهلاً، "
+            "سريعاً، وموثوقاً. لذلك بنينا منظومة متكاملة تجمع بين التنفيذ "
+            "المباشر للأعمال الكهربائية وأنظمة الطاقة، وبين منصة ذكية تربط "
+            "العملاء بأفضل مقدمي الخدمات الفنية في المملكة."
         ),
-        "about_title": "عن انها التجارية",
-        "vision_title": "الرؤية",
+        "about_title": "من نحن",
+        "vision_title": "رؤيتنا",
         "vision": (
-            "أن نكون الخيار الأول في المملكة العربية السعودية في مجال التشغيل والصيانة "
-            "لجميع القطاعات وتقديم الحلول العملية والمبتكرة لسوق العمل بجميع كياناته "
-            "الاقتصادية سواء القطاع الحكومي وشبه الحكومي والخاص."
+            "أن نكون المنصة الأولى في المملكة العربية السعودية التي تُيسّر الوصول "
+            "إلى الخدمات الفنية المتخصصة — من الكهرباء والطاقة الشمسية إلى السباكة "
+            "والتكييف — بكفاءة عالية، وبيئة آمنة، وتجربة مستخدم استثنائية."
         ),
-        "mission_title": "الرسالة",
+        "mission_title": "رسالتنا",
         "mission": (
-            "أن نتجاوز توقعات العملاء للقيمة والخدمة، نبني ونحافظ على علاقاتنا مع العملاء "
-            "ونضمن رضا العملاء على المدى الطويل ونساهم بالتطور الاقتصادي بالمملكة وأن "
-            "نتميز بخدماتنا ومصداقيتنا في سوق العمل."
+            "تقديم حلول طاقة وكهرباء متكاملة عالية الجودة، وتشغيل منصة وساطة موثوقة "
+            "تربط الأفراد والمنشآت بمقدمي الخدمات الفنية المؤهلين، لتحقيق تجربة خدمة "
+            "سلسة ومحترفة في كل مرة."
         ),
-        "system_title": "نظام إدارة ومتابعة مشروعك",
+        "system_title": "منصتك الذكية لإدارة الخدمات",
         "system_description": (
-            "نظام خاص بشركة انها منصة مبتكرة تتيح للعملاء إدارة مشاريعهم ومتابعة تقدمها "
-            "بدقة وفعالية، مع تقارير لحظية وواجهة سهلة الاستخدام لضمان شفافية العمليات."
+            "منصة FWZ الرقمية تتيح لك تقديم طلب خدمتك في ثوانٍ، ومتابعة تقدم "
+            "التنفيذ لحظةً بلحظة، والتواصل المباشر مع فريق العمل — كل ذلك من "
+            "مكان واحد بواجهة سهلة وشفافية كاملة."
         ),
-        "contact_title": "معلومات التواصل",
+        "contact_title": "تواصل معنا",
         "hq": "المملكة العربية السعودية - الرياض",
-        "contact_note": "نسعد بخدمتكم على الدوام – ربط مباشر لدعم سريع واستفسارات فورية",
+        "contact_note": "فريقنا جاهز للرد على استفساراتكم على مدار الساعة — تواصلوا معنا عبر واتساب للحصول على دعم فوري",
     },
     "en": {
-        "company_name": "ANHA Trading Company",
+        "company_name": "FWZ Energy & Electrical",
         "intro": (
-            "One of the leading operation and maintenance companies in the Kingdom, "
-            "distinguished by attracting major projects and prominent clients thanks to "
-            "its commitment to quality and professionalism. The company focuses on customer "
-            "satisfaction and efficient project execution through a specialized team."
+            "At FWZ, we believe access to technical services should be simple, fast, and "
+            "reliable. That's why we built a complete ecosystem — combining direct execution "
+            "of electrical and energy projects with a smart platform that connects clients "
+            "to the Kingdom's best technical service providers."
         ),
-        "about_title": "About ANHA Trading",
-        "vision_title": "Vision",
+        "about_title": "About FWZ",
+        "vision_title": "Our Vision",
         "vision": (
-            "To be the first choice in Saudi Arabia in the field of operation and maintenance "
-            "for all sectors, providing practical and innovative solutions to the labor market "
-            "in all its economic entities, whether government, semi-government, or private."
+            "To be Saudi Arabia's leading platform for specialized technical services — "
+            "from electrical works and solar energy to plumbing and HVAC — delivered "
+            "with high efficiency, a safe environment, and an exceptional user experience."
         ),
-        "mission_title": "Mission",
+        "mission_title": "Our Mission",
         "mission": (
-            "To exceed customer expectations for value and service, build and maintain our "
-            "relationships with customers, ensure long-term customer satisfaction, contribute "
-            "to the economic development of the Kingdom, and excel in our services and credibility."
+            "To deliver high-quality, integrated energy and electrical solutions, and to "
+            "operate a trusted marketplace that connects individuals and organizations with "
+            "qualified technical service providers — ensuring a seamless, professional "
+            "experience every time."
         ),
-        "system_title": "Project Management System",
+        "system_title": "Your Smart Service Management Platform",
         "system_description": (
-            "A specialized platform by ANHA that allows clients to manage their projects "
-            "and track their progress with precision and efficiency, featuring real-time "
-            "reports and an easy-to-use interface for operational transparency."
+            "The FWZ digital platform lets you submit a service request in seconds, "
+            "track execution progress in real time, and communicate directly with our "
+            "team — all from one place, with a simple interface and full transparency."
         ),
-        "contact_title": "Contact Information",
+        "contact_title": "Get in Touch",
         "hq": "Kingdom of Saudi Arabia - Riyadh",
-        "contact_note": "We're delighted to serve you – direct support and instant inquiries",
+        "contact_note": "Our team is ready around the clock — reach us on WhatsApp for instant support and inquiries.",
     },
     "whatsapp": "+966 54 888 8568",
 }
 
 TRANSLATIONS = {
     "ar": {
-        "app_title": "شركة انها التجارية",
+        "app_title": "FWZ للطاقة والكهرباء",
         "nav_services": "خدماتنا",
-        "nav_book": "حجز صيانة",
+        "nav_book": "اطلب خدمة",
         "nav_reviews": "التقييمات",
         "nav_login": "تسجيل الدخول",
         "nav_register": "إنشاء حساب",
         "nav_dashboard": "لوحة التحكم",
-        "hero_title": "حلول تشغيل وصيانة متكاملة",
-        "hero_sub": "نخدم منشآتكم باحترافية، سرعة استجابة، وشفافية كاملة.",
-        "meta_description": "شركة انها التجارية - الرائدة في حلول التشغيل والصيانة المتكاملة في المملكة العربية السعودية. خدمات فنية، نظافة، سباكة، وكهرباء باحترافية عالية.",
-        "meta_keywords": "تشغيل وصيانة, انها التجارية, صيانة مباني, خدمات فنية, الرياض, السعودية, نظافة, سباكة, كهرباء",
-        "og_title": "شركة انها التجارية | حلول التشغيل والصيانة",
+        "hero_title": "حلول طاقة وخدمات فنية متكاملة",
+        "hero_sub": "نُنفّذ الأعمال الكهربائية وأنظمة الطاقة الشمسية، ونربطك بأفضل مقدمي الخدمات الفنية في المملكة — بكفاءة، وأمان، واحترافية.",
+        "meta_description": "FWZ للطاقة والكهرباء — حلول متكاملة في الأعمال الكهربائية، الطاقة الشمسية، والصيانة، إلى جانب منصة وساطة تربطك بأفضل الفنيين في الكهرباء والسباكة والتكييف واللحام.",
+        "meta_keywords": "FWZ, كهرباء, طاقة شمسية, صيانة, سباكة, تكييف, لحام, خدمات فنية, الرياض, السعودية, وساطة خدمات",
+        "og_title": "FWZ للطاقة والكهرباء | طاقة. كهرباء. خدمات فنية.",
         "book_cta": "اطلب خدمة الآن",
         "login_title": "تسجيل الدخول",
         "login_desc": "أدخل بياناتك للوصول إلى حسابك",
@@ -124,10 +126,11 @@ TRANSLATIONS = {
         "back_home": "العودة للرئيسية",
         "back": "العودة للخلف",
         "switch_lang": "English",
-        "successful_projects": "مشروع ناجح",
+        "successful_projects": "مشروع منجز",
         "customer_rating": "تقييم العملاء",
         "request_service": "اطلب هذه الخدمة الآن",
         "no_services": "لا توجد خدمات متاحة حالياً",
+        "services_subtitle": "خدمات فنية متخصصة — من الكهرباء والطاقة الشمسية إلى السباكة والتكييف واللحام.",
         "welcome": "مرحباً",
         "filter_by": "تصفية حسب:",
         "all": "الكل",
@@ -185,10 +188,10 @@ TRANSLATIONS = {
         "cancel_request": "❌ إلغاء",
         "confirm_cancel": "هل أنت متأكد من إلغاء هذا الطلب؟",
         # Hero section
-        "fast_execution": "سرعة التنفيذ",
-        "team_ready": "جاهزية كاملة لفريق العمل",
-        "testimonial_quote": "أفضل تجربة عمل على الإطلاق، السرعة والإتقان هما العنوان.",
-        "testimonial_author": "أحمد سالم - عميل مميز",
+        "fast_execution": "تنفيذ سريع ومضمون",
+        "team_ready": "فريق متخصص جاهز على مدار الساعة",
+        "testimonial_quote": "FWZ غيّرت طريقة تعاملنا مع الخدمات الفنية — سرعة في الاستجابة، ودقة في التنفيذ، واحترافية لم نعهدها من قبل.",
+        "testimonial_author": "خالد المطيري — مدير مرفق",
         # Reset password
         "reset_desc": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
         "reset_confirm_desc": "أدخل كلمة المرور الجديدة",
@@ -210,18 +213,18 @@ TRANSLATIONS = {
         "password_updated_msg": "لقد تم تغيير كلمة المرور الخاصة بك بنجاح. يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة.",
     },
     "en": {
-        "app_title": "ANHA Trading Company",
+        "app_title": "FWZ Energy & Electrical",
         "nav_services": "Our Services",
-        "nav_book": "Book Maintenance",
+        "nav_book": "Request Service",
         "nav_reviews": "Reviews",
         "nav_login": "Login",
-        "nav_register": "Register",
+        "nav_register": "Get Started",
         "nav_dashboard": "Dashboard",
-        "hero_title": "Integrated Operation & Maintenance Solutions",
-        "hero_sub": "We serve your facilities with professionalism, quick response, and full transparency.",
-        "meta_description": "ANHA Trading Company - Leader in integrated operation and maintenance solutions in Saudi Arabia. Technical services, cleaning, plumbing, and electrical with high professionalism.",
-        "meta_keywords": "operation and maintenance, ANHA trading, building maintenance, technical services, Riyadh, Saudi Arabia, cleaning, plumbing, electrical",
-        "og_title": "ANHA Trading Company | O&M Solutions",
+        "hero_title": "Energy & Technical Services, Reimagined",
+        "hero_sub": "We execute electrical works and solar systems directly — and connect you with top-rated technical professionals across the Kingdom. Fast, safe, and fully transparent.",
+        "meta_description": "FWZ Energy & Electrical — integrated solutions in electrical works, solar energy, and maintenance, plus a trusted marketplace connecting you with specialists in plumbing, HVAC, welding, and more.",
+        "meta_keywords": "FWZ, electrical, solar energy, maintenance, plumbing, HVAC, welding, technical services, Riyadh, Saudi Arabia, service marketplace",
+        "og_title": "FWZ Energy & Electrical | Power. Precision. Platform.",
         "book_cta": "Request Service Now",
         "login_title": "Login",
         "login_desc": "Enter your credentials to access your account",
@@ -265,10 +268,11 @@ TRANSLATIONS = {
         "back_home": "Back to Home",
         "back": "Go Back",
         "switch_lang": "العربية",
-        "successful_projects": "Successful Projects",
+        "successful_projects": "Projects Delivered",
         "customer_rating": "Customer Rating",
         "request_service": "Request This Service",
         "no_services": "No services available at the moment",
+        "services_subtitle": "Specialized technical services — electrical, solar energy, plumbing, HVAC, welding, and more.",
         "welcome": "Welcome",
         "filter_by": "Filter by:",
         "all": "All",
@@ -326,10 +330,10 @@ TRANSLATIONS = {
         "cancel_request": "❌ Cancel",
         "confirm_cancel": "Are you sure you want to cancel this request?",
         # Hero section
-        "fast_execution": "Fast Execution",
-        "team_ready": "Full team readiness",
-        "testimonial_quote": "Best work experience ever, speed and perfection are the hallmarks.",
-        "testimonial_author": "Ahmed Salem - Premium Client",
+        "fast_execution": "Fast & Guaranteed Execution",
+        "team_ready": "Specialized team available 24/7",
+        "testimonial_quote": "FWZ changed how we handle technical services entirely — lightning-fast response, precise execution, and a level of professionalism we hadn't seen before.",
+        "testimonial_author": "Khalid Al-Mutairi — Facility Manager",
         # Reset password
         "reset_desc": "Enter your email to reset your password",
         "reset_confirm_desc": "Enter your new password",
