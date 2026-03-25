@@ -1,45 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="flex justify-center items-center min-h-[80vh] py-12">
-  <div class="glass-card auth-card animate-in w-full max-w-[480px] p-8 md:p-12 relative">
+<section class="auth-section">
+  <div class="glass-card animate-in w-full max-w-[460px]">
 
-    {# Header #}
-    <div class="text-center mb-10">
-      <div class="text-[3.5rem] mb-4 drop-shadow-md">🔑</div>
-      <h2
-        class="text-[2rem] font-[950] mb-2 tracking-tight bg-gradient-to-br from-[var(--text-main)] to-[var(--text-muted)] bg-clip-text text-transparent">
-        {{ t.reset_title }}
-      </h2>
-      <p class="text-[var(--text-muted)] text-[0.95rem] leading-relaxed">
-        {{ t.reset_desc }}
-      </p>
+    {# Icon header #}
+    <div class="flex flex-col items-center gap-3 mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-[var(--accent-glow)] flex items-center justify-center text-[var(--accent-primary)]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
+        </svg>
+      </div>
+      <div class="text-center">
+        <h2 class="text-2xl font-black tracking-tight">{{ t.reset_title }}</h2>
+        <p class="muted text-sm mt-1">{{ t.reset_desc }}</p>
+      </div>
     </div>
 
     {# Reset Request Form #}
-    <form method="post" action="/reset/request" class="space-y-6">
+    <form method="post" action="/reset/request" class="flex flex-col gap-5">
       {% with type="email", name="email", label=t.email, placeholder="example@domain.com", required=true %}
       {% include "partials/form_input.html" %}
       {% endwith %}
 
-      <button
-        class="btn w-full py-4 text-[1rem] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-        type="submit">
+      <button class="btn w-full mt-4" type="submit">
         <span>{{ t.reset_request }}</span>
-        <span class="rtl:rotate-180">→</span>
+        {% if lang == 'ar' %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        {% endif %}
       </button>
     </form>
 
     {# Footer Links #}
-    <div class="mt-8 pt-6 border-t border-black/5 text-center">
+    <div class="mt-8 pt-6 border-t border-black/[0.06] dark:border-white/[0.07]">
       {% with
-      primary_text=t.remember_password,
-      primary_url="/login",
-      primary_label=t.nav_login
+        primary_text=t.remember_password,
+        primary_url="/login",
+        primary_label=t.nav_login
       %}
       {% include "partials/auth_footer.html" %}
       {% endwith %}
     </div>
+
   </div>
 </section>
 {% endblock %}

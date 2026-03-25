@@ -1,53 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="flex justify-center items-center min-h-[80vh] py-12">
-  <div class="glass-card auth-card animate-in w-full max-w-[480px] p-8 md:p-12 relative">
+<section class="auth-section">
+  <div class="glass-card animate-in w-full max-w-[460px]">
 
-    {# Header #}
-    <div class="text-center mb-10">
-      <div class="text-[3.5rem] mb-4 drop-shadow-md">🔒</div>
-      <h2
-        class="text-[2rem] font-[950] mb-2 tracking-tight bg-gradient-to-br from-[var(--text-main)] to-[var(--text-muted)] bg-clip-text text-transparent">
-        {{ t.reset_new }}
-      </h2>
-      <p class="text-[var(--text-muted)] text-[0.95rem] leading-relaxed">
-        {{ t.reset_confirm_desc }}
-      </p>
+    {# Icon header #}
+    <div class="flex flex-col items-center gap-3 mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-[var(--accent-glow)] flex items-center justify-center text-[var(--accent-primary)]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+        </svg>
+      </div>
+      <div class="text-center">
+        <h2 class="text-2xl font-black tracking-tight">{{ t.reset_new }}</h2>
+        <p class="muted text-sm mt-1">{{ t.reset_confirm_desc }}</p>
+      </div>
     </div>
 
     {# Reset Confirm Form #}
-    <form method="post" action="/reset/confirm" class="space-y-6">
+    <form method="post" action="/reset/confirm" class="flex flex-col gap-5">
       <input type="hidden" name="token" value="{{ token }}">
 
-      {% with type="password", name="new_password", label=t.password, placeholder=t.new_password_placeholder,
-      required=true %}
+      {% with type="password", name="new_password", label=t.password, placeholder=t.new_password_placeholder, required=true %}
       {% include "partials/form_input.html" %}
       {% endwith %}
 
-      {% with type="password", name="confirm_password", label=t.confirm_password, placeholder=t.confirm_password_placeholder,
-      required=true %}
+      {% with type="password", name="confirm_password", label=t.confirm_password, placeholder=t.confirm_password_placeholder, required=true %}
       {% include "partials/form_input.html" %}
       {% endwith %}
 
-      <button
-        class="btn w-full py-4 text-[1rem] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-        type="submit">
+      <button class="btn w-full mt-4" type="submit">
         <span>{{ t.submit }}</span>
-        <span>✅</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
       </button>
     </form>
 
     {# Footer Links #}
-    <div class="mt-8 pt-6 border-t border-black/5 text-center">
+    <div class="mt-8 pt-6 border-t border-black/[0.06] dark:border-white/[0.07]">
       {% with
-      primary_text=t.no_reset_needed,
-      primary_url="/login",
-      primary_label=t.nav_login
+        primary_text=t.no_reset_needed,
+        primary_url="/login",
+        primary_label=t.nav_login
       %}
       {% include "partials/auth_footer.html" %}
       {% endwith %}
     </div>
+
   </div>
 </section>
 {% endblock %}

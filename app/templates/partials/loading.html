@@ -1,10 +1,11 @@
 {#
-Loading Spinner Partial
-A centered loading indicator
+Loading Skeleton Partial
+A skeleton shimmer placeholder shown while content loads
 Variables:
-- text: Optional loading text (uses t.loading by default)
+- text: Optional loading text (unused — skeleton is visual-only)
 #}
-<div class="loading-spinner text-center muted animate-in" style="padding: 3rem;">
-    <div style="font-size: 2rem; margin-bottom: 1rem;">⏳</div>
-    <p style="margin: 0;">{{ text|default(t.loading) }}</p>
+<div class="space-y-4 p-2 animate-in">
+  <div class="skeleton h-24 rounded-[var(--radius-md)] w-full"></div>
+  <div class="skeleton h-24 rounded-[var(--radius-md)] w-full"></div>
+  <div class="skeleton h-24 rounded-[var(--radius-md)] w-full"></div>
 </div>

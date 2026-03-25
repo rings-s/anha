@@ -3,46 +3,49 @@ Map Location Picker Partial Component
 Usage: include "partials/map_picker.html" in your template
 Requires: Leaflet JS/CSS loaded in base.html, map_controller.js Stimulus controller
 #}
-<div class="map-picker glass-card" style="margin-top: 1.5rem; padding: 1.5rem; border-radius: var(--radius-lg);">
-    <!-- Hidden inputs for form submission -->
-    <input data-map-target="lat" type="hidden" name="location_lat">
-    <input data-map-target="lng" type="hidden" name="location_lng">
+<div class="glass-card mt-6 p-6" data-controller="map" style="border-radius: var(--radius-lg);">
+  <!-- Hidden inputs for form submission -->
+  <input data-map-target="lat" type="hidden" name="location_lat">
+  <input data-map-target="lng" type="hidden" name="location_lng">
 
-    <!-- Header with label and detect button -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <label style="margin: 0; font-size: 1rem; font-weight: 700;">
-            📍 {{ t.location }}
-        </label>
-        <div style="display: flex; gap: 0.5rem;">
-            <button type="button" class="btn outline" data-action="map#detectLocation" data-map-target="detectBtn"
-                style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-                <span data-map-target="detectText">{{ t.detect_location }}</span>
-                <span data-map-target="detectSpinner" style="display: none;">{{ t.detecting_location }}</span>
-            </button>
-            <button type="button" class="btn outline" data-action="map#shareLocation" data-map-target="shareBtn"
-                style="padding: 0.5rem 1rem; font-size: 0.85rem;">
-                {{ t.open_google_maps }}
-            </button>
-        </div>
+  <!-- Header with label and detect button -->
+  <div class="flex justify-between items-center mb-4">
+    <label class="m-0 text-base font-bold flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="text-[var(--accent-primary)]" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+      </svg>
+      {{ t.location }}
+    </label>
+    <div class="flex gap-2">
+      <button type="button" class="btn outline sm" data-action="map#detectLocation" data-map-target="detectBtn">
+        <span data-map-target="detectText">{{ t.detect_location }}</span>
+        <span data-map-target="detectSpinner" class="hidden">{{ t.detecting_location }}</span>
+      </button>
+      <button type="button" class="btn outline sm" data-action="map#shareLocation" data-map-target="shareBtn">
+        {{ t.open_google_maps }}
+      </button>
     </div>
+  </div>
 
-    <!-- Status message -->
-    <div data-map-target="status"
-        style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; font-size: 0.9rem;">
-    </div>
+  <!-- Status message -->
+  <div data-map-target="status"
+    class="hidden p-3 rounded-[var(--radius-md)] mb-4 text-sm">
+  </div>
 
-    <!-- Coordinates display -->
-    <div data-map-target="coords" class="muted"
-        style="font-size: 0.85rem; margin-bottom: 0.75rem; font-family: monospace; display: none;">
-        📌 <span data-map-target="coordsText">--</span>
-    </div>
+  <!-- Coordinates display -->
+  <div data-map-target="coords"
+    class="text-[var(--text-muted)] text-xs mb-3 font-mono hidden flex items-center gap-1.5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/>
+    </svg>
+    <span data-map-target="coordsText">--</span>
+  </div>
 
-    <!-- Map container -->
-    <div class="map glass" data-map-target="map"
-        style="height: 350px; border-radius: var(--radius-md); border: 2px solid white; overflow: hidden;"></div>
+  <!-- Map container -->
+  <div class="map glass" data-map-target="map"
+    style="height: 350px; border-radius: var(--radius-md); overflow: hidden;"></div>
 
-    <!-- Instructions -->
-    <p class="muted" style="font-size: 0.8rem; margin-top: 0.75rem; margin-bottom: 0;">
-        {{ t.map_hint }}
-    </p>
+  <!-- Instructions -->
+  <p class="text-[var(--text-muted)] text-xs mt-3 mb-0">{{ t.map_hint }}</p>
 </div>

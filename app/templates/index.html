@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section
-  class="hero-advanced grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-16 items-center min-h-[75vh] mt-8 mb-24 relative container">
+{# ── Hero Section — asymmetric split ── #}
+<section class="hero-advanced grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-16 items-center min-h-[75vh] mt-8 mb-24 relative container">
   <div class="hero-text animate-in relative z-10">
     <div class="mb-5">
-      <span
-        class="badge inline-block bg-accent-secondary text-white px-4 py-1.5 font-extrabold rounded-full text-sm uppercase tracking-wider">
-        {{ profile.company_name }} ✨
+      <span class="badge inline-flex items-center gap-2 bg-accent-secondary text-white px-4 py-1.5 font-extrabold rounded-full text-sm uppercase tracking-wider">
+        <span class="live-dot"></span>
+        {{ profile.company_name }}
       </span>
     </div>
 
-    <h1
-      class="text-[4.2rem] font-[950] leading-[1.05] mb-6 bg-linear-to-br from-text-main via-text-main to-accent-primary bg-clip-text text-transparent tracking-[-2px]">
+    <h1 class="text-5xl md:text-6xl font-black leading-[1.05] mb-6 text-[var(--text-main)] tracking-tight">
       {{ t.hero_title }}
     </h1>
 
@@ -20,23 +19,19 @@
       {{ t.hero_sub }}
     </p>
 
-    <div class="hero-actions flex gap-4 items-center">
-      <a class="btn" href="/book">
-        {{ t.book_cta }}
-      </a>
-      <a class="btn outline" href="#services">
-        {{ t.nav_services }}
-      </a>
+    <div class="hero-actions flex gap-4 items-center flex-wrap">
+      <a class="btn" href="/book">{{ t.book_cta }}</a>
+      <a class="btn outline" href="/services">{{ t.nav_services }}</a>
     </div>
 
-    <!-- Integrated Stats/Trust -->
-    <div class="mt-10 flex gap-12 border-t border-black/5 pt-6">
+    {# Stats #}
+    <div class="mt-10 flex gap-12 border-t border-black/[0.06] dark:border-white/[0.07] pt-6">
       <div>
-        <div class="text-[1.8rem] font-[900] text-accent-primary">+500</div>
+        <div class="text-[1.8rem] font-[900] text-accent-primary tabular-nums">487+</div>
         <div class="muted font-semibold text-sm">{{ t.successful_projects }}</div>
       </div>
       <div>
-        <div class="text-[1.8rem] font-[900] text-accent-primary">4.9/5</div>
+        <div class="text-[1.8rem] font-[900] text-accent-primary tabular-nums">4.8 / 5</div>
         <div class="muted font-semibold text-sm">{{ t.customer_rating }}</div>
       </div>
     </div>
@@ -45,90 +40,73 @@
   <div class="hero-visual animate-in flex relative h-[500px] items-center justify-center perspective-1000"
     style="animation-delay: 0.4s;">
     <div class="glass-stack relative w-full h-full rotate-[-2deg]">
-      <!-- Primary Floating Item -->
-      <div
-        class="glass-floating absolute bg-glass-bg backdrop-blur-xl border border-white/60 shadow-2xl rounded-[30px] w-[320px] p-5 top-[10%] right-[10%] z-20 animate-float">
+      {# Primary Floating Card #}
+      <div class="glass-floating absolute bg-glass-bg backdrop-blur-xl border border-white/60 shadow-2xl rounded-[30px] w-[320px] p-5 top-[10%] right-[10%] z-20 animate-float">
         <div class="flex justify-between items-center mb-6">
           <div class="font-[900] text-[1.1rem] text-accent-primary">{{ t.fast_execution }}</div>
-          <div class="bg-accent-glow px-2.5 py-1.5 rounded-xl">⚡</div>
+          <div class="bg-accent-glow px-2.5 py-1.5 rounded-xl text-accent-primary flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+          </div>
         </div>
-        <div class="h-[100px] bg-accent-glow/20 rounded-2xl flex items-center justify-center mb-4">
-          <span class="text-[2rem]">🚀</span>
+        <div class="h-[100px] bg-accent-glow/20 rounded-2xl flex items-center justify-center mb-4 text-accent-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
         </div>
         <div class="text-sm font-bold">{{ t.team_ready }}</div>
       </div>
 
-      <!-- Testimonial Bubble -->
-      <div
-        class="glass-floating absolute bg-white/85 backdrop-blur-xl border border-white/60 shadow-2xl rounded-[25px] w-[260px] p-5 bottom-[15%] right-[-50px] z-30 animate-float"
+      {# Testimonial Bubble #}
+      <div class="glass-floating absolute bg-white/85 backdrop-blur-xl border border-white/60 shadow-2xl rounded-[25px] w-[260px] p-5 bottom-[15%] right-[-50px] z-30 animate-float"
         style="animation-delay: 2s;">
-        <div class="italic text-[0.95rem] mb-4 text-[#444]">"{{ t.testimonial_quote }}"
+        <div class="flex items-start gap-2 mb-3">
+          <span class="text-accent-primary shrink-0 mt-0.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+          </span>
+          <div class="italic text-[0.95rem] text-[#444]">"{{ t.testimonial_quote }}"</div>
         </div>
         <div class="font-extrabold text-[0.85rem] text-accent-primary">{{ t.testimonial_author }}</div>
       </div>
 
-      <!-- Decorative Circle -->
-      <div
-        class="glass-floating absolute bg-linear-to-br from-accent-glow to-white/20 rounded-full w-[180px] h-[180px] top-[40%] left-[40%] z-10 opacity-50 animate-float"
+      {# Decorative Circle #}
+      <div class="glass-floating absolute bg-gradient-to-br from-accent-glow to-white/20 rounded-full w-[180px] h-[180px] top-[40%] left-[40%] z-10 opacity-50 animate-float"
         style="animation-delay: 4s;"></div>
     </div>
   </div>
 </section>
 
-<!-- About Company Area (Fixed and Integrated) -->
-<section class="container animate-in my-24">
-  <div class="text-center max-w-[1000px] mx-auto">
-    <h2 class="text-[2.2rem] font-[950] mb-14 tracking-[-1px]">{{ profile.about_title }}</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div class="glass-card text-start p-10 rounded-[var(--radius-lg)]">
-        <div class="text-[2.2rem] mb-5">🎯</div>
-        <h3 class="text-[1.5rem] mb-4 text-accent-primary font-[900]">{{ profile.vision_title }}</h3>
-        <p class="muted text-base leading-[1.7]">{{ profile.vision }}</p>
-      </div>
-
-      <div class="glass-card text-start p-10 rounded-[var(--radius-lg)]">
-        <div class="text-[2.2rem] mb-5">💡</div>
-        <h3 class="text-[1.5rem] mb-4 text-accent-primary font-[900]">{{ profile.mission_title }}</h3>
-        <p class="muted text-base leading-[1.7]">{{ profile.mission }}</p>
-      </div>
+{# ── Services Preview — 2-col grid with "View All" link ── #}
+{% if services %}
+<section id="services" class="container animate-in my-24" style="animation-delay: 0.15s;">
+  <div class="flex items-end justify-between mb-10 gap-6 flex-wrap">
+    <div>
+      <h2 class="text-[2rem] font-[950] tracking-[-0.5px] text-[var(--text-main)]">{{ t.nav_services }}</h2>
+      <p class="text-[var(--text-muted)] font-medium mt-1 text-base">{{ t.services_page_subtitle }}</p>
     </div>
-
-    <div class="glass-card mt-12 p-10 rounded-[var(--radius-lg)] border-1.5 border-white">
-      <p class="text-[1.15rem] leading-[1.8] text-text-main font-medium">{{ profile.intro }}</p>
-    </div>
+    <a href="/services" class="btn outline flex items-center gap-2 shrink-0">
+      {{ t.view_all_services }}
+      {% if lang == 'ar' %}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+      {% else %}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      {% endif %}
+    </a>
   </div>
-</section>
 
-<section id="services" class="container animate-in my-24">
-  <h2 class="text-[2.2rem] font-[950] text-center mb-14 tracking-[-0.5px]">{{ t.nav_services }}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     {% for service in services %}
-    <div
-      class="glass-card card-hover text-start p-8 rounded-[var(--radius-lg)] relative overflow-hidden flex flex-col border border-white/5">
-
-      {# Subtle icon background decorator #}
-      <div class="absolute -top-[15px] -right-[15px] text-[5rem] opacity-[0.03] pointer-events-none rotate-[10deg]">🔧
-      </div>
-
+    <div class="glass-card card-hover text-start p-8 rounded-[var(--radius-lg)] relative overflow-hidden flex flex-col border border-white/5 hover:border-[rgba(13,107,94,0.2)] transition-all duration-500">
       <div class="flex gap-5 items-start mb-6">
-        <div
-          class="w-[50px] h-[50px] bg-[#0f6b5f1a] rounded-2xl flex items-center justify-center text-[1.5rem] shrink-0">
-          🛠️
+        <div class="w-[50px] h-[50px] bg-[rgba(13,107,94,0.08)] rounded-2xl flex items-center justify-center shrink-0 text-accent-primary border border-[rgba(13,107,94,0.1)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/></svg>
         </div>
         <div>
-          <h3 class="text-text-main text-[1.25rem] mb-1.5 font-[800] leading-[1.3]">
-            {{ service.name_ar if lang == 'ar' else service.name_en }}
+          {# Language-specific name only #}
+          <h3 class="text-[1.2rem] mb-1 font-[800] leading-[1.3] text-[var(--text-main)]">
+            {% if lang == 'ar' %}
+              {{ service.name_ar or service.name_en }}
+            {% else %}
+              {{ service.name_en or service.name_ar }}
+            {% endif %}
           </h3>
-          {% if service.name_en and lang == 'ar' %}
-          <div class="text-accent-primary font-bold text-xs uppercase tracking-[0.5px]">
-            {{ service.name_en }}
-          </div>
-          {% elif service.name_ar and lang == 'en' %}
-          <div class="text-accent-primary font-bold text-xs tracking-[0.5px]">
-            {{ service.name_ar }}
-          </div>
-          {% endif %}
         </div>
       </div>
 
@@ -136,31 +114,83 @@
         {{ service.description or t.default_service_desc }}
       </p>
 
-      <div class="mt-8 pt-6 border-t border-black/5">
+      <div class="mt-8 pt-6 border-t border-black/[0.06] dark:border-white/[0.07]">
         <a href="/book" class="font-[800] text-[0.9rem] text-accent-primary flex items-center gap-2">
-          {{ t.request_service }} <span>{{ '←' if lang == 'ar' else '→' }}</span>
+          {{ t.request_service }}
+          {% if lang == 'ar' %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+          {% else %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          {% endif %}
         </a>
       </div>
     </div>
     {% endfor %}
   </div>
 </section>
+{% endif %}
 
-<section class="container animate-in my-24 mb-32">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)]">
-      <h3 class="text-[1.5rem] mb-5 font-[900]">{{ profile.system_title }}</h3>
+{# ── About Preview ── #}
+<section class="container animate-in my-24" style="animation-delay: 0.2s;">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)] hover:border-[rgba(13,107,94,0.25)] border border-slate-200/40 dark:border-white/[0.06] transition-all duration-500 group">
+      <div class="w-12 h-12 bg-[rgba(13,107,94,0.08)] rounded-2xl flex items-center justify-center mb-5 text-[var(--accent-primary)] group-hover:bg-[var(--accent-primary)] group-hover:text-white transition-all duration-500">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+      </div>
+      <h3 class="text-[1.4rem] mb-4 text-[var(--accent-primary)] font-[900] group-hover:text-[var(--accent-primary)]">{{ profile.vision_title }}</h3>
+      <p class="muted text-base leading-[1.7]">{{ profile.vision }}</p>
+    </div>
+    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)] hover:border-[rgba(13,107,94,0.25)] border border-slate-200/40 dark:border-white/[0.06] transition-all duration-500 group">
+      <div class="w-12 h-12 bg-[rgba(13,107,94,0.08)] rounded-2xl flex items-center justify-center mb-5 text-[var(--accent-primary)] group-hover:bg-[var(--accent-primary)] group-hover:text-white transition-all duration-500">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+      </div>
+      <h3 class="text-[1.4rem] mb-4 text-[var(--accent-primary)] font-[900] group-hover:text-[var(--accent-primary)]">{{ profile.mission_title }}</h3>
+      <p class="muted text-base leading-[1.7]">{{ profile.mission }}</p>
+    </div>
+  </div>
+
+  {# About CTA #}
+  <div class="mt-6 glass-card p-8 rounded-[var(--radius-lg)] border border-slate-200/40 dark:border-white/[0.06] flex items-center justify-between gap-6 flex-wrap">
+    <p class="text-[1.05rem] leading-[1.8] text-[var(--text-main)] font-medium max-w-[65ch]">{{ profile.intro }}</p>
+    <a href="/about" class="btn outline shrink-0 flex items-center gap-2">
+      {{ t.learn_more_about }}
+      {% if lang == 'ar' %}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+      {% else %}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      {% endif %}
+    </a>
+  </div>
+</section>
+
+{# ── Contact Section ── #}
+<section class="container animate-in my-24 mb-32" style="animation-delay: 0.25s;">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)] border border-slate-200/40 dark:border-white/[0.06]">
+      <h3 class="text-[1.4rem] mb-5 font-[900] text-[var(--text-main)]">{{ profile.system_title }}</h3>
       <p class="muted text-base leading-[1.7]">{{ profile.system_description }}</p>
     </div>
-    <div class="glass-card text-start p-10 rounded-[var(--radius-lg)] bg-accent-primary text-white">
-      <h3 class="text-[1.5rem] mb-5 font-[900] text-white">{{ profile.contact_title }}</h3>
-      <div class="mt-6 space-y-3">
-        <p class="text-[1.05rem]"><strong>{{ t.whatsapp }}:</strong> <span dir="ltr" class="inline-block">{{
-            profile.whatsapp }}</span></p>
-        <p class="text-[1.05rem]">{{ profile.hq }}</p>
-        <p class="text-[1.05rem] opacity-90">{{ profile.contact_note }}</p>
+    <div class="text-start p-10 rounded-[var(--radius-lg)] border border-white/20 relative overflow-hidden"
+      style="background-color: var(--accent-primary);">
+      <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%);"></div>
+      <h3 class="text-[1.4rem] mb-5 font-[900] text-white relative z-10">{{ profile.contact_title }}</h3>
+      <div class="mt-4 space-y-4 relative z-10">
+        <p class="text-white text-[1.05rem] flex items-center gap-3">
+          <span class="shrink-0 text-white/70">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+          </span>
+          <strong>{{ t.whatsapp }}:</strong> <span dir="ltr" class="inline-block">{{ profile.whatsapp }}</span>
+        </p>
+        <p class="text-white text-[1.05rem] flex items-center gap-3">
+          <span class="shrink-0 text-white/70">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+          </span>
+          {{ profile.hq }}
+        </p>
+        <p class="text-white/80 text-[1rem]">{{ profile.contact_note }}</p>
       </div>
     </div>
   </div>
 </section>
+
 {% endblock %}

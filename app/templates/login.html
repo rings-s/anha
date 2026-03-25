@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="container flex justify-center items-center min-h-[75vh]">
-  <div class="glass-card animate-in w-full max-w-[450px] p-12">
-    {# Header #}
-    <div class="text-center mb-10">
-      <div class="text-[3rem] mb-4">🔐</div>
-      <h2 class="text-[2rem] font-[900] mb-2">{{ t.login_title }}</h2>
-      <p class="muted m-0">{{ t.login_desc }}</p>
+<section class="auth-section">
+  <div class="glass-card animate-in w-full max-w-[460px]">
+
+    {# Icon header #}
+    <div class="flex flex-col items-center gap-3 mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-[var(--accent-glow)] flex items-center justify-center text-[var(--accent-primary)]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+        </svg>
+      </div>
+      <div class="text-center">
+        <h2 class="text-2xl font-black tracking-tight">{{ t.login_title }}</h2>
+        <p class="muted text-sm mt-1">{{ t.login_desc }}</p>
+      </div>
     </div>
 
     {# Login Form #}
-    <form method="post" action="/login" class="flex flex-col gap-6">
+    <form method="post" action="/login" class="flex flex-col gap-5">
       {% with type="email", name="email", label=t.email, placeholder="example@domain.com", required=true %}
       {% include "partials/form_input.html" %}
       {% endwith %}
@@ -20,21 +27,29 @@
       {% include "partials/form_input.html" %}
       {% endwith %}
 
-      <button class="btn w-full mt-6 py-4" type="submit">
-        {{ t.submit }} →
+      <button class="btn w-full mt-4" type="submit">
+        <span>{{ t.submit }}</span>
+        {% if lang == 'ar' %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        {% endif %}
       </button>
     </form>
 
     {# Footer Links #}
-    {% with
-    primary_text=t.no_account,
-    primary_url="/register",
-    primary_label=t.nav_register,
-    secondary_url="/reset",
-    secondary_label=t.reset_title
-    %}
-    {% include "partials/auth_footer.html" %}
-    {% endwith %}
+    <div class="mt-8 pt-6 border-t border-black/[0.06] dark:border-white/[0.07]">
+      {% with
+        primary_text=t.no_account,
+        primary_url="/register",
+        primary_label=t.nav_register,
+        secondary_url="/reset",
+        secondary_label=t.reset_title
+      %}
+      {% include "partials/auth_footer.html" %}
+      {% endwith %}
+    </div>
+
   </div>
 </section>
 {% endblock %}

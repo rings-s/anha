@@ -56,8 +56,29 @@ async def home(
 ):
     services = (await session.execute(select(Service))).scalars().all()
     context = _base_context(request, user=current_user)
-    context["services"] = services
+    context["services"] = services[:4]  # Show preview only on home
     return templates.TemplateResponse("index.html", context)
+
+
+@router.get("/services", response_class=HTMLResponse)
+async def services_page(
+    request: Request,
+    session: AsyncSession = Depends(get_db_session),
+    current_user: User | None = Depends(get_current_user_optional),
+):
+    services = (await session.execute(select(Service))).scalars().all()
+    context = _base_context(request, user=current_user)
+    context["services"] = services
+    return templates.TemplateResponse("services.html", context)
+
+
+@router.get("/about", response_class=HTMLResponse)
+async def about_page(
+    request: Request,
+    current_user: User | None = Depends(get_current_user_optional),
+):
+    context = _base_context(request, user=current_user)
+    return templates.TemplateResponse("about.html", context)
 
 
 @router.get("/login", response_class=HTMLResponse)
@@ -100,26 +121,6 @@ async def reset_verify_page(request: Request, token: str, session: AsyncSession 
     return templates.TemplateResponse("reset_verified.html", context)
 
 
-@router.get("/reset/{token}", response_class=HTMLResponse)
-async def reset_confirm_page(request: Request, token: str, session: AsyncSession = Depends(get_db_session)):
-    # Verify token exists and is not expired
-    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
-    result = await session.execute(
-        select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash)
-    )
-    matched = result.scalar_one_or_none()
-    
-    if not matched:
-        raise HTTPException(status_code=400, detail="الرابط غير صالح")
-    
-    if matched.expires_at < datetime.utcnow():
-        raise HTTPException(status_code=400, detail="رابط إعادة التعيين منتهي الصلاحية")
-
-    context = _base_context(request)
-    context["token"] = token
-    return templates.TemplateResponse("reset_confirm.html", context)
-
-
 @router.get("/reset/sent", response_class=HTMLResponse)
 async def reset_sent_page(request: Request):
     return templates.TemplateResponse("reset_success.html", _base_context(request))
@@ -128,6 +129,26 @@ async def reset_sent_page(request: Request):
 @router.get("/reset/done", response_class=HTMLResponse)
 async def reset_done_page(request: Request):
     return templates.TemplateResponse("password_updated.html", _base_context(request))
+
+
+@router.get("/reset/{token}", response_class=HTMLResponse)
+async def reset_confirm_page(request: Request, token: str, session: AsyncSession = Depends(get_db_session)):
+    # Verify token exists and is not expired
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    result = await session.execute(
+        select(PasswordResetToken).where(PasswordResetToken.token_hash == token_hash)
+    )
+    matched = result.scalar_one_or_none()
+
+    if not matched:
+        raise HTTPException(status_code=400, detail="الرابط غير صالح")
+
+    if matched.expires_at < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="رابط إعادة التعيين منتهي الصلاحية")
+
+    context = _base_context(request)
+    context["token"] = token
+    return templates.TemplateResponse("reset_confirm.html", context)
 
 
 @router.get("/dashboard", response_class=HTMLResponse)
@@ -170,11 +191,6 @@ async def booking_page(
     return templates.TemplateResponse("booking.html", context)
 
 
-@router.get("/profile", response_class=HTMLResponse)
-async def profile_page(request: Request, user: User = Depends(get_current_user)):
-    context = _base_context(request, user=user)
-    return templates.TemplateResponse("profile.html", context)
-
 
 @router.get("/robots.txt")
 async def robots_txt():
@@ -184,7 +200,7 @@ async def robots_txt():
 
 @router.get("/sitemap.xml")
 async def sitemap_xml(request: Request):
-    urls = ["/", "/login", "/register", "/book"]
+    urls = ["/", "/services", "/about", "/login", "/register", "/book"]
     base_url = str(request.base_url).rstrip("/")
     
     xml_items = []

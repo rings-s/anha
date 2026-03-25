@@ -8,18 +8,14 @@ Variables:
 - secondary_url: Optional secondary link URL
 - secondary_label: Optional secondary link label
 #}
-<div class="text-center">
-    <p class="mb-3">
-        <span class="text-[var(--text-muted)]">{{ primary_text }}</span>
-        <a href="{{ primary_url }}"
-            class="font-bold border-b-2 border-transparent hover:border-[var(--accent-primary)] pb-0.5">{{ primary_label
-            }}</a>
-    </p>
-    {% if secondary_url and secondary_label %}
-    <p>
-        <a href="{{ secondary_url }}"
-            class="text-sm text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors">{{
-            secondary_label }}</a>
-    </p>
-    {% endif %}
+<div class="text-center space-y-2.5">
+  <p class="text-sm">
+    <span class="muted">{{ primary_text }}</span>
+    <a href="{{ primary_url }}" class="font-bold text-[var(--accent-primary)] hover:underline underline-offset-2 ms-1">{{ primary_label }}</a>
+  </p>
+  {% if secondary_url and secondary_label %}
+  <p>
+    <a href="{{ secondary_url }}" class="text-sm muted hover:text-[var(--accent-primary)] transition-colors">{{ secondary_label }}</a>
+  </p>
+  {% endif %}
 </div>

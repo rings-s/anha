@@ -1,49 +1,171 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Services Area -->
-<section class="container mx-auto px-6 animate-in my-16 relative">
-  <div class="absolute top-0 right-0 w-96 h-96 bg-accent-primary/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+{# ── Services Page ─────────────────────────────────────────────────── #}
 
-  <div class="text-center mb-16">
-    <h2 class="text-[2.5rem] font-[900] tracking-tight text-text-main">{{ t.nav_services }}</h2>
-    <p class="text-text-muted mt-4 font-medium text-lg">{{ t.services_subtitle }}</p>
+{# ── Page Header — asymmetric split (DESIGN_VARIANCE: 8) ── #}
+<section class="animate-in mb-16 relative">
+  {# Ambient glow blobs — pointer-events-none, fixed z #}
+  <div class="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+    <div class="absolute top-[-80px] {% if lang == 'ar' %}left-[-60px]{% else %}right-[-60px]{% endif %} w-[500px] h-[500px] bg-[rgba(13,107,94,0.06)] rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-0 {% if lang == 'ar' %}right-20{% else %}left-20{% endif %} w-[300px] h-[300px] bg-[rgba(13,107,94,0.04)] rounded-full blur-[80px]"></div>
   </div>
-  
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+
+  <div class="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-10 items-end">
+    <div>
+      <div class="inline-flex items-center gap-2 mb-5 px-4 py-1.5 bg-[rgba(13,107,94,0.07)] border border-[rgba(13,107,94,0.14)] rounded-full">
+        <span class="live-dot"></span>
+        <span class="text-[var(--accent-primary)] font-[800] text-[0.72rem] uppercase tracking-[0.1em]">{{ profile.company_name }}</span>
+      </div>
+      <h1 class="text-[2.6rem] md:text-[3.2rem] font-[950] tracking-tighter leading-[1.06] text-[var(--text-main)] mb-5">
+        {{ t.services_page_title }}
+      </h1>
+      <p class="text-[var(--text-muted)] text-[1.05rem] leading-[1.85] font-medium max-w-[55ch]">
+        {{ t.services_page_subtitle }}
+      </p>
+    </div>
+    <div class="flex {% if lang == 'ar' %}justify-start md:justify-end{% else %}justify-start md:justify-end{% endif %} items-end pb-1">
+      <a href="/book" class="btn">
+        {{ t.book_cta }}
+        {% if lang == 'ar' %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        {% endif %}
+      </a>
+    </div>
+  </div>
+
+  <div class="mt-12 h-px bg-gradient-to-r from-transparent via-[rgba(13,107,94,0.18)] to-transparent"></div>
+</section>
+
+{# ── Services Grid — 2-col asymmetric, staggered ── #}
+{% if services %}
+<section class="animate-in mb-16" style="animation-delay: 0.1s;">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
     {% for service in services %}
-    <div class="glass-card group text-start p-8 flex flex-col h-full bg-white/60 hover:bg-white/90 border border-slate-200/50">
-      <div class="flex gap-5 items-center mb-8">
-        <div class="w-[56px] h-[56px] bg-slate-100 rounded-2xl flex items-center justify-center text-[1.5rem] shrink-0 group-hover:bg-accent-primary group-hover:text-white transition-colors duration-500 shadow-sm border border-slate-200">
-          🛠️
+    <div class="glass-card group text-start flex flex-col h-full border border-[rgba(0,0,0,0.06)] dark:border-white/[0.06] hover:border-[rgba(13,107,94,0.28)] transition-all duration-500 hover:shadow-[0_20px_50px_-10px_rgba(13,107,94,0.12)]"
+      style="animation-delay: {{ loop.index0 * 0.07 }}s; padding: 2rem;">
+
+      {# Icon + Title row #}
+      <div class="flex gap-4 items-start mb-5">
+        <div class="w-[48px] h-[48px] bg-[rgba(13,107,94,0.07)] rounded-2xl flex items-center justify-center shrink-0 text-[var(--accent-primary)] group-hover:bg-[var(--accent-primary)] group-hover:text-white transition-all duration-500 border border-[rgba(13,107,94,0.1)] group-hover:border-transparent shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>
+          </svg>
         </div>
-        <div>
-          <h3 class="text-text-main text-[1.2rem] font-[800] leading-tight mb-1 group-hover:text-accent-primary transition-colors">
-            {{ service.name_ar if lang == 'ar' else service.name_en }}
+        <div class="flex-1 min-w-0 pt-1">
+          {# Language-specific name ONLY — no bilingual subtitle #}
+          <h3 class="text-[1.15rem] font-[900] leading-tight tracking-tight text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors duration-300">
+            {% if lang == 'ar' %}
+              {{ service.name_ar or service.name_en }}
+            {% else %}
+              {{ service.name_en or service.name_ar }}
+            {% endif %}
           </h3>
-          {% if service.name_en and lang == 'ar' %}
-          <div class="text-text-muted font-bold text-xs uppercase tracking-wider">
-            {{ service.name_en }}
-          </div>
-          {% elif service.name_ar and lang == 'en' %}
-          <div class="text-text-muted font-bold text-xs tracking-wider">
-            {{ service.name_ar }}
-          </div>
-          {% endif %}
         </div>
       </div>
 
-      <p class="text-text-muted text-[1rem] leading-[1.7] flex-grow font-medium">
+      {# Description #}
+      <p class="text-[var(--text-muted)] text-[0.95rem] leading-[1.75] flex-grow font-medium">
         {{ service.description or t.default_service_desc }}
       </p>
 
-      <div class="mt-8 pt-6 border-t border-slate-200/50 flex justify-between items-center group-hover:border-accent-primary/20 transition-colors">
-        <a href="/book" class="font-[800] text-[0.95rem] text-text-main group-hover:text-accent-primary transition-colors flex items-center gap-2">
-          {{ t.request_service }} <span class="group-hover:translate-x-1 transition-transform">{{ '←' if lang == 'ar' else '→' }}</span>
+      {# CTA footer #}
+      <div class="mt-7 pt-5 border-t border-black/[0.05] dark:border-white/[0.05] group-hover:border-[rgba(13,107,94,0.14)] transition-colors flex items-center justify-between">
+        <a href="/book" class="inline-flex items-center gap-2 font-[800] text-[0.875rem] text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+          {{ t.request_service }}
+          {% if lang == 'ar' %}
+          <svg class="group-hover:-translate-x-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+          {% else %}
+          <svg class="group-hover:translate-x-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          {% endif %}
         </a>
+        <div class="w-7 h-7 rounded-full bg-[rgba(13,107,94,0.06)] group-hover:bg-[rgba(13,107,94,0.14)] flex items-center justify-center transition-colors text-[var(--accent-primary)] opacity-0 group-hover:opacity-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            {% if lang == 'ar' %}<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+            {% else %}<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>{% endif %}
+          </svg>
+        </div>
       </div>
     </div>
     {% endfor %}
   </div>
 </section>
+{% else %}
+{# ── Empty State ── #}
+<section class="animate-in flex flex-col items-center justify-center py-28 text-center mb-16">
+  <div class="w-18 h-18 rounded-3xl bg-[rgba(13,107,94,0.07)] flex items-center justify-center text-[var(--accent-primary)] mb-7 border border-[rgba(13,107,94,0.12)]" style="width:4.5rem;height:4.5rem;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>
+    </svg>
+  </div>
+  <h3 class="text-[1.4rem] font-[900] text-[var(--text-main)] mb-2.5 tracking-tight">{{ t.no_services }}</h3>
+  <p class="text-[var(--text-muted)] text-[0.97rem] max-w-[38ch] leading-relaxed">{{ t.services_page_subtitle }}</p>
+</section>
+{% endif %}
+
+{# ── Contact CTA Banner ── #}
+<section class="animate-in mb-4" style="animation-delay: 0.2s;">
+  <div class="relative rounded-[var(--radius-lg)] overflow-hidden" style="background-color: var(--accent-primary);">
+
+    {# Layered decorative backgrounds #}
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(circle at 20% 55%, rgba(255,255,255,0.11) 0%, transparent 45%), radial-gradient(circle at 82% 10%, rgba(255,255,255,0.07) 0%, transparent 40%);"></div>
+    <div class="absolute inset-0 pointer-events-none opacity-[0.035]" style="background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px); background-size: 36px 36px;"></div>
+
+    <div class="relative z-10 p-9 md:p-14">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 items-center">
+
+        <div>
+          {# Status pill #}
+          <div class="inline-flex items-center gap-2 mb-4 px-3 py-1.5 bg-white/[0.12] border border-white/[0.18] rounded-full">
+            <span class="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse-dot shrink-0"></span>
+            <span class="text-white/90 text-[0.7rem] font-[800] uppercase tracking-[0.08em]">{{ t.team_ready }}</span>
+          </div>
+          <h2 class="text-[1.75rem] md:text-[2.25rem] font-[950] tracking-tight leading-[1.1] mb-5 text-white">
+            {{ profile.contact_title }}
+          </h2>
+
+          {# Contact details — horizontal layout #}
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 text-sm font-medium">
+            <div class="flex items-center gap-2.5 text-white/85">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="text-white/60 shrink-0" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+              </svg>
+              <span dir="ltr" class="font-[800] text-white">{{ profile.whatsapp }}</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-white/75">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="text-white/60 shrink-0" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+              </svg>
+              {{ profile.hq }}
+            </div>
+          </div>
+          {% if profile.contact_note %}
+          <p class="text-white/55 text-[0.85rem] leading-relaxed max-w-[52ch] mt-3">{{ profile.contact_note }}</p>
+          {% endif %}
+        </div>
+
+        {# CTAs — stacked with visual hierarchy #}
+        <div class="flex flex-row md:flex-col gap-3">
+          <a href="/book"
+            class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white font-[800] rounded-full text-sm hover:bg-white/94 transition-all active:scale-[0.97] shadow-[0_4px_18px_rgba(0,0,0,0.18)]"
+            style="color: var(--accent-primary);">
+            {{ t.book_cta }}
+          </a>
+          <a href="https://wa.me/{{ profile.whatsapp | replace(' ', '') | replace('+', '') }}" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white/[0.1] text-white border border-white/[0.22] font-[700] rounded-full text-sm hover:bg-white/[0.18] hover:border-white/40 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+            </svg>
+            {{ t.whatsapp }}
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

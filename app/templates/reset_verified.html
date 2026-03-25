@@ -1,30 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container py-24" data-controller="redirect" data-redirect-url-value="/reset/{{ token }}" data-redirect-delay-value="2000">
-    <div class="glass-card max-w-[500px] mx-auto text-center p-12 animate-in">
-        <div class="mb-8">
-            <div class="w-20 h-20 bg-accent-glow/20 rounded-full flex items-center justify-center text-[3rem] mx-auto">
-                ✅
-            </div>
-        </div>
+<section class="auth-section" data-controller="redirect" data-redirect-url-value="/reset/{{ token }}" data-redirect-delay-value="2000">
+  <div class="glass-card animate-in w-full max-w-[460px] text-center">
 
-        <h1 class="text-[2rem] font-[900] mb-6 text-text-main">
-            {{ t.reset_verified_title }}
-        </h1>
-
-        <p class="text-text-muted mb-10 leading-relaxed text-lg">
-            {{ t.reset_verified_msg }}
-        </p>
-
-        <div class="flex flex-col gap-4">
-            <a href="/reset/{{ token }}" class="btn">
-                {{ t.continue_reset }}
-            </a>
-            <a href="/login" class="btn outline">
-                {{ t.back_to_login }}
-            </a>
-        </div>
+    {# Icon header — check in green tint #}
+    <div class="flex flex-col items-center gap-3 mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-green-500/15 flex items-center justify-center text-green-600">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="text-center">
+        <h2 class="text-2xl font-black tracking-tight">{{ t.reset_verified_title }}</h2>
+      </div>
     </div>
-</div>
+
+    <p class="muted leading-relaxed mb-8">{{ t.reset_verified_msg }}</p>
+
+    <div class="flex flex-col gap-3">
+      <a href="/reset/{{ token }}" class="btn w-full">
+        {% if lang == 'ar' %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+        {% else %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        {% endif %}
+        <span>{{ t.continue_reset }}</span>
+      </a>
+      <a href="/login" class="btn outline w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+        </svg>
+        <span>{{ t.back_to_login }}</span>
+      </a>
+    </div>
+
+  </div>
+</section>
 {% endblock %}

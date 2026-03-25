@@ -1,32 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container" style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
-    <div class="glass animate-in"
-        style="padding: 4rem; text-align: center; max-width: 600px; border-radius: var(--radius-lg); position: relative; overflow: hidden;">
-        {# Decorative background element #}
-        <div
-            style="position: absolute; top: -50px; right: -50px; font-size: 15rem; opacity: 0.03; pointer-events: none; transform: rotate(-15deg);">
-            ERROR</div>
+<div class="container flex items-center justify-center" style="min-height: 80vh;">
+  <div class="glass animate-in text-center p-16 max-w-[600px] rounded-[var(--radius-lg)] relative overflow-hidden">
 
-        <div style="font-size: 6rem; margin-bottom: 2rem; line-height: 1; font-weight: 950; color: #e74c3c;">
-            ⚠️
-        </div>
+    {# Decorative watermark #}
+    <div class="absolute top-[-40px] right-[-40px] text-[14rem] font-[950] opacity-[0.025] pointer-events-none leading-none select-none tracking-tighter">ERR</div>
 
-        <h1 style="font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -1px;">{{ t.error_occurred }}</h1>
-        <p class="muted" style="font-size: 1.2rem; margin-bottom: 3rem; line-height: 1.6;">
-            {{ t.error_message }}
-        </p>
-
-        <div style="display: flex; gap: 1rem; justify-content: center;">
-            <a href="/" class="btn" style="padding: 1rem 2.5rem; border-radius: 50px; font-weight: 800;">
-                🏠 {{ t.back_home }}
-            </a>
-            <button onclick="location.reload()" class="btn outline"
-                style="padding: 1rem 2.5rem; border-radius: 50px; font-weight: 800;">
-                {{ t.refresh_page }}
-            </button>
-        </div>
+    <div class="w-20 h-20 rounded-[var(--radius-md)] bg-red-50 dark:bg-red-500/10 flex items-center justify-center text-red-500 mx-auto mb-8">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+      </svg>
     </div>
+
+    <h1 class="font-[900] mb-4 tracking-tight text-2xl">{{ t.error_occurred }}</h1>
+    <p class="text-[var(--text-muted)] text-lg mb-10 leading-relaxed max-w-[45ch] mx-auto">
+      {{ t.error_message }}
+    </p>
+
+    <div class="flex gap-3 justify-center">
+      <a href="/" class="btn px-8 py-3 font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+        </svg>
+        {{ t.back_home }}
+      </a>
+      <button onclick="location.reload()" class="btn outline px-8 py-3 font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+        </svg>
+        {{ t.refresh_page }}
+      </button>
+    </div>
+
+  </div>
 </div>
 {% endblock %}

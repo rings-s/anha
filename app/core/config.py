@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-    app_name: str = "ANHA Trading"
+    app_name: str = "FWZ Energy & Electrical"
     environment: str = "development"
     base_url: str = "http://localhost:8000"
 
@@ -28,9 +28,9 @@ class Settings(BaseSettings):
     # SMTP Configuration (Defaulting to Hostinger settings as a baseline)
     smtp_host: str = "smtp.hostinger.com"
     smtp_port: int = 587
-    smtp_user: str | None = "info@inha.sa"
+    smtp_user: str | None = "info@fwz.sa"
     smtp_password: str | None = None
-    smtp_from_email: str = "info@inha.sa"
+    smtp_from_email: str = "info@fwz.sa"
     smtp_tls: bool = True
 
 

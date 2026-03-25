@@ -1,169 +1,177 @@
 {# Admin Bookings List Partial #}
-<div class="glass animate-in" style="margin-top: 1.5rem; padding: 2rem; border-radius: var(--radius-lg);">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 3px; height: 20px; background: var(--accent-primary); border-radius: 10px;"></div>
-            <h3 style="margin: 0; font-weight: 800;">إدارة سجل الطلبات</h3>
-        </div>
-        <div style="display: flex; gap: 0.5rem; background: rgba(0,0,0,0.05); padding: 0.4rem; border-radius: 50px;"
-            data-controller="filter">
-            <button class="btn outline active"
-                style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
-                hx-get="/admin/bookings?status=all" hx-target="#admin-bookings-grid" hx-swap="innerHTML">الكل</button>
-            <button class="btn outline"
-                style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
-                hx-get="/admin/bookings?status=requested" hx-target="#admin-bookings-grid"
-                hx-swap="innerHTML">جديد</button>
-            <button class="btn outline"
-                style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
-                hx-get="/admin/bookings?status=assigned" hx-target="#admin-bookings-grid" hx-swap="innerHTML">تم
-                التكليف</button>
-            <button class="btn outline"
-                style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
-                hx-get="/admin/bookings?status=in_progress" hx-target="#admin-bookings-grid" hx-swap="innerHTML">قيد
-                التنفيذ</button>
-            <button class="btn outline"
-                style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 50px; border: none;"
-                hx-get="/admin/bookings?status=completed" hx-target="#admin-bookings-grid"
-                hx-swap="innerHTML">مكتمل</button>
-        </div>
+<div class="glass animate-in mt-6 p-8 rounded-[var(--radius-lg)]">
+
+  {# Section Header #}
+  <div class="flex justify-between items-center mb-8 flex-wrap gap-4">
+    <div class="section-title mb-0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/>
+      </svg>
+      {{ t.admin_bookings_title }}
     </div>
 
-    <div id="admin-bookings-grid" class="animate-in">
-        {# Bookings Table #}
-        <div
-            style="overflow-x: auto; background: rgba(0,0,0,0.02); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
-            <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
-                <thead>
-                    <tr style="background: rgba(0,0,0,0.05); color: var(--text-main);">
-                        <th style="text-align: right; padding: 1rem 1.25rem; font-weight: 800; font-size: 0.8rem;"># ID
-                        </th>
-                        <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الخدمة
-                            المطلوبة</th>
-                        <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">العميل
-                        </th>
-                        <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الحالة
-                        </th>
-                        <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">الموظف
-                            المكلف</th>
-                        <th style="text-align: right; padding: 1rem 0.8rem; font-weight: 800; font-size: 0.8rem;">
-                            التاريخ</th>
-                        <th style="text-align: center; padding: 1rem 1.25rem; font-weight: 800; font-size: 0.8rem;">
-                            الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for booking in bookings %}
-                    <tr class="table-row-hover"
-                        style="border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s ease;">
-                        <td
-                            style="padding: 1rem 1.25rem; font-weight: 500; font-family: monospace; color: var(--accent-primary); font-size: 0.85rem;">
-                            {{ booking.id }}</td>
-                        <td style="padding: 1rem 0.8rem;">
-                            <div style="font-weight: 700; font-size: 0.85rem;">{{ booking.service.name_ar if
-                                booking.service else 'خدمة غير
-                                محددة' }}</div>
-                            <div class="muted" style="font-size: 0.7rem;">{{ booking.service.name_en if booking.service
-                                and booking.service.name_en else '' }}</div>
-                        </td>
-                        <td style="padding: 1rem 0.8rem;">
-                            <div style="font-weight: 600; font-size: 0.85rem;">{{ booking.client.full_name if
-                                booking.client else 'عميل مجهول' }}</div>
-                            <div class="muted"
-                                style="font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem;">
-                                <span>📞</span> {{ booking.contact_phone }}
-                            </div>
-                        </td>
-                        <td style="padding: 1.2rem 1rem;">
-                            {% set status_labels = {'requested': 'جديد', 'assigned': 'تم التكليف', 'in_progress': 'قيد
-                            التنفيذ', 'completed': 'مكتمل', 'cancelled': 'ملغي'} %}
-                            {% set status_val = booking.status.value %}
-                            <span class="badge status-badge status-{{ status_val }}">
-                                {{ status_labels.get(status_val, status_val) }}
-                            </span>
-                        </td>
-                        <td style="padding: 1.2rem 1rem;">
-                            {% if booking.assigned_employee %}
-                            <div
-                                style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem;">
-                                <div
-                                    style="width: 24px; height: 24px; background: var(--accent-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">
-                                    {{ booking.assigned_employee.full_name[0] }}</div>
-                                {{ booking.assigned_employee.full_name }}
-                            </div>
-                            {% else %}
-                            <span class="muted" style="font-size: 0.85rem; font-style: italic;">— غير معين —</span>
-                            {% endif %}
-                        </td>
-                        <td style="padding: 1rem 0.8rem; font-size: 0.8rem;" class="muted">{{
-                            booking.created_at.strftime('%Y-%m-%d') if booking.created_at else '---' }}</td>
-                        <td style="padding: 1rem 1.25rem; text-align: center;">
-                            <div style="display: flex; gap: 0.8rem; justify-content: center;">
-                                <button class="btn outline"
-                                    style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px;"
-                                    onclick="document.getElementById('edit-booking-{{ booking.id }}').showModal()"
-                                    title="إدارة الطلب">✏️</button>
-                                <form method="post" action="/admin/bookings/{{ booking.id }}/delete"
-                                    style="display: inline;"
-                                    onsubmit="return confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')">
-                                    <button type="submit" class="btn outline"
-                                        style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #e74c3c; border-color: rgba(231, 76, 60, 0.2);">🗑️</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        {# Edit Booking Modals (moved outside table for valid HTML) #}
-        {% for booking in bookings %}
-        <dialog id="edit-booking-{{ booking.id }}">
-            <div class="modal-header">
-                <h3>📋 إدارة الطلب #{{ booking.id }}</h3>
-                <p>تغيير حالة الطلب أو تعيين موظف مسئول</p>
-            </div>
-            <form method="post" action="/admin/bookings/{{ booking.id }}/update">
-                <div class="modal-content">
-                    <div class="modal-form-group">
-                        <label>حالة الطلب الحالية</label>
-                        <select name="status">
-                            {% for status in statuses %}
-                            <option value="{{ status.value }}" {% if booking.status==status %}selected{% endif %}>{{
-                                status.value | capitalize }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="modal-form-group">
-                        <label>الموظف المكلف بالتنفيذ</label>
-                        <select name="assigned_employee_id">
-                            <option value="">— اختيار الموظف —</option>
-                            {% for emp in employees %}
-                            <option value="{{ emp.id }}" {% if booking.assigned_employee_id==emp.id %}selected{% endif
-                                %}>
-                                {{ emp.full_name }} ({{ emp.role.value }})
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn" style="flex: 2;">💾 حفظ التعديلات</button>
-                    <button type="button" class="btn outline" onclick="this.closest('dialog').close()"
-                        style="flex: 1;">إلغاء</button>
-                </div>
-            </form>
-        </dialog>
-        {% endfor %}
-
-        {% if not bookings %}
-        <div class="text-center" style="padding: 5rem 2rem;">
-            <div style="font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.2;">📭</div>
-            <h4 style="font-weight: 800; margin-bottom: 0.5rem;">لا توجد طلبات في هذا القسم</h4>
-            <p class="muted">سيظهر هنا أي طلبات جديدة بمجرد استلامها من العملاء</p>
-        </div>
-        {% endif %}
+    <div class="tabs-nav" data-controller="filter">
+      <button class="tab-btn active" hx-get="/admin/bookings?status=all" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.all }}</button>
+      <button class="tab-btn" hx-get="/admin/bookings?status=requested" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_requested }}</button>
+      <button class="tab-btn" hx-get="/admin/bookings?status=assigned" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_assigned }}</button>
+      <button class="tab-btn" hx-get="/admin/bookings?status=in_progress" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_in_progress }}</button>
+      <button class="tab-btn" hx-get="/admin/bookings?status=completed" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_completed }}</button>
     </div>
+  </div>
+
+  <div id="admin-bookings-grid" class="animate-in">
+    {# Bookings Table #}
+    <div class="overflow-x-auto rounded-[var(--radius-sm)] border border-black/[0.04] dark:border-white/[0.05]">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th># ID</th>
+            <th>{{ t.col_service }}</th>
+            <th>{{ t.col_client }}</th>
+            <th>{{ t.status }}</th>
+            <th>{{ t.col_employee }}</th>
+            <th>{{ t.col_date }}</th>
+            <th class="text-center">{{ t.col_actions }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+          <tr>
+            <td class="font-mono text-[var(--accent-primary)] text-sm">{{ booking.id }}</td>
+            <td>
+              {% if booking.service %}
+              {# Show only the active language name in admin too, per user request #}
+              <div class="font-bold text-sm">
+                {% if lang == 'ar' %}
+                  {{ booking.service.name_ar or booking.service.name_en }}
+                {% else %}
+                  {{ booking.service.name_en or booking.service.name_ar }}
+                {% endif %}
+              </div>
+              {% else %}
+              <div class="font-bold text-sm text-[var(--text-muted)] italic">{{ t.unknown_service }}</div>
+              {% endif %}
+            </td>
+            <td>
+              <div class="font-semibold text-sm">{{ booking.client.full_name if booking.client else t.unknown_client }}</div>
+              <div class="text-[var(--text-muted)] text-xs mt-0.5 flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+                </svg>
+                {{ booking.contact_phone }}
+              </div>
+            </td>
+            <td>
+              {% set status_val = booking.status.value %}
+              {% if status_val == 'requested' %}
+                {% set status_label = t.status_requested %}
+              {% elif status_val == 'assigned' %}
+                {% set status_label = t.status_assigned %}
+              {% elif status_val == 'in_progress' %}
+                {% set status_label = t.status_in_progress %}
+              {% elif status_val == 'completed' %}
+                {% set status_label = t.status_completed %}
+              {% elif status_val == 'cancelled' %}
+                {% set status_label = t.status_cancelled %}
+              {% else %}
+                {% set status_label = status_val %}
+              {% endif %}
+              <span class="badge status-{{ status_val }}">{{ status_label }}</span>
+            </td>
+            <td>
+              {% if booking.assigned_employee %}
+              <div class="flex items-center gap-2 font-semibold text-sm">
+                <div class="w-6 h-6 bg-[var(--accent-primary)] text-white rounded-full flex items-center justify-center text-xs shrink-0 font-bold">
+                  {{ booking.assigned_employee.full_name[0] }}
+                </div>
+                {{ booking.assigned_employee.full_name }}
+              </div>
+              {% else %}
+              <span class="text-[var(--text-muted)] text-sm italic">{{ t.unassigned }}</span>
+              {% endif %}
+            </td>
+            <td class="text-[var(--text-muted)] text-sm tabular-nums">
+              {{ booking.created_at.strftime('%Y-%m-%d') if booking.created_at else '---' }}
+            </td>
+            <td>
+              <div class="flex gap-2 justify-center">
+                <button class="btn icon outline"
+                  onclick="document.getElementById('edit-booking-{{ booking.id }}').showModal()"
+                  title="{{ t.manage_booking_label }}" aria-label="{{ t.manage_booking_label }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                  </svg>
+                </button>
+                <form method="post" action="/admin/bookings/{{ booking.id }}/delete" class="inline m-0"
+                  onsubmit="return confirm('{{ t.confirm_delete_booking }}')">
+                  <button type="submit" class="btn icon danger" title="{{ t.delete_booking_label }}" aria-label="{{ t.delete_booking_label }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {# Edit Booking Modals #}
+    {% for booking in bookings %}
+    <dialog id="edit-booking-{{ booking.id }}">
+      <div class="modal-header">
+        <h3>{{ t.admin_edit_booking_title }} #{{ booking.id }}</h3>
+        <p>{{ t.admin_edit_booking_desc }}</p>
+      </div>
+      <form method="post" action="/admin/bookings/{{ booking.id }}/update">
+        <div class="modal-content">
+          <div class="modal-form-group">
+            <label>{{ t.booking_status_label }}</label>
+            <select name="status">
+              {% for status in statuses %}
+              <option value="{{ status.value }}" {% if booking.status==status %}selected{% endif %}>{{ status.value | capitalize }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="modal-form-group">
+            <label>{{ t.assigned_employee_label }}</label>
+            <select name="assigned_employee_id">
+              <option value="">{{ t.assign_employee_placeholder }}</option>
+              {% for emp in employees %}
+              <option value="{{ emp.id }}" {% if booking.assigned_employee_id==emp.id %}selected{% endif %}>
+                {{ emp.full_name }} ({{ emp.role.value }})
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn" style="flex:2;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+            </svg>
+            {{ t.save_modifications }}
+          </button>
+          <button type="button" class="btn outline" onclick="this.closest('dialog').close()" style="flex:1;">{{ t.cancel }}</button>
+        </div>
+      </form>
+    </dialog>
+    {% endfor %}
+
+    {# Empty State #}
+    {% if not bookings %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.251 2.251 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.251 2.251 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"/>
+        </svg>
+      </div>
+      <h3>{{ t.no_bookings_in_section }}</h3>
+      <p>{{ t.bookings_appear_here }}</p>
+    </div>
+    {% endif %}
+  </div>
+
 </div>
