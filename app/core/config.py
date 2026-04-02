@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -33,6 +34,14 @@ class Settings(BaseSettings):
     smtp_from_email: str = "info@fwz.sa"
     smtp_tls: bool = True
 
+    @model_validator(mode="after")
+    def _check_production_secrets(self) -> "Settings":
+        if self.environment == "production" and self.secret_key in ("change-me", ""):
+            raise ValueError(
+                "SECRET_KEY must be set to a secure random value in production. "
+                "Generate one with: python -c \"import secrets; print(secrets.token_urlsafe(32))\""
+            )
+        return self
 
 
 @lru_cache

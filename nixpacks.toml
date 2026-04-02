@@ -1,0 +1,17 @@
+[phases.setup]
+nixPkgs = ["python313", "nodejs_20"]
+
+[phases.install]
+cmds = [
+  "curl -LsSf https://astral.sh/uv/install.sh | sh",
+  "$HOME/.local/bin/uv sync --frozen --no-dev",
+  "npm ci"
+]
+
+[phases.build]
+cmds = [
+  "npm run build"
+]
+
+[start]
+cmd = "$HOME/.local/bin/uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT --loop uvloop --http httptools --workers 2"

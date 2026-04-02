@@ -1,0 +1,72 @@
+# Railway Deployment - Files to Exclude
+# ============================================
+
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment files — NEVER ship secrets
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+.venv
+env/
+venv/
+ENV/
+corvexEnv/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Dev databases — use Railway PostgreSQL in production
+*.db
+*.sqlite
+*.sqlite3
+
+# Node
+node_modules/
+npm-debug.log*
+bun.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+tests/
+pytest.ini
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# Nginx (not used on Railway)
+nginx/
+
+# Scripts
+scripts/
+
+# Backups
+backups/
+*.sql
+
+# Misc
+*.md
+!README.md
+DEPLOY.md

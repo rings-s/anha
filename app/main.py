@@ -1,4 +1,5 @@
 from collections import deque
+from contextlib import asynccontextmanager
 from time import monotonic
 from typing import Deque
 
@@ -18,11 +19,39 @@ from app.services.content import get_translations, get_profile
 
 settings = get_settings()
 
-app = FastAPI(title=settings.app_name, default_response_class=ORJSONResponse)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ── Startup ────────────────────────────────────────────────────────
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    if settings.auto_create_db:
+        async with AsyncSession(engine) as session:
+            await init_db(session)
+    yield
+    # ── Shutdown ───────────────────────────────────────────────────────
+    await engine.dispose()
+
+
+app = FastAPI(
+    title=settings.app_name,
+    default_response_class=ORJSONResponse,
+    lifespan=lifespan,
+)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # In-memory, per-process rate limiter.
 _rate_limit_store: dict[str, Deque[float]] = {}
+
+# Health check endpoint for deployment monitoring
+@app.get("/health", response_class=ORJSONResponse)
+async def health_check():
+    """Health check endpoint for deployment monitoring (Railway/Render)."""
+    return ORJSONResponse({
+        "status": "healthy",
+        "service": "anha-trading",
+        "environment": settings.environment
+    })
 
 @app.middleware("http")
 async def rate_limit(request: Request, call_next):
@@ -127,12 +156,3 @@ app.include_router(pages.router)
 app.include_router(auth.router)
 app.include_router(bookings.router)
 app.include_router(admin.router)
-
-
-@app.on_event("startup")
-async def on_startup() -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    if settings.auto_create_db:
-        async with AsyncSession(engine) as session:
-            await init_db(session)

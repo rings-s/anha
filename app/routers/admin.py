@@ -291,11 +291,17 @@ async def list_services(
 async def create_service(
     name_ar: str = Form(...),
     name_en: str = Form(""),
-    description: str = Form(""),
+    description_ar: str = Form(""),
+    description_en: str = Form(""),
     admin: User = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ):
-    service = Service(name_ar=name_ar, name_en=name_en, description=description)
+    service = Service(
+        name_ar=name_ar,
+        name_en=name_en,
+        description_ar=description_ar or None,
+        description_en=description_en or None,
+    )
     session.add(service)
     await session.commit()
     return _redirect("/admin")
@@ -306,7 +312,8 @@ async def update_service(
     service_id: int,
     name_ar: str = Form(...),
     name_en: str = Form(""),
-    description: str = Form(""),
+    description_ar: str = Form(""),
+    description_en: str = Form(""),
     admin: User = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ):
@@ -314,10 +321,11 @@ async def update_service(
     service = result.scalar_one_or_none()
     if not service:
         return HTMLResponse("الخدمة غير موجودة", status_code=404)
-    
+
     service.name_ar = name_ar
     service.name_en = name_en
-    service.description = description
+    service.description_ar = description_ar or None
+    service.description_en = description_en or None
     await session.commit()
     return _redirect("/admin")
 

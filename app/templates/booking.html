@@ -13,7 +13,13 @@
           <label>{{ t.service }}</label>
           <select name="service_id" required>
             {% for service in services %}
-            <option value="{{ service.id }}">{{ service.name_ar if lang == 'ar' else service.name_en }}</option>
+            <option value="{{ service.id }}">
+              {% if lang == 'ar' %}
+                {{ service.name_ar or service.name_en }}
+              {% else %}
+                {{ service.name_en or service.name_ar }}
+              {% endif %}
+            </option>
             {% endfor %}
           </select>
         </div>

@@ -85,8 +85,13 @@
   {% for user in users %}
   <dialog id="edit-user-{{ user.id }}">
     <div class="modal-header">
-      <h3>{{ t.admin_edit_user_title }}</h3>
-      <p>{{ t.admin_edit_user_desc }}: {{ user.full_name }}</p>
+      <div class="modal-header-text">
+        <h3>{{ t.admin_edit_user_title }}</h3>
+        <p>{{ t.admin_edit_user_desc }}: {{ user.full_name }}</p>
+      </div>
+      <button type="button" class="modal-close" onclick="this.closest('dialog').close()" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
     <form method="post" action="/admin/users/{{ user.id }}/update">
       <div class="modal-content">
@@ -103,7 +108,9 @@
             <label>{{ t.user_role_label }}</label>
             <select name="role">
               {% for role in roles %}
-              <option value="{{ role.value }}" {% if user.role==role %}selected{% endif %}>{{ role.value | capitalize }}</option>
+              <option value="{{ role.value }}" {% if user.role==role %}selected{% endif %}>
+                {{ t.get('role_' + role.value, role.value | capitalize) }}
+              </option>
               {% endfor %}
             </select>
           </div>
@@ -147,8 +154,13 @@
 {# Create User Modal #}
 <dialog id="create-user-modal">
   <div class="modal-header">
-    <h3>{{ t.admin_create_user_title }}</h3>
-    <p>{{ t.admin_create_user_desc }}</p>
+    <div class="modal-header-text">
+      <h3>{{ t.admin_create_user_title }}</h3>
+      <p>{{ t.admin_create_user_desc }}</p>
+    </div>
+    <button type="button" class="modal-close" onclick="this.closest('dialog').close()" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
   </div>
   <form method="post" action="/admin/users/create">
     <div class="modal-content">

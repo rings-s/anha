@@ -39,7 +39,8 @@
         {% endif %}
 
         <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-5 min-h-[3.5em]">
-          {{ service.description[:120] if service.description else t.no_description_available }}{% if service.description and service.description|length > 120 %}…{% endif %}
+          {% set desc = service.description_ar or service.description_en or service.description %}
+          {{ desc[:120] if desc else t.no_description_available }}{% if desc and desc|length > 120 %}…{% endif %}
         </p>
       </div>
 
@@ -69,8 +70,13 @@
   {% for service in services %}
   <dialog id="edit-service-{{ service.id }}">
     <div class="modal-header">
-      <h3>{{ t.admin_edit_service_title }}</h3>
-      <p>{{ t.admin_edit_service_desc }}: {{ service.name_ar }}</p>
+      <div class="modal-header-text">
+        <h3>{{ t.admin_edit_service_title }}</h3>
+        <p>{{ t.admin_edit_service_desc }}: {{ service.name_ar }}</p>
+      </div>
+      <button type="button" class="modal-close" onclick="this.closest('dialog').close()" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
     <form method="post" action="/admin/services/{{ service.id }}/update">
       <div class="modal-content">
@@ -83,8 +89,12 @@
           <input type="text" name="name_en" value="{{ service.name_en or '' }}">
         </div>
         <div class="modal-form-group">
-          <label>{{ t.service_desc_label }}</label>
-          <textarea name="description" rows="4">{{ service.description or '' }}</textarea>
+          <label>{{ t.service_desc_ar_label }}</label>
+          <textarea name="description_ar" rows="3" placeholder="{{ t.service_desc_ar_placeholder }}">{{ service.description_ar or service.description or '' }}</textarea>
+        </div>
+        <div class="modal-form-group">
+          <label>{{ t.service_desc_en_label }}</label>
+          <textarea name="description_en" rows="3" placeholder="{{ t.service_desc_en_placeholder }}">{{ service.description_en or '' }}</textarea>
         </div>
       </div>
       <div class="modal-footer">
@@ -118,8 +128,13 @@
 {# Create Service Modal #}
 <dialog id="create-service-modal">
   <div class="modal-header">
-    <h3>{{ t.admin_create_service_title }}</h3>
-    <p>{{ t.admin_create_service_desc }}</p>
+    <div class="modal-header-text">
+      <h3>{{ t.admin_create_service_title }}</h3>
+      <p>{{ t.admin_create_service_desc }}</p>
+    </div>
+    <button type="button" class="modal-close" onclick="this.closest('dialog').close()" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
   </div>
   <form method="post" action="/admin/services/create">
     <div class="modal-content">
@@ -132,8 +147,12 @@
         <input type="text" name="name_en" placeholder="{{ t.service_name_en_placeholder }}">
       </div>
       <div class="modal-form-group">
-        <label>{{ t.service_desc_label }}</label>
-        <textarea name="description" rows="4" placeholder="{{ t.service_desc_placeholder }}"></textarea>
+        <label>{{ t.service_desc_ar_label }}</label>
+        <textarea name="description_ar" rows="3" placeholder="{{ t.service_desc_ar_placeholder }}"></textarea>
+      </div>
+      <div class="modal-form-group">
+        <label>{{ t.service_desc_en_label }}</label>
+        <textarea name="description_en" rows="3" placeholder="{{ t.service_desc_en_placeholder }}"></textarea>
       </div>
     </div>
     <div class="modal-footer">

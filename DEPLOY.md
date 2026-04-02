@@ -1,345 +1,290 @@
 # ============================================
-# ANHA Trading - Production Deployment Guide
-# For Hostinger VPS
+# ANHA Trading - Deployment Guide
 # ============================================
 
 ## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [VPS Setup](#vps-setup)
-3. [Initial Deployment](#initial-deployment)
-4. [SSL Certificate Setup](#ssl-certificate-setup)
-5. [Maintenance](#maintenance)
-6. [Troubleshooting](#troubleshooting)
+1. [Railway Deployment (Recommended)](#railway-deployment-recommended)
+2. [Hostinger VPS Deployment](#hostinger-vps-deployment)
+3. [Troubleshooting](#troubleshooting)
 
 ---
 
-## Prerequisites
+## Railway Deployment (Recommended)
 
-### Hostinger VPS Requirements
-- **OS**: Ubuntu 22.04 LTS (recommended) or 20.04 LTS
-- **RAM**: Minimum 2GB (4GB recommended)
-- **Storage**: Minimum 20GB SSD
-- **Ports**: 80, 443 must be open
-- **Domain**: Point your domain to VPS IP address
+### Why Railway?
+- **One-Click Deploy**: Connect GitHub and deploy instantly
+- **Auto SSL**: Free HTTPS automatically configured
+- **Auto Deploy**: Every git push triggers deployment
+- **Managed Database**: PostgreSQL included
+- **Generous Free Tier**: $5 credit/month, pay-as-you-go
+- **Simple Pricing**: Only pay for what you use
 
-### Software Requirements
-- Docker 24.0+
-- Docker Compose 2.20+
-- Git
+### Step-by-Step Deployment
 
----
+#### 1. Prepare Your Repository
 
-## VPS Setup
-
-### 1. Update System
+**Generate uv lock file (required):**
 ```bash
-sudo apt update && sudo apt upgrade -y
-```
+# Install uv if you haven't already
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-### 2. Install Docker
-```bash
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
-
-# Add the repository:
-echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# Install Docker:
-sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-# Add user to docker group:
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-### 3. Install Additional Tools
-```bash
-sudo apt install -y git curl ncdu htop ufw fail2ban
-```
-
-### 4. Configure Firewall
-```bash
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow ssh
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw enable
-```
-
----
-
-## Initial Deployment
-
-### 1. Clone Repository
-```bash
-cd ~
-git clone https://github.com/yourusername/anha-trading.git
+# Navigate to your project
 cd anha-trading
+
+# Generate lock file (ensures reproducible builds)
+uv lock
+
+# Commit all deployment files
+git add railway.json nixpacks.toml .railwayignore .python-version uv.lock
+git commit -m "Add Railway deployment configuration with uv"
+git push origin main
 ```
 
-### 2. Configure Environment
+**Note:** The `uv.lock` file ensures your production dependencies match exactly what you tested with.
+
+#### 2. Create Railway Account
+1. Go to [https://railway.app](https://railway.app)
+2. Sign up with GitHub (recommended) for instant access
+3. Complete the onboarding process
+
+#### 3. Create New Project
+1. Click **"New Project"**
+2. Select **"Deploy from GitHub repo"**
+3. Authorize Railway to access your GitHub
+4. Select your `anha-trading` repository
+5. Select the `main` branch
+
+#### 4. Configure Service Settings
+
+Railway will auto-detect Python and configure most settings. Verify:
+
+**Build Settings:**
+- **Build Command**: `curl -LsSf https://astral.sh/uv/install.sh | sh && $HOME/.local/bin/uv sync --frozen && npm install && npm run build`
+- **Start Command**: `$HOME/.local/bin/uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT --loop uvloop --http httptools --workers 2`
+
+**Performance Optimizations:**
+- ✅ **Python 3.13**: Latest Python with 10-40% performance improvements
+- ✅ **uv**: Ultra-fast Python package manager (10-100x faster than pip)
+- ✅ **uvloop**: Rust-based event loop (2-4x faster than asyncio)
+- ✅ **httptools**: Rust-based HTTP parser (high-performance)
+- ✅ **orjson**: Rust-based JSON serialization (3-4x faster than stdlib)
+- ✅ **Multiple Workers**: 2 workers for parallel request handling
+- ✅ **bcrypt**: Rust-based password hashing
+
+**Why uv?**
+- **10-100x faster** than pip and pip-tools
+- Written in Rust (like uvloop, orjson)
+- Compatible with pip requirements.txt
+- Locks dependencies for reproducible builds
+- Lower memory usage
+
+**Healthcheck:**
+- **Healthcheck Path**: `/health`
+- **Port**: Railway auto-assigns via `$PORT` environment variable
+
+#### 5. Add Environment Variables
+
+In Railway dashboard, go to your service → **Variables** tab → **"Add Variable"**:
+
 ```bash
-# Copy production environment template
-cp .env.production .env.production.local
+# Required Variables
+APP_NAME=ANHA Trading
+ENVIRONMENT=production
+ACCESS_TOKEN_EXPIRE_MINUTES=720
+RESET_TOKEN_EXPIRE_MINUTES=30
+AUTO_CREATE_DB=true
+LOG_LEVEL=INFO
+SECRET_KEY=<generate-secure-random-key>
 
-# Edit with your values
-nano .env.production.local
+# Generate SECRET_KEY with:
+# python -c "import secrets; print(secrets.token_urlsafe(32))"
 ```
 
-**Important: Update these values in .env.production.local:**
-- `BASE_URL`: Your domain (e.g., https://your-domain.com)
-- `SECRET_KEY`: Generate with `python -c "import secrets; print(secrets.token_urlsafe(32))"`
-- `POSTGRES_PASSWORD`: Strong random password
-- `SMTP_USER`, `SMTP_PASSWORD`: Your Hostinger email credentials
+**Click "Generate"** for SECRET_KEY or create your own secure value.
 
-### 3. Make Scripts Executable
+#### 6. Add PostgreSQL Database
+
+1. In your Railway project, click **"New"** → **"Database"** → **"Add PostgreSQL"**
+2. Railway will provision a PostgreSQL database automatically
+3. Wait for database to be ready (~1-2 minutes)
+4. Railway automatically creates `DATABASE_URL` variable in your service
+
+**Verify Database Connection:**
+- Go to your web service → **Variables** tab
+- You should see `DATABASE_URL` automatically added
+- Format: `postgresql://user:password@host:port/database`
+
+#### 7. Add Persistent Volume (Optional - for file storage)
+
+If you need persistent file storage:
+
+1. In service dashboard, go to **"Volumes"** tab
+2. Click **"Add Volume"**
+3. Configure:
+   - **Name**: `app-data`
+   - **Mount Path**: `/app/data`
+   - **Size**: 1 GB (minimum, expandable)
+
+#### 8. Deploy
+
+1. Railway automatically starts building after configuration
+2. Watch the **Deployments** tab for build progress
+3. Build completes in ~2-4 minutes
+4. Once deployed, you'll see:
+   - ✅ Build successful
+   - ✅ Health check passing
+   - 🌐 **Generate Domain** button
+
+#### 9. Configure Custom Domain
+
+1. In Railway dashboard, go to **"Settings"**
+2. Scroll to **"Domains"**
+3. Click **"Add Custom Domain"**
+4. Enter your domain (e.g., `app.yourdomain.com` or `anha.yourdomain.com`)
+5. Railway provides DNS records to configure:
+   ```
+   Type: CNAME
+   Name: app (or @ for root)
+   Value: <your-service>.up.railway.app
+   ```
+6. Update your domain's DNS records
+7. Railway automatically provisions SSL certificate (takes 5-10 minutes)
+
+**Free Railway Domain:**
+- Click **"Generate Domain"** for a free `*.up.railway.app` domain
+- Example: `anha-trading.up.railway.app`
+- Includes free SSL certificate
+
+#### 10. Create Admin User
+
+After deployment, create the first admin user:
+
+**Option A: Registration Page (Easiest)**
+1. Visit your deployed URL
+2. Go to registration page
+3. Create an account
+4. Manually update role in database (see below)
+
+**Option B: Railway Shell**
+1. In Railway dashboard, click **"Shell"** tab
+2. Wait for shell to connect
+3. Run Python script:
+
+```python
+python << EOF
+import asyncio
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from app.models.user import User, Role
+from app.core.security import hash_password
+from app.db.session import Base
+
+async def create_admin():
+    import os
+    database_url = os.getenv("DATABASE_URL")
+    engine = create_async_engine(database_url)
+    
+    async with AsyncSession(engine) as session:
+        admin = User(
+            email='admin@yourdomain.com',
+            full_name='Admin User',
+            phone='+966500000000',
+            hashed_password=hash_password('YourSecurePassword123!'),
+            role=Role.admin,
+            is_active=True
+        )
+        session.add(admin)
+        await session.commit()
+        print("Admin user created successfully!")
+
+asyncio.run(create_admin())
+EOF
+```
+
+**Option C: Direct Database Access**
+1. In Railway dashboard, go to PostgreSQL service
+2. Click **"Connect"** → **"Psql"**
+3. Run SQL:
+```sql
+-- You'll need to generate the hash first
+-- Use Railway Shell to run: python -c "from app.core.security import hash_password; print(hash_password('YourPassword'))"
+
+-- Then insert:
+INSERT INTO users (email, full_name, phone, hashed_password, role, is_active)
+VALUES ('admin@yourdomain.com', 'Admin User', '+966500000000', '<hashed_password>', 'admin', true);
+```
+
+#### 11. Configure SMTP (Optional - for password reset emails)
+
+In Railway **Variables** tab, add:
+
 ```bash
-chmod +x scripts/*.sh
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=587
+SMTP_USER=your-email@your-domain.com
+SMTP_PASSWORD=your-smtp-password
+SMTP_FROM_EMAIL=your-email@your-domain.com
+SMTP_TLS=true
 ```
 
-### 4. Deploy (Without SSL - Initial)
-```bash
-# For first deployment without SSL
-# Edit nginx/conf.d/default.conf and comment out SSL lines if needed
-./scripts/deploy.sh
-```
+#### 12. Monitor Deployment
 
-### 5. Verify Deployment
-```bash
-# Check containers are running
-docker-compose -f docker-compose.prod.yml ps
-
-# View logs
-docker-compose -f docker-compose.prod.yml logs -f
-
-# Test locally
-curl http://localhost/health
-```
+- **Logs**: Dashboard → **Logs** tab (real-time streaming)
+- **Metrics**: Dashboard → **Metrics** tab (CPU, Memory, Network)
+- **Health**: Check `/health` endpoint
+- **Deployments**: View deployment history and rollback if needed
 
 ---
 
-## SSL Certificate Setup
+## Railway Cost Estimation
 
-### Option 1: Let's Encrypt (Recommended - Free)
+### Free Tier
+- **$5 credit/month** (enough for small apps)
+- Pay-as-you-go after credit
 
-```bash
-# Run the SSL setup script
-./scripts/setup-ssl.sh your-domain.com your-email@example.com
+### Typical Monthly Usage (Starter App)
+| Resource | Usage | Cost |
+|----------|-------|------|
+| Compute | 720 hrs | ~$5 |
+| PostgreSQL | 512 MB | ~$5 |
+| Volume (1GB) | 1 GB | ~$1 |
+| Bandwidth | 10 GB | Included |
+| **Total** | | **~$11/month** |
 
-# Example:
-./scripts/setup-ssl.sh app.yourdomain.com admin@yourdomain.com
-```
+**With $5 credit: ~$6/month out of pocket**
 
-This will:
-1. Obtain SSL certificate from Let's Encrypt
-2. Configure Nginx for HTTPS
-3. Auto-renew certificates
-
-### Option 2: Hostinger SSL (If purchased)
-
-```bash
-# Create SSL directory
-mkdir -p nginx/ssl
-
-# Upload your Hostinger SSL certificates:
-# - certificate.crt -> nginx/ssl/fullchain.pem
-# - private.key -> nginx/ssl/privkey.pem
-# - ca_bundle.crt -> nginx/ssl/chain.pem
-
-# Set permissions
-chmod 600 nginx/ssl/privkey.pem
-chmod 644 nginx/ssl/fullchain.pem
-chmod 644 nginx/ssl/chain.pem
-
-# Restart Nginx
-docker-compose -f docker-compose.prod.yml restart nginx
-```
+### Cost Optimization Tips
+- Use free Railway domain initially
+- Scale down during low-traffic periods
+- Monitor usage in dashboard
+- Set spending limits in **Settings → Billing**
 
 ---
 
-## Maintenance
+## Railway vs Render Comparison
 
-### Daily Operations
+| Feature | Railway | Render |
+|---------|---------|--------|
+| Free Tier | $5 credit | Limited free tier |
+| PostgreSQL | $5/month | $9/month |
+| Ease of Use | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Auto Deploy | ✅ | ✅ |
+| Custom Domain | ✅ Free SSL | ✅ Free SSL |
+| Pricing | Pay-as-you-go | Fixed plans |
+| **Best For** | **Flexibility & Cost** | Simplicity |
 
-**View logs:**
-```bash
-# All services
-docker-compose -f docker-compose.prod.yml logs -f
+---
 
-# Specific service
-docker-compose -f docker-compose.prod.yml logs -f app
-docker-compose -f docker-compose.prod.yml logs -f nginx
-docker-compose -f docker-compose.prod.yml logs -f db
-```
+## Hostinger VPS Deployment
 
-**Check status:**
-```bash
-docker-compose -f docker-compose.prod.yml ps
-docker stats
-```
+For detailed Docker deployment instructions on Hostinger VPS, see the original deployment guide in the repository history or use the Render deployment method above.
 
-### Backup Database
-
-**Manual backup:**
-```bash
-./scripts/backup.sh
-```
-
-**Automatic backups:** (Already configured by deploy.sh)
-- Daily at system cron time
-- Stored in `./backups/`
-- 7-day retention
-
-### Update Application
-
-```bash
-# Pull latest code and redeploy
-./scripts/update.sh
-```
-
-### Database Maintenance
-
-```bash
-# Connect to database
-docker exec -it anha-db psql -U anha_user -d anha_db
-
-# Vacuum database
-docker exec anha-db psql -U anha_user -d anha_db -c "VACUUM ANALYZE;"
-```
+**Quick Summary:**
+1. Set up Ubuntu VPS with Docker & Docker Compose
+2. Clone repository and configure `.env.production.local`
+3. Run `docker-compose -f docker-compose.prod.yml up -d`
+4. Set up SSL with Let's Encrypt
+5. Configure Nginx reverse proxy
 
 ---
 
 ## Troubleshooting
-
-### Container Won't Start
-
-```bash
-# Check logs
-docker-compose -f docker-compose.prod.yml logs --tail=100 [service-name]
-
-# Check for port conflicts
-sudo netstat -tlnp | grep -E '80|443|8000|5432'
-
-# Restart service
-docker-compose -f docker-compose.prod.yml restart [service-name]
-```
-
-### Database Connection Issues
-
-```bash
-# Check database is running
-docker-compose -f docker-compose.prod.yml ps db
-
-# Check logs
-docker-compose -f docker-compose.prod.yml logs db
-
-# Verify environment variables
-docker-compose -f docker-compose.prod.yml exec app env | grep DATABASE
-```
-
-### SSL Certificate Issues
-
-```bash
-# Renew certificate manually
-docker run -it --rm \
-  -v "$(pwd)/nginx/certbot-data:/etc/letsencrypt" \
-  -v "$(pwd)/nginx/www/certbot:/var/www/certbot" \
-  -p 80:80 \
-  certbot/certbot renew --force-renewal
-
-# Test Nginx config
-docker-compose -f docker-compose.prod.yml exec nginx nginx -t
-```
-
-### High Memory Usage
-
-```bash
-# Check memory usage
-docker stats --no-stream
-
-# Restart services
-docker-compose -f docker-compose.prod.yml restart
-
-# Prune unused images
-docker system prune -a
-```
-
-### Reset Everything (⚠️ DANGER - Data Loss)
-
-```bash
-# Stop all containers
-docker-compose -f docker-compose.prod.yml down
-
-# Remove volumes (DELETES ALL DATA)
-docker-compose -f docker-compose.prod.yml down -v
-
-# Remove all images
-docker system prune -a --volumes
-
-# Redeploy
-./scripts/deploy.sh
-```
-
----
-
-## Security Checklist
-
-- [ ] Changed default `SECRET_KEY` in `.env.production.local`
-- [ ] Changed default `POSTGRES_PASSWORD`
-- [ ] Enabled firewall (UFW)
-- [ ] SSL certificate installed
-- [ ] Regular backups configured
-- [ ] Fail2ban installed and running
-- [ ] Docker containers running as non-root
-- [ ] No sensitive data in code repository
-- [ ] Environment file not tracked in git
-- [ ] Database not exposed to internet
-
----
-
-## Useful Commands Reference
-
-```bash
-# Start services
-docker-compose -f docker-compose.prod.yml up -d
-
-# Stop services
-docker-compose -f docker-compose.prod.yml down
-
-# View logs
-docker-compose -f docker-compose.prod.yml logs -f
-
-# Restart service
-docker-compose -f docker-compose.prod.yml restart [service]
-
-# Rebuild and restart
-docker-compose -f docker-compose.prod.yml up -d --build
-
-# Access container shell
-docker-compose -f docker-compose.prod.yml exec [service] sh
-
-# Database backup
-./scripts/backup.sh
-
-# Database restore
-./scripts/restore.sh backups/anha_db_20240115_120000.sql.gz
-```
-
----
-
-## Support
-
-For issues or questions:
-1. Check logs: `docker-compose -f docker-compose.prod.yml logs`
-2. Check this troubleshooting guide
-3. Contact Hostinger support for VPS issues
-4. Open an issue in the project repository

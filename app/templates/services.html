@@ -4,28 +4,28 @@
 {# ── Services Page ─────────────────────────────────────────────────── #}
 
 {# ── Page Header — asymmetric split (DESIGN_VARIANCE: 8) ── #}
-<section class="animate-in mb-16 relative">
+<section class="animate-in mb-16 relative pt-8 md:pt-14 lg:pt-10">
   {# Ambient glow blobs — pointer-events-none, fixed z #}
   <div class="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-    <div class="absolute top-[-80px] {% if lang == 'ar' %}left-[-60px]{% else %}right-[-60px]{% endif %} w-[500px] h-[500px] bg-[rgba(13,107,94,0.06)] rounded-full blur-[120px]"></div>
+    <div class="absolute top-[-80px] {% if lang == 'ar' %}left-[-60px]{% else %}right-[-60px]{% endif %} w-[600px] h-[600px] bg-[rgba(13,107,94,0.06)] rounded-full blur-[140px]"></div>
     <div class="absolute bottom-0 {% if lang == 'ar' %}right-20{% else %}left-20{% endif %} w-[300px] h-[300px] bg-[rgba(13,107,94,0.04)] rounded-full blur-[80px]"></div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-10 items-end">
+  <div class="grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-10 md:gap-16 items-end">
     <div>
-      <div class="inline-flex items-center gap-2 mb-5 px-4 py-1.5 bg-[rgba(13,107,94,0.07)] border border-[rgba(13,107,94,0.14)] rounded-full">
+      <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 bg-[rgba(13,107,94,0.07)] border border-[rgba(13,107,94,0.14)] rounded-full">
         <span class="live-dot"></span>
         <span class="text-[var(--accent-primary)] font-[800] text-[0.72rem] uppercase tracking-[0.1em]">{{ profile.company_name }}</span>
       </div>
-      <h1 class="text-[2.6rem] md:text-[3.2rem] font-[950] tracking-tighter leading-[1.06] text-[var(--text-main)] mb-5">
+      <h1 class="text-[2.8rem] md:text-[3.5rem] lg:text-[3.8rem] font-[950] tracking-tighter leading-[1.04] text-[var(--text-main)] mb-6">
         {{ t.services_page_title }}
       </h1>
-      <p class="text-[var(--text-muted)] text-[1.05rem] leading-[1.85] font-medium max-w-[55ch]">
+      <p class="text-[var(--text-muted)] text-[1.07rem] leading-[1.9] font-medium max-w-[55ch]">
         {{ t.services_page_subtitle }}
       </p>
     </div>
-    <div class="flex {% if lang == 'ar' %}justify-start md:justify-end{% else %}justify-start md:justify-end{% endif %} items-end pb-1">
-      <a href="/book" class="btn">
+    <div class="flex {% if lang == 'ar' %}justify-start md:justify-end{% else %}justify-start md:justify-end{% endif %} items-end pb-2">
+      <a href="{{ '/book' if current_user else '/login' }}" class="btn">
         {{ t.book_cta }}
         {% if lang == 'ar' %}
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div class="mt-12 h-px bg-gradient-to-r from-transparent via-[rgba(13,107,94,0.18)] to-transparent"></div>
+  <div class="mt-14 h-px bg-gradient-to-r from-transparent via-[rgba(13,107,94,0.18)] to-transparent"></div>
 </section>
 
 {# ── Services Grid — 2-col asymmetric, staggered ── #}
@@ -66,9 +66,13 @@
         </div>
       </div>
 
-      {# Description #}
+      {# Description — language-specific #}
       <p class="text-[var(--text-muted)] text-[0.95rem] leading-[1.75] flex-grow font-medium">
-        {{ service.description or t.default_service_desc }}
+        {% if lang == 'ar' %}
+          {{ service.description_ar or service.description or service.description_en or t.default_service_desc }}
+        {% else %}
+          {{ service.description_en or service.description_ar or service.description or t.default_service_desc }}
+        {% endif %}
       </p>
 
       {# CTA footer #}

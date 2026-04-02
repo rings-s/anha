@@ -111,7 +111,11 @@
       </div>
 
       <p class="muted text-[0.95rem] leading-[1.6] m-0 line-clamp-3 h-[75px]">
-        {{ service.description or t.default_service_desc }}
+        {% if lang == 'ar' %}
+          {{ service.description_ar or service.description or service.description_en or t.default_service_desc }}
+        {% else %}
+          {{ service.description_en or service.description_ar or service.description or t.default_service_desc }}
+        {% endif %}
       </p>
 
       <div class="mt-8 pt-6 border-t border-black/[0.06] dark:border-white/[0.07]">

@@ -334,6 +334,42 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 .tab-panel { display: block; }
 .tab-panel.hidden { display: none; }
 
+/* ── Filter Pills ─────────────────────────────────────────────────────── */
+/* Visually distinct from .tabs-nav — these are status filters, not navigation */
+.filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+.filter-pill {
+    padding: 0.3rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: transparent;
+    color: var(--text-muted);
+    transition: var(--transition);
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+}
+.filter-pill:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: rgba(13,107,94,0.05);
+}
+.filter-pill:active { transform: scale(0.97); }
+.filter-pill.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(13,107,94,0.22);
+}
+.dark .filter-pill { border-color: rgba(255,255,255,0.12); }
+.dark .filter-pill.active { box-shadow: 0 2px 8px rgba(20,163,147,0.22); }
+
 /* ── Skeleton ─────────────────────────────────────────────────────────── */
 .skeleton {
     position: relative;
@@ -355,35 +391,101 @@ textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 
 /* ── Modal / Dialog ───────────────────────────────────────────────────── */
 dialog {
-    border: none;
+    border: 1px solid rgba(0,0,0,0.07);
     border-radius: var(--radius-lg);
     padding: 0;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+    /* Liquid glass: deep shadow + physical refraction edge */
+    box-shadow:
+        0 32px 80px rgba(0,0,0,0.2),
+        0 8px 24px rgba(0,0,0,0.1),
+        inset 0 1px 0 rgba(255,255,255,0.18);
     max-width: 520px;
     width: calc(100% - 3rem);
     background: #ffffff;
     overflow: hidden;
+    /* inset: 0 + margin: auto = bulletproof cross-browser centering */
+    position: fixed;
+    inset: 0;
+    margin: auto;
 }
-.dark dialog { background: #1e293b; }
-dialog::backdrop { background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); }
+.dark dialog {
+    background: #1e293b;
+    border-color: rgba(255,255,255,0.08);
+    box-shadow:
+        0 32px 80px rgba(0,0,0,0.55),
+        0 8px 24px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+}
+dialog::backdrop {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+dialog[open] {
+    animation: modal-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modal-in {
+    from { opacity: 0; transform: scale(0.94); }
+    to   { opacity: 1; transform: scale(1);    }
+}
 
 .modal-header {
-    padding: 1.75rem 2rem 1.25rem;
+    padding: 1.5rem 1.75rem 1.2rem;
     border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    /* Subtle accent gradient at top signals brand context */
+    background: linear-gradient(180deg, rgba(13,107,94,0.04) 0%, transparent 100%);
 }
-.modal-header h3 { font-weight: 900; font-size: 1.1rem; margin: 0 0 0.2rem; }
-.modal-header p  { color: var(--text-muted); font-size: 0.875rem; margin: 0; }
+.dark .modal-header {
+    border-bottom-color: rgba(255,255,255,0.06);
+    background: linear-gradient(180deg, rgba(20,163,147,0.05) 0%, transparent 100%);
+}
+.modal-header-text { flex: 1; min-width: 0; }
+.modal-header h3 { font-weight: 900; font-size: 1.05rem; margin: 0 0 0.2rem; }
+.modal-header p  { color: var(--text-muted); font-size: 0.85rem; margin: 0; line-height: 1.5; }
 
-.modal-content { padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.25rem; }
+/* X close button — rotate on hover for tactile physicality */
+.modal-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: var(--transition);
+    flex-shrink: 0;
+    padding: 0;
+    margin-top: 0.1rem;
+}
+.modal-close:hover {
+    background: rgba(224,92,92,0.08);
+    border-color: rgba(224,92,92,0.35);
+    color: #e05c5c;
+    transform: scale(1.08) rotate(90deg);
+}
+.modal-close:active { transform: scale(0.96) rotate(90deg); }
+.dark .modal-close { border-color: rgba(255,255,255,0.12); }
+
+.modal-content { padding: 1.75rem; display: flex; flex-direction: column; gap: 1.25rem; }
 .modal-form-group { display: flex; flex-direction: column; gap: 0.4rem; }
 .modal-form-group label { font-size: 0.8rem; }
 
 .modal-footer {
-    padding: 1.25rem 2rem 1.75rem;
+    padding: 1.2rem 1.75rem 1.5rem;
     border-top: 1px solid rgba(0,0,0,0.05);
     display: flex;
     gap: 0.75rem;
 }
+.dark .modal-footer { border-top-color: rgba(255,255,255,0.05); }
 
 /* ── Dark Mode Toggle ─────────────────────────────────────────────────── */
 .dark-toggle {

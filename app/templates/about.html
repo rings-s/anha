@@ -4,26 +4,26 @@
 {# ── About Page ──────────────────────────────────────────────────────── #}
 
 {# ── Hero — asymmetric split layout ── #}
-<section class="animate-in mb-16 relative">
+<section class="animate-in mb-16 relative pt-8 md:pt-14 lg:pt-10">
   {# Ambient glow blobs — pointer-events-none, fixed z #}
   <div class="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-    <div class="absolute top-[-80px] {% if lang == 'ar' %}right-[-60px]{% else %}left-[-60px]{% endif %} w-[500px] h-[500px] bg-[rgba(13,107,94,0.07)] rounded-full blur-[120px]"></div>
+    <div class="absolute top-[-80px] {% if lang == 'ar' %}right-[-60px]{% else %}left-[-60px]{% endif %} w-[600px] h-[600px] bg-[rgba(13,107,94,0.07)] rounded-full blur-[140px]"></div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-[1.3fr_0.7fr] gap-12 items-center">
+  <div class="grid grid-cols-1 md:grid-cols-[1.3fr_0.7fr] gap-12 md:gap-16 items-center">
     <div>
-      <div class="inline-flex items-center gap-2 mb-5 px-4 py-1.5 bg-[rgba(13,107,94,0.07)] border border-[rgba(13,107,94,0.14)] rounded-full">
+      <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 bg-[rgba(13,107,94,0.07)] border border-[rgba(13,107,94,0.14)] rounded-full">
         <span class="live-dot"></span>
         <span class="text-[var(--accent-primary)] font-[800] text-[0.72rem] uppercase tracking-[0.1em]">{{ t.about_hero_badge }}</span>
       </div>
-      <h1 class="text-[2.6rem] md:text-[3.2rem] font-[950] tracking-tighter leading-[1.06] text-[var(--text-main)] mb-5">
+      <h1 class="text-[2.8rem] md:text-[3.5rem] lg:text-[3.8rem] font-[950] tracking-tighter leading-[1.04] text-[var(--text-main)] mb-6">
         {{ profile.about_title }}
       </h1>
-      <p class="text-[var(--text-muted)] text-[1.05rem] leading-[1.85] font-medium max-w-[58ch]">
+      <p class="text-[var(--text-muted)] text-[1.07rem] leading-[1.9] font-medium max-w-[58ch]">
         {{ profile.intro }}
       </p>
-      <div class="mt-8 flex gap-3 flex-wrap">
-        <a href="/book" class="btn">
+      <div class="mt-10 flex gap-3 flex-wrap">
+        <a href="{{ '/book' if current_user else '/login' }}" class="btn">
           {{ t.contact_us_cta }}
         </a>
         <a href="/services" class="btn outline">
@@ -34,16 +34,16 @@
 
     {# Right side — stat callouts grid #}
     <div class="grid grid-cols-2 gap-3">
-      <div class="p-5 text-center rounded-[var(--radius-md)] border border-[rgba(13,107,94,0.1)] bg-[rgba(13,107,94,0.04)] dark:bg-[rgba(13,107,94,0.07)] dark:border-[rgba(20,163,147,0.15)]">
-        <div class="text-[2.2rem] font-[950] text-[var(--accent-primary)] tabular-nums leading-none mb-1.5">487+</div>
+      <div class="p-6 text-center rounded-[var(--radius-md)] border border-[rgba(13,107,94,0.1)] bg-[rgba(13,107,94,0.04)] dark:bg-[rgba(13,107,94,0.07)] dark:border-[rgba(20,163,147,0.15)]">
+        <div class="text-[2.4rem] font-[950] text-[var(--accent-primary)] tabular-nums leading-none mb-2">487+</div>
         <div class="text-[var(--text-muted)] font-[700] text-[0.7rem] uppercase tracking-[0.08em]">{{ t.successful_projects }}</div>
       </div>
-      <div class="p-5 text-center rounded-[var(--radius-md)] border border-[rgba(13,107,94,0.1)] bg-[rgba(13,107,94,0.04)] dark:bg-[rgba(13,107,94,0.07)] dark:border-[rgba(20,163,147,0.15)]">
-        <div class="text-[2.2rem] font-[950] text-[var(--accent-primary)] tabular-nums leading-none mb-1.5">4.8</div>
+      <div class="p-6 text-center rounded-[var(--radius-md)] border border-[rgba(13,107,94,0.1)] bg-[rgba(13,107,94,0.04)] dark:bg-[rgba(13,107,94,0.07)] dark:border-[rgba(20,163,147,0.15)]">
+        <div class="text-[2.4rem] font-[950] text-[var(--accent-primary)] tabular-nums leading-none mb-2">4.8</div>
         <div class="text-[var(--text-muted)] font-[700] text-[0.7rem] uppercase tracking-[0.08em]">{{ t.customer_rating }}</div>
       </div>
       <div class="col-span-2 p-5 rounded-[var(--radius-md)] border border-[rgba(13,107,94,0.18)] bg-[rgba(13,107,94,0.06)] dark:bg-[rgba(13,107,94,0.1)] dark:border-[rgba(20,163,147,0.2)] text-center">
-        <div class="flex items-center justify-center gap-2 mb-1">
+        <div class="flex items-center justify-center gap-2 mb-1.5">
           <span class="live-dot"></span>
           <span class="text-[var(--accent-primary)] font-[900] text-sm">{{ t.team_ready }}</span>
         </div>
@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <div class="mt-14 h-px bg-gradient-to-r from-transparent via-[rgba(13,107,94,0.18)] to-transparent"></div>
+  <div class="mt-16 h-px bg-gradient-to-r from-transparent via-[rgba(13,107,94,0.18)] to-transparent"></div>
 </section>
 
 {# ── Vision & Mission ── #}

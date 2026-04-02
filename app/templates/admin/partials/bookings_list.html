@@ -10,12 +10,12 @@
       {{ t.admin_bookings_title }}
     </div>
 
-    <div class="tabs-nav" data-controller="filter">
-      <button class="tab-btn active" hx-get="/admin/bookings?status=all" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.all }}</button>
-      <button class="tab-btn" hx-get="/admin/bookings?status=requested" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_requested }}</button>
-      <button class="tab-btn" hx-get="/admin/bookings?status=assigned" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_assigned }}</button>
-      <button class="tab-btn" hx-get="/admin/bookings?status=in_progress" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_in_progress }}</button>
-      <button class="tab-btn" hx-get="/admin/bookings?status=completed" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_completed }}</button>
+    <div class="filter-pills" onclick="this.querySelectorAll('.filter-pill').forEach(b=>b.classList.remove('active')); event.target.closest('.filter-pill')?.classList.add('active')">
+      <button class="filter-pill active" hx-get="/admin/bookings?status=all" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.all }}</button>
+      <button class="filter-pill" hx-get="/admin/bookings?status=requested" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_requested }}</button>
+      <button class="filter-pill" hx-get="/admin/bookings?status=assigned" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_assigned }}</button>
+      <button class="filter-pill" hx-get="/admin/bookings?status=in_progress" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_in_progress }}</button>
+      <button class="filter-pill" hx-get="/admin/bookings?status=completed" hx-target="#admin-bookings-grid" hx-swap="innerHTML">{{ t.status_completed }}</button>
     </div>
   </div>
 
@@ -122,8 +122,13 @@
     {% for booking in bookings %}
     <dialog id="edit-booking-{{ booking.id }}">
       <div class="modal-header">
-        <h3>{{ t.admin_edit_booking_title }} #{{ booking.id }}</h3>
-        <p>{{ t.admin_edit_booking_desc }}</p>
+        <div class="modal-header-text">
+          <h3>{{ t.admin_edit_booking_title }} #{{ booking.id }}</h3>
+          <p>{{ t.admin_edit_booking_desc }}</p>
+        </div>
+        <button type="button" class="modal-close" onclick="this.closest('dialog').close()" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
       </div>
       <form method="post" action="/admin/bookings/{{ booking.id }}/update">
         <div class="modal-content">
@@ -131,7 +136,9 @@
             <label>{{ t.booking_status_label }}</label>
             <select name="status">
               {% for status in statuses %}
-              <option value="{{ status.value }}" {% if booking.status==status %}selected{% endif %}>{{ status.value | capitalize }}</option>
+              <option value="{{ status.value }}" {% if booking.status==status %}selected{% endif %}>
+                {{ t.get('status_' + status.value, status.value | title) }}
+              </option>
               {% endfor %}
             </select>
           </div>
