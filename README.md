@@ -18,10 +18,10 @@ Arabic-first maintenance booking app for ANHA Trading (شركة انها الت�
 
 3. Run:
    ```bash
-   uvicorn app.main:app --reload --port 8000
+   uvicorn app.main:app --reload --port 8742
    ```
 
-Open http://localhost:8000
+Open http://localhost:8742
 
 ## Production
 
@@ -52,7 +52,7 @@ alembic revision --autogenerate -m "describe change"
    ```
 4. Start the server:
    ```
-   uvicorn app.main:app --host 0.0.0.0 --port 8000 --loop uvloop --http h11
+   uvicorn app.main:app --host 0.0.0.0 --port 8742 --loop uvloop --http h11
    ```
 
 ## Roles

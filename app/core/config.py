@@ -8,7 +8,7 @@ class Settings(BaseSettings):
 
     app_name: str = "FWZ Energy & Electrical"
     environment: str = "development"
-    base_url: str = "http://localhost:8000"
+    base_url: str = "http://localhost:8742"
 
     # Default to SQLite for local dev; override with DATABASE_URL in prod.
     database_url: str = "sqlite+aiosqlite:///./dev.db"
